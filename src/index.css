@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.pxbutton {
+  background-color: #27ae60;
+  height: 50px;
+  width: 280px;
+  color: #ffffff;
+  border: 1px solid #27ae60;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+  margin-top: 8px;
+}
