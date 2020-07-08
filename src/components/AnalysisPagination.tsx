@@ -9,7 +9,7 @@ import { AnalysisElements } from '../api/Services';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
+      width: '80%',
     },
     container: {
       maxHeight: 440,
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
   interface Column {
-    id: 'City' | 'SectorDesc' | 'EstateType' | 'Construction' | 'Layout' | 'WallMaterial' | 'MinCost' | 'MaxCost' | 'BeginDate' | 'EndDate';
+    id: 'City' | 'SectorDescription' | 'TypeEstate' | 'DetailArea' | 'ApartmentLayout' | 'WallMaterial' | 'MinCostWithBargain' | 'MaxCostWithBargain' | 'BeginDate' | 'EndDate';
     label: string;
     minWidth?: number;
     align?: 'right';
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
   const columns: Column[] = [
     { id: "City", label: "Нас. пункт", minWidth: 100 },
-    { id: "SectorDesc", label: "Описание сектора", minWidth: 100 },
-    { id: "EstateType", label: "Тип недвижимости", minWidth: 100 },
-    { id: "Construction", label: "Особенности строения/площадь жилого дома", minWidth: 100 },
-    { id: "Layout", label: "Планировка (назначение для участка)", minWidth: 100 },
+    { id: "SectorDescription", label: "Описание сектора", minWidth: 100 },
+    { id: "TypeEstate", label: "Тип недвижимости", minWidth: 100 },
+    { id: "DetailArea", label: "Особенности строения/площадь жилого дома", minWidth: 100 },
+    { id: "ApartmentLayout", label: "Планировка (назначение для участка)", minWidth: 100 },
     { id: "WallMaterial", label: "Материал стен", minWidth: 100 },
-    { id: "MinCost", label: "Стоимость за кв (сотку) Min", minWidth: 100 },
-    { id: "MaxCost", label: "Стоимость за кв (сотку) Max", minWidth: 100 },
+    { id: "MinCostWithBargain", label: "Стоимость за кв (сотку) Min", minWidth: 100 },
+    { id: "MaxCostWithBargain", label: "Стоимость за кв (сотку) Max", minWidth: 100 },
     { id: "BeginDate", label: "Дата начала параметра", minWidth: 100 },
     { id: "EndDate", label: "Дата окончания параметра", minWidth: 100 },
   ];
@@ -78,7 +78,7 @@ export const AnalysisPagination: React.FC<CityProps> = (city) =>{
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.Id}>
                   {columns.map((column) => {
-                    const value = 1; //row[column.id];
+                    const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === 'number' ? column.format(value) : value}

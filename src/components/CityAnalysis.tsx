@@ -77,7 +77,7 @@ export const CityAnalysis = () =>{
       </FormControl>
       <button className="pxbutton">Вывести справочник</button>
         </Grid>
-          <Grid item xs={3}>{<AnalysisPagination city={city}/>}</Grid>
+          <Grid item xs={12} container justify = "center">{<AnalysisPagination city={city}/>}</Grid>
        
       </Grid>
     </div>
