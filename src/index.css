@@ -23,6 +23,47 @@ code {
   font-family: "Roboto", sans-serif;
   margin-top: 8px;
 }
+
+.hrtrait{
+  
+  width: 1000px;
+  size: 50;
+  color: green;
+}
+
+/* label[for="file-input"] {
+  display: block;
+  margin-bottom: 1em;
+  font-size: 1em;
+  color: #fff;
+  opacity: 0;
+  font-weight: bold;
+}
+
+input[type="file"] {
+  cursor: pointer !Important;
+}
+input[type="file"]::-webkit-file-upload-button {
+  border: none;
+  padding: 5px 12px;
+  background: #9e2baf;
+  color: #fff;
+  font-size: 1em;
+  transition: all .4s;
+  cursor: pointer;
+  border-radius: 20px;
+}
+input[type="file"]::-ms-browse {
+  border: none;
+  padding: 5px 12px;
+  background: #9e2baf;
+  color: #fff;
+  font-size: 1em;
+  transition: all .4s;
+  cursor: pointer;
+  border-radius: 20px;
+} */
+
 .pxbuttonRight {
   background-color: #27ae60;
   height: 50px;
@@ -33,11 +74,4 @@ code {
   font-size: 14px;
   font-family: "Roboto", sans-serif;
   float: right;
-}
-
-.hrtrait{
-  
-  width: 1000px;
-  size: 50;
-  color: green;
 }

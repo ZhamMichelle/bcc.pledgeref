@@ -37,3 +37,9 @@ export class ListService {
         return service.getRestClient().post('/temporary/', city, { responseType: [] as AnalysisElements[] });
     }
 }
+
+export class UploadService {
+    getList(body:FormData){
+        return service.getRestClient().post('/upload/', body, { responseType: String });
+    }
+}

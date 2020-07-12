@@ -4,8 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel} from "@material-ui/core";
 import {AnalysisPagination} from './AnalysisPagination'
 import {AddAnalysis} from './AddAnalysis'
-import axios from 'axios';
-import { fileURLToPath } from 'url';
+import { UploadService } from '../api/Services';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,19 +53,26 @@ export const CityAnalysis = () =>{
     const [boolka, setBoolka] = useState(false)
     const [addBool, setAddBool] = useState(false)
     const [exitResult, setExitResult] = useState();
+    const [uploadResult, setUploadResult] = useState();
+    var uploadFile = new UploadService();
+
     const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
       const obj = {hello: 'world'};
-const blob1 = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
+      const blob1 = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
       var file = e.target.files;
-      //var path = (window.URL || window.webkitURL).createObjectURL(file);
-      let reader = new FileReader();
+      var formData = new FormData();
+      formData.append('body', file?.[0] || blob1);
       if(!!file){
-        //debugger;
-       let test= reader?.readAsDataURL(file[0].slice());
-        console.log("lala",e.target?.files?.[0].type)
+        uploadFile.getList(formData).then(json=>setUploadResult(json.data))
       }
-      
   }
+  useEffect(()=>{
+    console.log("uploadResult",uploadResult);
+    if(uploadResult==="Ok") {
+      alert("Файл загружен")
+    }
+    else if(uploadResult==="Error") alert("Произошла ошибка. Попробуйте изменить содержимое файла.");
+},[uploadResult])
     // useEffect(()=>{
     //   axios(
     //     `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Алматы+Жарокова+169`,
@@ -110,7 +116,7 @@ const getList = (e:any) =>{
       </FormControl>
       <button className="pxbutton" onClick={(e:any)=>{getList(e)}}>Вывести справочник</button>
       <input type='file' id='input' style={{float: "right"}} onChange={(e)=>onFileChange(e)}/>
-      
+    
         </Grid>
    {boolka ? <Grid item xs={12} container justify = "center">{<AnalysisPagination city={city}/>}</Grid> : <></>}
           {/* {city  ? <Grid item xs={12} container justify = "center">{<AnalysisPagination city={city}/>}</Grid> : <></>} */}
