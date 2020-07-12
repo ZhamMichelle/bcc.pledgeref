@@ -1,3 +1,6 @@
+import service from "./Service";
+import { strict } from 'assert';
+
 export class AnalysisElements{
         Id?: number;
         CityCodeKATO?: number;
@@ -22,4 +25,15 @@ export class AnalysisElements{
         MaxCostWithBargain?: number; 
         BeginDate?: Date;
         EndDate?: Date;
+}
+
+
+export class City{
+city?: string;
+}
+
+export class ListService {
+    getList(city:City){
+        return service.getRestClient().post('/temporary/', city, { responseType: [] as AnalysisElements[] });
+    }
 }
