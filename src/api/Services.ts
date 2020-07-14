@@ -42,8 +42,8 @@ city?: string = "Актау";
 }
 
 export class ListService {
-    getList(city:City){
-        return service.getRestClient().post('/temporary/', city, { responseType: [] as AnalysisElements[] });
+    getList(city:string){
+        return service.getRestClient().get(`/temporary/city/?city=${city}`, { responseType: [] as AnalysisElements[] });
     }
 }
 
@@ -54,13 +54,31 @@ export class UploadService {
 }
 
 export class SearchService {
-    getBySearch(city:City, sector:number){
-        return service.getRestClient().get(`/temporary/search/?city=${city.city}&sector=${sector}`, {responseType: [] as AnalysisElements[]});
+    getBySearch(city:string, sector:number){
+        return service.getRestClient().get(`/temporary/search/?city=${city}&sector=${sector}`, {responseType: [] as AnalysisElements[]});
     }
 }
 
 export class DeleteService {
     deleteElement(id:number){
         return service.getRestClient().delete(`/temporary/${id}`);
+    }
+}
+
+export class GetIdService {
+    getIdElement(id:number){
+        return service.getRestClient().get(`/temporary/${id}`, {responseType: new AnalysisElements()});
+    }
+}
+
+export class PostService {
+    postElement(element:AnalysisElements){
+        return service.getRestClient().post(`/temporary/`, element);
+    }
+}
+
+export class PutService {
+    putElement(element:AnalysisElements){
+        return service.getRestClient().put(`/temporary/`, element);
     }
 }

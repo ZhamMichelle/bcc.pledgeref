@@ -34,28 +34,24 @@ const useStyles = makeStyles((theme: Theme) =>
 type CityProps = {
     city: string;
   };
-export const Elements = (city, props:any) =>{
+export const Elements = (props:any) =>{
     const classes = useStyles();
     const [wantDelete, setWantDelete] = useState(false);
     const [idWantDelete, setIdWantDelete] = useState(0);
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
     const [searchName, setSearchName] = useState();
     const {
+        city,
       formState,
       onSelectedItem,
       filter,
     }: {
+        city: string;
       formState: FormState;
       onSelectedItem: (m: AnalysisElements) => void;
       filter: [];
     } = props;
 
-    var getSearchList=new SearchService();
-    useEffect(() => {
-    getSearchList.getBySearch(city, searchName).then(json => {
-          setAnalysis(json.data);
-        });
-      }, [searchName]);
     var getListing = new ListService();
     useEffect(()=>{
         getListing.getList(city)
@@ -64,6 +60,13 @@ export const Elements = (city, props:any) =>{
     console.log(error.response)
     });
     },[])
+
+    var getSearchList=new SearchService();
+    useEffect(() => {
+    getSearchList.getBySearch(city, searchName).then(json => {
+          setAnalysis(json.data);
+        });
+      }, [searchName]);
     useEffect(()=>{
         console.log("analysis",analysis)
     },[analysis])
@@ -72,7 +75,7 @@ export const Elements = (city, props:any) =>{
         if (formState === FormState.READ) {
           !!onSelectedItem && onSelectedItem(element);
         } else {
-          history.push(`/command/${element.id}`);
+          history.push(`/element/${element.id}`);
         }
       };
 
@@ -161,7 +164,7 @@ return(
                               intent={Intent.PRIMARY}
                               onClick={(e: any) => {
                                 history.push(
-                                  `/command/${m.id}/edit`
+                                  `element/${m.id}/edit`
                                 );
                                 e.stopPropagation();
                               }}
