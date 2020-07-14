@@ -5,6 +5,7 @@ import {FormControl, Select, InputLabel} from "@material-ui/core";
 import {AnalysisPagination} from './AnalysisPagination'
 import {AddAnalysis} from './AddAnalysis'
 import { UploadService } from '../api/Services';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,12 +76,12 @@ export const CityAnalysis = () =>{
 },[uploadResult])
     // useEffect(()=>{
     //   axios(
-    //     `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Алматы+Жарокова+169`,
+    //     `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Актау+Микрорайон+5+42`,
     //   ).then(json=>setExitResult(json.data));
     // },[])
-    // useEffect(()=>{
-    //   console.log('coordinates', exitResult)
-    // },[exitResult])
+    useEffect(()=>{
+      console.log('coordinates', exitResult)
+    },[exitResult])
 const getList = (e:any) =>{
     e.preventDefault();
     setBoolka(true);

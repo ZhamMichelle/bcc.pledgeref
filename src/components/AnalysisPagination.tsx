@@ -2,8 +2,18 @@ import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@material-ui/core";
-import { AnalysisElements, ListService } from '../api/Services';
+import { AnalysisElements, ListService, FormState, Element } from '../api/Services';
 import moment from "moment";
+import {
+  HTMLTable,
+  Button,
+  Classes,
+  Intent,
+  Switch,
+  Alert,
+  InputGroup,
+} from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -42,22 +52,33 @@ const useStyles = makeStyles((theme: Theme) =>
   type CityProps = {
     city: string;
   };
-export const AnalysisPagination: React.FC<CityProps> = (city) =>{
+export const AnalysisPagination: React.FC<CityProps> = (city, props:any) =>{
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
+    const [searchName, setSearchName] = useState();
+    const {
+      formState,
+      onSelectedItem,
+      filter,
+    }: {
+      formState: FormState;
+      onSelectedItem: (m: Element) => void;
+      filter: [];
+    } = props;
+
 var test = new ListService();
-useEffect(()=>{
-test.getList(city)
-.then(json=>setAnalysis(json.data))
-.catch(error => {
-  console.log(error.response)
-});
-},[])
-useEffect(()=>{
-    console.log("analysis",analysis)
-},[analysis])
+// useEffect(()=>{
+// test.getList(city)
+// .then(json=>setAnalysis(json.data))
+// .catch(error => {
+//   console.log(error.response)
+// });
+// },[])
+// useEffect(()=>{
+//     console.log("analysis",analysis)
+// },[analysis])
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -69,55 +90,45 @@ useEffect(()=>{
       };
 
     return(
-        <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {analysis.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={i}  >
-                  {columns.map((column) => {
-                    var value = row[column.id];
-                    if (column.id === "beginDate" || column.id === "endDate") {
-                        var momentVar = moment(value, moment.ISO_8601, true);
-                        if (momentVar.isValid()) {
-                          value = momentVar.format("MM.DD.YYYY, HH:mm");
-                        }
-                      }
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={analysis.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </Paper>
+      <React.Fragment>
+        <HTMLTable
+            striped={true}
+            bordered={true}
+            interactive={true}
+            style={{ width: "100%" }}
+          >
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>
+                  <InputGroup
+                    type="search"
+                    leftIcon={IconNames.SEARCH}
+                    placeholder="Поиск названия"
+                    value={searchName}
+                    onChange={(e: any) => setSearchName(e.target.value)}
+                  />
+                </th>
+                <th>
+                  <InputGroup
+                    type="search"
+                    leftIcon={IconNames.SEARCH}
+                    placeholder="Поиск команды"
+                    value={searchName}
+                    onChange={(e: any) => setSearchName(e.target.value)}
+                  />
+                </th>
+                {formState !== FormState.READ && (
+                  <React.Fragment>
+                    <th>Описание</th>
+                    <th>Активная</th>
+                    <th>Настройки</th>
+                    <th>Prod</th>
+                  </React.Fragment>
+                )}
+              </tr>
+            </thead>
+          </HTMLTable>
+      </React.Fragment>
     )
 }

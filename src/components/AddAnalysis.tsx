@@ -24,6 +24,7 @@ export const AddAnalysis = () =>{
     ['Жилой дом', "002"],
     ['Встроенное помещение', "003"]
   ]);
+  var PropertyTypes = {'Квартира': "001", 'Жилой дом': "002", 'Встроенное помещение': "003"}
     const classes = useStyles();
     const [prType, setPrType] = useState();
 useEffect(()=>{console.log("test",PropertyType.keys());
@@ -59,18 +60,12 @@ PropertyType.forEach((value,key,map)=>{
           style={{ height: "50px", width: "280px" }}
         >
       <option>Выберите тип недвижимости</option>
-     {PropertyType.forEach(element => (
-        <option >
-        {PropertyType.get("Квартира")}
-      </option>
-     ))} 
+      {Object.entries(PropertyTypes)
+  .map( ([key, value]) => (
+  <option key={key} value={value}>{key}</option>
+  ))}
+     
         </Select>
-</Grid>
-<Grid item xs={12}>
-<div>
-  {Object.entries(PropertyType)
-  .map( ([key, value]) => {console.log(`My key is ${key} and my value is ${value}`)} )}
-  </div>
 </Grid>
 </Grid>
         </div>
