@@ -1,10 +1,12 @@
 import React from 'react';
 import { CityAnalysis } from './components/CityAnalysis';
 import {MainPage} from './components/MainPage'
+import {Element} from './components/Element'
 import { createBrowserHistory } from "history";
 import { BrowserRouter, Switch, Route, Link, Router } from "react-router-dom";
 import { Toaster, Position, IToastProps, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
+import {FormState} from './api/Services'
 
 export const history = createBrowserHistory();
 
@@ -56,7 +58,7 @@ function App() {
       timeout: 3000,
     });
   };
-  
+
   return (
     <div>
       <Toaster position={Position.TOP} ref={refHandlers.toaster} />
@@ -71,7 +73,8 @@ function App() {
     <Router history={history}>
     <Switch>
       {/* <Route exact path="/login" component={Login} /> */}
-      <Route path="/" component={MainPage} />
+      <Route exact path="/" component={MainPage} />
+      <Route path={`/element/:id`} component={Element} />
     </Switch>
   </Router>
   </AppContext.Provider>

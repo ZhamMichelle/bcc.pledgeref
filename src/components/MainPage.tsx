@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { AnalysisElements, ListService, FormState, Element } from '../api/Services';
+import { AnalysisElements, ListService, FormState, Element, UploadService } from '../api/Services';
 import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel} from "@material-ui/core";
 import {Elements} from './Elements'
+import { Switch, Route } from "react-router-dom";
 
 const cities: string[] = [
     "Алматы",
@@ -43,32 +44,29 @@ const cities: string[] = [
       },
   }),
 );
-export const MainPage = ()=>{
+export const MainPage = (props: any)=>{
+const { match: _match }: { match: any } = props;
     const classes = useStyles();
-const [elements, setElements] = useState([] as AnalysisElements[])
 const [city, setCity] = useState("");
-const [sector, setSector] = useState("");
-
-
-// const onBind = (element: AnalysisElements, showToast: () => void) => {
-//     var con = window.confirm("Вы дейтсвительно хотите прикрепить команду?");
-//     if (con) {
-//       api.colvirRest.bind(model.id, command.id).then(() => {
-//         showToast();
-//         setModel(
-//           iassign(
-//             model,
-//             c => c.commands,
-//             p => {
-//               p?.push({ commandId: command.id, command });
-//               return p;
-//             }
-//           )
-//         );
-//       });
-//     }
-//   };
-
+const [uploadResult, setUploadResult] = useState();
+    var uploadFile = new UploadService();
+const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const obj = {hello: 'world'};
+  const blob1 = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
+  var file = e.target.files;
+  var formData = new FormData();
+  formData.append('body', file?.[0] || blob1);
+  if(!!file){
+    uploadFile.getList(formData).then(json=>setUploadResult(json.data))
+  }
+}
+useEffect(()=>{
+console.log("uploadResult",uploadResult);
+if(uploadResult==="Ok") {
+  alert("Файл загружен")
+}
+else if(uploadResult==="Error") alert("Произошла ошибка. Попробуйте изменить содержимое файла.");
+},[uploadResult])
 return (
         <React.Fragment>
 <h2 style={{textAlign: 'center'}}>Заполнение и корректировка справочника</h2>
@@ -90,9 +88,11 @@ return (
             </option>
           ))}
         </Select>
+        
         </FormControl>
-
+        <input type='file' id='input' style={{float: "right"}} onChange={(e)=>onFileChange(e)}/>
         <Elements city="Актау"
+        // filter={(elements || []).map(m => m.id)}
               formState={FormState.READ}
             />
         </React.Fragment>

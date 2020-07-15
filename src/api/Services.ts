@@ -1,5 +1,7 @@
 import service from "./Service";
-import { strict } from 'assert';
+import { server } from "./server";
+
+const webConfigEnv = (window as any).env;
 
 export class AnalysisElements{
         id?: number;
@@ -41,11 +43,19 @@ export class City{
 city?: string = "Актау";
 }
 
+// export class ListService {
+//     getList(city:string){
+//         return service.getRestClient().get(`/temporary/city/?city=${city}`, { responseType: [] as AnalysisElements[] });
+//     }
+// }
+
 export class ListService {
-    getList(city:string){
-        return service.getRestClient().get(`/temporary/city/?city=${city}`, { responseType: [] as AnalysisElements[] });
+    async getList(city:string): Promise<AnalysisElements[]> {
+      return server.get(`/temporary/city/?city=${city}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
     }
-}
+  }
 
 export class UploadService {
     getList(body:FormData){

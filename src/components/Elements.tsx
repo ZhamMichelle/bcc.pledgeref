@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@material-ui/core";
-import { AnalysisElements, ListService, FormState, Element, SearchService, DeleteService } from '../api/Services';
+import { AnalysisElements, ListService, FormState,  SearchService, DeleteService, UploadService } from '../api/Services';
 import moment from "moment";
 import {
   HTMLTable,
@@ -15,6 +15,8 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { AppContext, history } from "../App";
+import {Element} from './Element'
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +42,7 @@ export const Elements = (props:any) =>{
     const [idWantDelete, setIdWantDelete] = useState(0);
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
     const [searchName, setSearchName] = useState();
+    
     const {
         city,
       formState,
@@ -55,7 +58,7 @@ export const Elements = (props:any) =>{
     var getListing = new ListService();
     useEffect(()=>{
         getListing.getList(city)
-    .then(json=>setAnalysis(json.data))
+    .then(json=>setAnalysis(json))
     .catch(error => {
     console.log(error.response)
     });
@@ -86,6 +89,16 @@ export const Elements = (props:any) =>{
           setAnalysis(analysis.filter((m) => m.id !== idWantDelete));
         });
       };
+
+      const test = () =>{
+          console.log("suka")
+          return(
+              <>
+                <Element />
+              </>
+          )
+      }
+     
 return(
     <AppContext.Consumer>
         {({ showToastDelete, showToastError }) => (
@@ -106,9 +119,9 @@ return(
             </p>
           </Alert>
         <Grid item xs={11} className={classes.paper}>
-         <Table
-            className='bp3-html-table-bordered'
-            style={{ width: "100%", textAlign: 'center'}}
+         <table
+           
+            style={{ width: "100%", textAlign: 'center', border:'1px solid black', borderCollapse: 'collapse'}}
           >
             <thead>
               <tr>
@@ -130,11 +143,7 @@ return(
                 <th>Стоимость за кв(сотку) Max</th>
                 <th>Дата начала параметра</th>
                 <th>Дата окончания параметра</th>
-                {formState !== FormState.READ && (
-                  <React.Fragment>
-                    <th>Настройки</th>
-                  </React.Fragment>
-                )}
+                <th>Настройки</th>
               </tr>
             </thead>
             <tbody>
@@ -154,9 +163,7 @@ return(
                       <td>{m.maxCostPerSQM}</td>
                       <td>{m.beginDate}</td>
                       <td>{m.endDate}</td>
-                      {formState !== FormState.READ && (
-                        <React.Fragment>
-                          
+                      
                           <td style={{ width: "88px" }}>
                             <Button
                               className={Classes.MINIMAL}
@@ -164,9 +171,10 @@ return(
                               intent={Intent.PRIMARY}
                               onClick={(e: any) => {
                                 history.push(
-                                  `element/${m.id}/edit`
+                                  `element/${m.id}`
                                 );
                                 e.stopPropagation();
+                                
                               }}
                             />
                             <Button
@@ -180,13 +188,11 @@ return(
                               }}
                             />
                           </td>
-                        </React.Fragment>
-                      )}
                     </tr>
                   )
               )}
             </tbody>
-          </Table>
+          </table>
           </Grid>
     </React.Fragment>
     )}
