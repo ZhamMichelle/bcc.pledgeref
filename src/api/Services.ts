@@ -5,7 +5,7 @@ const webConfigEnv = (window as any).env;
 
 export class AnalysisElements{
         id?: number;
-        cityCodeKATO?: number;
+        cityCodeKATO?: string;
         city?: string;
         sectorCode?: string;
         sector?: number; 
@@ -35,60 +35,61 @@ export enum FormState {
     READ
   }
 
-  export class Element {
-    params: AnalysisElements[] = [new AnalysisElements()];
-  }
-
 export class City{
 city?: string = "Актау";
 }
 
-// export class ListService {
-//     getList(city:string){
-//         return service.getRestClient().get(`/temporary/city/?city=${city}`, { responseType: [] as AnalysisElements[] });
-//     }
-// }
 
-export class ListService {
+export class Services {
     async getList(city:string): Promise<AnalysisElements[]> {
       return server.get(`/temporary/city/?city=${city}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
-  }
+  
 
-export class UploadService {
-    getList(body:FormData){
-        return service.getRestClient().post('/upload/', body, { responseType: String });
+    async postExcel(body:FormData): Promise<string> {
+      return server.post('/upload/', body, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
     }
-}
 
-export class SearchService {
-    getBySearch(city:string, sector:number){
-        return service.getRestClient().get(`/temporary/search/?city=${city}&sector=${sector}`, {responseType: [] as AnalysisElements[]});
+    async getBySearch(city:string, sector:number): Promise<AnalysisElements[]> {
+      return server.get(`/temporary/search/?city=${city}&sector=${sector}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
     }
-}
 
-export class DeleteService {
-    deleteElement(id:number){
-        return service.getRestClient().delete(`/temporary/${id}`);
+    async deleteElement(id:number): Promise<void> {
+      return server.delete(`/temporary/${id}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
     }
-}
 
-export class GetIdService {
-    getIdElement(id:number){
-        return service.getRestClient().get(`/temporary/${id}`, {responseType: new AnalysisElements()});
+   async getIdElement(id:number): Promise<AnalysisElements>{
+        return server.get(`/temporary/${id}`, {
+            baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+        });
     }
-}
 
-export class PostService {
-    postElement(element:AnalysisElements){
-        return service.getRestClient().post(`/temporary/`, element);
+   async postElement(element:AnalysisElements): Promise<void>{
+        return server.post(`/temporary/`, element, {
+            baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+        });
     }
-}
 
-export class PutService {
-    putElement(element:AnalysisElements){
-        return service.getRestClient().put(`/temporary/`, element);
+
+   async putElement(element:AnalysisElements): Promise<void>{
+        return server.put(`/temporary/`, element, {
+            baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+        });
     }
+
+
+    async getKatoCityCode(city:string): Promise<string>{
+return server.get(`/reference/api/kato/children/city/?city=${city}`, {
+    baseURL: webConfigEnv.KATO,
+})
+    }
+
 }

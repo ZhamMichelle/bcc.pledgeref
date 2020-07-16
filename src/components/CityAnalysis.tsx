@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel} from "@material-ui/core";
 import {AnalysisPagination} from './AnalysisPagination'
 import {AddAnalysis} from './AddAnalysis'
-import { UploadService } from '../api/Services';
+import { Services } from '../api/Services';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,7 +36,6 @@ const cities: string[] = [
     "Кызылорда",
     "Павлодар",
     "Петропавловск",
-    "Рудный",
     "Семей",
     "Талдыкорган",
     "Тараз",
@@ -55,7 +54,7 @@ export const CityAnalysis = () =>{
     const [addBool, setAddBool] = useState(false)
     const [exitResult, setExitResult] = useState();
     const [uploadResult, setUploadResult] = useState();
-    var uploadFile = new UploadService();
+    var services = new Services();
 
     const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
       const obj = {hello: 'world'};
@@ -64,7 +63,7 @@ export const CityAnalysis = () =>{
       var formData = new FormData();
       formData.append('body', file?.[0] || blob1);
       if(!!file){
-        uploadFile.getList(formData).then(json=>setUploadResult(json.data))
+        services.postExcel(formData).then(json=>setUploadResult(json))
       }
   }
   useEffect(()=>{

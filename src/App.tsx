@@ -74,7 +74,7 @@ function App() {
     <Switch>
       {/* <Route exact path="/login" component={Login} /> */}
       <Route exact path="/" component={MainPage} />
-      <Route path={`/element/:id`} component={Element} />
+      <Route path={`/element/:id`} component={Element } />
     </Switch>
   </Router>
   </AppContext.Provider>

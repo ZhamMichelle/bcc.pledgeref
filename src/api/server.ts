@@ -93,6 +93,16 @@ export class Server {
     //   "Bearer " + (userContext.token || {}).accessToken;
     return axios.post(url, data, config).then((r) => r.data);
   }
+
+  public put(url: string, data: any, config = {} as any): any {
+    config = config || {};
+    config.headers = config.headers || {};
+    var userContext = JSON.parse(localStorage.getItem("userContext") || "{}");
+    // config.headers.Authorization =
+    //   "Bearer " + (userContext.token || {}).accessToken;
+    // config.baseURL = webConfigEnv.SERVER_URL;
+    return axios.put(url, data, config).then((r) => r.data);
+  }
 }
 
 export const server = new Server();

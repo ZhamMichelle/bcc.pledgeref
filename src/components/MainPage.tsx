@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { AnalysisElements, ListService, FormState, Element, UploadService } from '../api/Services';
+import { AnalysisElements, Services, FormState, } from '../api/Services';
 import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel} from "@material-ui/core";
 import {Elements} from './Elements'
@@ -20,7 +20,6 @@ const cities: string[] = [
     "Кызылорда",
     "Павлодар",
     "Петропавловск",
-    "Рудный",
     "Семей",
     "Талдыкорган",
     "Тараз",
@@ -49,7 +48,7 @@ const { match: _match }: { match: any } = props;
     const classes = useStyles();
 const [city, setCity] = useState("");
 const [uploadResult, setUploadResult] = useState();
-    var uploadFile = new UploadService();
+    var services = new Services();
 const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   const obj = {hello: 'world'};
   const blob1 = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
@@ -57,7 +56,7 @@ const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   var formData = new FormData();
   formData.append('body', file?.[0] || blob1);
   if(!!file){
-    uploadFile.getList(formData).then(json=>setUploadResult(json.data))
+    services.postExcel(formData).then(json=>setUploadResult(json))
   }
 }
 useEffect(()=>{

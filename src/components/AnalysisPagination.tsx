@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@material-ui/core";
-import { AnalysisElements, ListService, FormState, Element } from '../api/Services';
+import { AnalysisElements, Services, FormState,  } from '../api/Services';
 import moment from "moment";
 import {
   HTMLTable,
@@ -68,9 +68,9 @@ export const AnalysisPagination: React.FC<CityProps> = (city, props:any) =>{
       filter: [];
     } = props;
 
-var test = new ListService();
+var services = new Services();
 // useEffect(()=>{
-// test.getList(city)
+// services.getList(city)
 // .then(json=>setAnalysis(json.data))
 // .catch(error => {
 //   console.log(error.response)

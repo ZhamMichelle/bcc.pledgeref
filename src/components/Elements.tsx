@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {FormControl, Select, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@material-ui/core";
-import { AnalysisElements, ListService, FormState,  SearchService, DeleteService, UploadService } from '../api/Services';
+import { AnalysisElements, Services, FormState,  } from '../api/Services';
 import moment from "moment";
 import {
   HTMLTable,
@@ -55,19 +55,18 @@ export const Elements = (props:any) =>{
       filter: [];
     } = props;
 
-    var getListing = new ListService();
+    var services = new Services();
     useEffect(()=>{
-        getListing.getList(city)
+      services.getList(city)
     .then(json=>setAnalysis(json))
     .catch(error => {
     console.log(error.response)
     });
     },[])
 
-    var getSearchList=new SearchService();
     useEffect(() => {
-    getSearchList.getBySearch(city, searchName).then(json => {
-          setAnalysis(json.data);
+      services.getBySearch(city, searchName).then(json => {
+          setAnalysis(json);
         });
       }, [searchName]);
     useEffect(()=>{
@@ -82,22 +81,12 @@ export const Elements = (props:any) =>{
         }
       };
 
-      var deleteService = new DeleteService();
       const onConfirm = (showToast: () => void) => {
-        deleteService.deleteElement(idWantDelete).then(() => {
+        services.deleteElement(idWantDelete).then(() => {
           showToast();
           setAnalysis(analysis.filter((m) => m.id !== idWantDelete));
         });
       };
-
-      const test = () =>{
-          console.log("suka")
-          return(
-              <>
-                <Element />
-              </>
-          )
-      }
      
 return(
     <AppContext.Consumer>
