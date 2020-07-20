@@ -76,8 +76,8 @@ function App() {
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route exact path="/" component={MainPage} />
-      <Route path={`/:id`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
-      <Route path="/test" component={AddAnalysis} />
+      <Route path={`/:id/edit`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
+      <Route path='/create' component={(props)=> <Element {...props} formState={FormState.CREATE}/> } />
     </Switch>
   </Router>
   </AppContext.Provider>

@@ -1,10 +1,9 @@
 import React, { useState, ChangeEvent, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { AnalysisElements, Services, FormState, } from '../api/Services';
-import Grid from '@material-ui/core/Grid';
+import { Services, FormState, } from '../api/Services';
 import {FormControl, Select, InputLabel} from "@material-ui/core";
-import {Elements} from './Elements'
-import { Switch, Route } from "react-router-dom";
+import {Elements} from './Elements';
+import { AppContext, history} from "../App";
 
 const cities: string[] = [
     "Алматы",
@@ -89,6 +88,7 @@ return (
         </Select>
         
         </FormControl>
+        <button className='pxbutton' onClick={() => { history.push(`/create`)}}>Добавить данные</button>
         <input type='file' id='input' style={{float: "right"}} onChange={(e)=>onFileChange(e)}/>
         <Elements city={city}
               formState={FormState.READ}

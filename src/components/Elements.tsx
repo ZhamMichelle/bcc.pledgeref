@@ -11,6 +11,8 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { AppContext, history, PATH_REFERENCE_BOOK } from "../App";
+import moment from "moment";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -138,8 +140,11 @@ return(
                       <td>{m.wallMaterial}</td>
                       <td>{m.minCostPerSQM}</td>
                       <td>{m.maxCostPerSQM}</td>
-                      <td>{m.beginDate}</td>
-                      <td>{m.endDate}</td>
+                      {/* <td>{m.beginDate}</td> */}
+                      <td>{m.beginDate !=null ?
+                        moment(m.beginDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.beginDate}</td>
+                      <td>{m.endDate !=null ?
+                        moment(m.endDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.endDate}</td>
                       
                           <td style={{ width: "88px" }}>
                             <Button
@@ -150,7 +155,7 @@ return(
                                 // history.replace(
                                 //   `${PATH_REFERENCE_BOOK}/command/${m.id}/edit`
                                 // ); 
-                                history.push(`/${m.id}`);  
+                                history.push(`/${m.id}/edit`);  
                                 e.stopPropagation();
                               }}
                             />

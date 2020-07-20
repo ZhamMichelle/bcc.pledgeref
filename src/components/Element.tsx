@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import { AppContext, history } from "../App";
-import {Grid, TextField, Select, InputLabel, FormControl} from '@material-ui/core';
+import {Grid, TextField, Select, InputLabel, FormControl, Input} from '@material-ui/core';
 import {  FormState, AnalysisElements, Services } from '../api/Services';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import moment from "moment";
 
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -78,9 +79,11 @@ export const Element = (props: any) =>{
   const { match, formState } = props;
 var services = new Services();
   useEffect(() => {
-    console.log('formstate',formState)
+    if (formState === FormState.EDIT || formState === FormState.READ) {
     services.getIdElement(match.params.id).then(json => setAnalysis(json));
+    }
   }, []);
+  useEffect(()=>{console.log('analysis',analysis)},[analysis])
 
   useEffect(()=>{
     if(analysis.city!=null){
@@ -121,10 +124,6 @@ var services = new Services();
               <h2 style={{textAlign: 'center'}}>Редактирование</h2>
               <Grid item xs={6} className={classes.paper} container spacing={3}>
                 <Grid item xs={6}>
-             <TextField  variant="outlined"  label="Код города КАТО" value={analysis.cityCodeKATO || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, cityCodeKATO: e.target.value })
-              }/> 
-              <br/><br/>
               <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">Город</InputLabel>
               <Select
@@ -142,13 +141,17 @@ var services = new Services();
                 ))}
               </Select>
             </FormControl>
+            <br/><br/>
+            <TextField  variant="outlined"  label="Код города КАТО" value={analysis.cityCodeKATO || ""} style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, cityCodeKATO: e.target.value })
+              }/> 
               <br/><br/>
               <TextField variant="outlined"  label="Код сектора города" value={analysis.sectorCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, sectorCode: e.target.value })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Сектор города" value={analysis.sector || 0} type='number' style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, sector: e.target.value})
+              <TextField variant="outlined"  label="Сектор города" value={analysis.sector || ""} style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, sector: parseInt(e.target.value)})
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Относительность расположения" value={analysis.relativityLocation || ""} style={{ width: "450px" }} onChange={(e: any) =>
@@ -196,14 +199,14 @@ var services = new Services();
               {helperLayout.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
               </Select>
               </FormControl>
-              </Grid>
-              <Grid item xs={6}>
+              <br/><br/>
               <TextField variant="outlined"  label="Код Планировка квартир" value={analysis.apartmentLayoutCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, apartmentLayoutCode: e.target.value })
               }/>
-              <br/><br/>
+              </Grid>
+              <Grid item xs={6}>
               <TextField variant="outlined"  label="Код Материал стен" value={analysis.wallMaterialCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, wallMaterialCode: e.target.value })
+                setAnalysis({ ...analysis, wallMaterialCode: parseInt(e.target.value) })
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Материал стен" value={analysis.wallMaterial || ""} style={{ width: "450px" }} onChange={(e: any) =>
@@ -229,23 +232,33 @@ var services = new Services();
               }/> 
               <br/><br/>
               <TextField variant="outlined"  label="Стоимость за кв.м., мин значение" value={analysis.minCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, minCostPerSQM: e.target.value })
+                setAnalysis({ ...analysis, minCostPerSQM: parseInt(e.target.value) })
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Стоимость за кв.м. макс значение" value={analysis.maxCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, maxCostPerSQM: e.target.value })
+                setAnalysis({ ...analysis, maxCostPerSQM: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Коридор, %" value={(analysis.corridor || 0)*100} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, corridor: e.target.value })
+              <TextField variant="outlined"  label="Коридор, %" value={(analysis.corridor || 0)} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, corridor: parseFloat(e.target.value) })
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом -10%" value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, minCostWithBargain: e.target.value })
+                setAnalysis({ ...analysis, minCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом -10%" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, maxCostWithBargain: e.target.value })
+                setAnalysis({ ...analysis, maxCostWithBargain: parseInt(e.target.value) })
+              }/>
+              <br/><br/>
+              <TextField variant="outlined"  label="Дата начала параметра" type="date" name="date" value={moment(analysis.beginDate, moment.ISO_8601, true).format("YYYY-MM-DD")}
+              InputLabelProps={{ shrink: true, required: true }}  style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, beginDate: e.target.value })
+              }/>
+              <br/><br/>
+              <TextField variant="outlined"  label="Дата окончания параметра" type="date" name="date" value={moment(analysis.endDate, moment.ISO_8601, true).format("YYYY-MM-DD")}
+              InputLabelProps={{ shrink: true, required: true }}  style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, endDate: e.target.value })
               }/>
               </Grid>
             </Grid>
