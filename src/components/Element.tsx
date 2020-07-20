@@ -78,25 +78,28 @@ export const Element = (props: any) =>{
   const { match, formState } = props;
 var services = new Services();
   useEffect(() => {
+    console.log('formstate',formState)
     services.getIdElement(match.params.id).then(json => setAnalysis(json));
   }, []);
 
   useEffect(()=>{
-    services.getKatoCityCode(analysis.city || "").then(json=>setAnalysis({...analysis, cityCodeKATO:json}))
+    if(analysis.city!=null){
+      services.getKatoCityCode(analysis.city || "").then(json=>setAnalysis({...analysis, cityCodeKATO:json.toString()}))
+    }
+    
   },[analysis.city])
 
   const onSubmit = (e: any, showToast: () => void) => {
-    console.log("formstate", formState)
     e.preventDefault();
     if (formState === FormState.CREATE) {
       services.postElement(analysis).then(() => {
         showToast();
-        history.back();
+        history.goBack();
       });
     } else if (formState === FormState.EDIT) {
       services.putElement(analysis).then(() => {
         showToast();
-        history.back();
+        history.goBack();
       });
     }
   };
@@ -144,8 +147,8 @@ var services = new Services();
                 setAnalysis({ ...analysis, sectorCode: e.target.value })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Сектор города" value={analysis.sector || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, sector: e.target.value })
+              <TextField variant="outlined"  label="Сектор города" value={analysis.sector || 0} type='number' style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, sector: e.target.value})
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Относительность расположения" value={analysis.relativityLocation || ""} style={{ width: "450px" }} onChange={(e: any) =>

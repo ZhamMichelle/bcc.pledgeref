@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const AddAnalysis = () =>{
+  debugger;
   const PropertyType: Map<string, string> = new Map([
     ['Квартира', "001"],
     ['Жилой дом', "002"],

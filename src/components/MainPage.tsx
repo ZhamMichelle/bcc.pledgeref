@@ -10,7 +10,6 @@ const cities: string[] = [
     "Алматы",
     "Актау",
     "Нур-Султан",
-    "Нур-Султан Элит",
     "Актобе",
     "Атырау",
     "Жезказган",
@@ -46,8 +45,8 @@ const cities: string[] = [
 export const MainPage = (props: any)=>{
 const { match: _match }: { match: any } = props;
     const classes = useStyles();
-const [city, setCity] = useState("");
-const [uploadResult, setUploadResult] = useState();
+    const [city, setCity] = useState("Актау");
+    const [uploadResult, setUploadResult] = useState();
     var services = new Services();
 const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   const obj = {hello: 'world'};
@@ -66,11 +65,12 @@ if(uploadResult==="Ok") {
 }
 else if(uploadResult==="Error") alert("Произошла ошибка. Попробуйте изменить содержимое файла.");
 },[uploadResult])
+
 return (
         <React.Fragment>
-<h2 style={{textAlign: 'center'}}>Заполнение и корректировка справочника</h2>
-<FormControl variant="outlined" className={classes.formControl}>
-<InputLabel htmlFor="outlined-age-native-simple">Город</InputLabel>
+        <h2 style={{textAlign: 'center'}}>Заполнение и корректировка справочника</h2>
+        <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">Город</InputLabel>
         <Select
           native
           value={city}
@@ -90,8 +90,7 @@ return (
         
         </FormControl>
         <input type='file' id='input' style={{float: "right"}} onChange={(e)=>onFileChange(e)}/>
-        <Elements city="Актау"
-        // filter={(elements || []).map(m => m.id)}
+        <Elements city={city}
               formState={FormState.READ}
             />
         </React.Fragment>

@@ -1,23 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import {FormControl, Select, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@material-ui/core";
 import { AnalysisElements, Services, FormState,  } from '../api/Services';
-import moment from "moment";
 import {
-  HTMLTable,
   Button,
   Classes,
   Intent,
-  Switch,
   Alert,
   InputGroup,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { AppContext, history } from "../App";
-import {Element} from './Element'
-import { green } from '@material-ui/core/colors';
-
+import { AppContext, history, PATH_REFERENCE_BOOK } from "../App";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -33,9 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-type CityProps = {
-    city: string;
-  };
 export const Elements = (props:any) =>{
     const classes = useStyles();
     const [wantDelete, setWantDelete] = useState(false);
@@ -62,24 +52,22 @@ export const Elements = (props:any) =>{
     .catch(error => {
     console.log(error.response)
     });
-    },[])
+    },[city])
 
     useEffect(() => {
-      services.getBySearch(city, searchName).then(json => {
+      if(searchName!=null){
+        services.getBySearch(city, searchName).then(json => {
           setAnalysis(json);
         });
+      }
       }, [searchName]);
     useEffect(()=>{
         console.log("analysis",analysis)
     },[analysis])
 
-    const onClickItem = (element: AnalysisElements) => {
-        if (formState === FormState.READ) {
-          !!onSelectedItem && onSelectedItem(element);
-        } else {
-          history.push(`/element/${element.id}`);
-        }
-      };
+    // const onClickItem = (element: AnalysisElements) => {
+    //       history.push(`${PATH_REFERENCE_BOOK}/element/${element.id}`);
+    //   };
 
       const onConfirm = (showToast: () => void) => {
         services.deleteElement(idWantDelete).then(() => {
@@ -87,7 +75,7 @@ export const Elements = (props:any) =>{
           setAnalysis(analysis.filter((m) => m.id !== idWantDelete));
         });
       };
-     
+    
 return(
     <AppContext.Consumer>
         {({ showToastDelete, showToastError }) => (
@@ -109,7 +97,6 @@ return(
           </Alert>
         <Grid item xs={11} className={classes.paper}>
          <table
-           
             style={{ width: "100%", textAlign: 'center', border:'1px solid black', borderCollapse: 'collapse'}}
           >
             <thead>
@@ -139,7 +126,8 @@ return(
               {analysis.map(
                 (m, i) =>
                   !filter?.some((f) => f == m.id) && (
-                    <tr key={i} onClick={() => onClickItem(m)}>
+                    // <tr key={i} onClick={() => onClickItem(m)}>
+                      <tr key={i}>
                       <td>{i + 1}</td>
                       <td>{m.city}</td>
                       <td>{m.sector}</td>
@@ -159,11 +147,11 @@ return(
                               icon={IconNames.EDIT}
                               intent={Intent.PRIMARY}
                               onClick={(e: any) => {
-                                history.push(
-                                  `element/${m.id}`
-                                );
+                                // history.replace(
+                                //   `${PATH_REFERENCE_BOOK}/command/${m.id}/edit`
+                                // ); 
+                                history.push(`/${m.id}`);  
                                 e.stopPropagation();
-                                
                               }}
                             />
                             <Button

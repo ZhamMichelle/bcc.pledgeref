@@ -1,12 +1,13 @@
-import React from 'react';
-import { CityAnalysis } from './components/CityAnalysis';
+import React, { useState } from 'react';
 import {MainPage} from './components/MainPage'
 import {Element} from './components/Element'
 import { createBrowserHistory } from "history";
-import { BrowserRouter, Switch, Route, Link, Router } from "react-router-dom";
-import { Toaster, Position, IToastProps, Intent } from "@blueprintjs/core";
+import { Switch, Route,  Router, } from "react-router-dom";
+import { Toaster, Position, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import {FormState} from './api/Services'
+import Login from "./login/Login";
+import {AddAnalysis} from './components/AddAnalysis'
+import { FormState, } from './api/Services';
 
 export const history = createBrowserHistory();
 
@@ -16,6 +17,7 @@ export const AppContext = React.createContext({
   showToastEdit: () => {},
   showToastError: (message: string) => console.error(message),
 });
+export const PATH_REFERENCE_BOOK = "/reference-book";
 
 function App() {
   let toaster: Toaster;
@@ -72,9 +74,10 @@ function App() {
       >
     <Router history={history}>
     <Switch>
-      {/* <Route exact path="/login" component={Login} /> */}
+      <Route exact path="/login" component={Login} />
       <Route exact path="/" component={MainPage} />
-      <Route path={`/element/:id`} component={Element } />
+      <Route path={`/:id`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
+      <Route path="/test" component={AddAnalysis} />
     </Switch>
   </Router>
   </AppContext.Provider>

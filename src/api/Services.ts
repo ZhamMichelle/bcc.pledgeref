@@ -38,7 +38,33 @@ export enum FormState {
 export class City{
 city?: string = "Актау";
 }
+export class UserParams {
+  username?: string;
+  password?: string;
+}
 
+export class UserContext {
+  token?: Token;
+  user?: User;
+}
+
+export class User {
+  avatar?: string;
+  login?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
+  rolesString?: string[];
+  branch?: string;
+  depCode?: string;
+  title?: string;
+}
+
+export class Token {
+  accessToken?: string;
+  refreshToken?: string;
+}
 
 export class Services {
     async getList(city:string): Promise<AnalysisElements[]> {
@@ -92,4 +118,13 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
 })
     }
 
+    
+}
+
+export class LoginServer {
+  async getLoginFromServer(usPar: UserParams): Promise<UserContext> {
+    return server.token("/inline/api/auth/login", usPar, {
+      baseURL: webConfigEnv.CAMUNDA_URL,
+    });
+  }
 }
