@@ -93,6 +93,9 @@ return (
         <Elements city={city}
               formState={FormState.READ}
             />
+            <div style={{ textAlign: "center" }}><button className='pxbutton' 
+            onClick={()=>{localStorage.clear(); window.location.reload()}}>Logout</button></div>
+            
         </React.Fragment>
     )
 }

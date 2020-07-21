@@ -1,4 +1,3 @@
-import service from "./Service";
 import { server } from "./server";
 
 const webConfigEnv = (window as any).env;
@@ -48,6 +47,18 @@ export class UserContext {
   user?: User;
 }
 
+// export class User {
+//   avatar?: string;
+//   login?: string;
+//   email?: string;
+//   firstName?: string;
+//   lastName?: string;
+//   fullName?: string;
+//   rolesString?: string[];
+//   branch?: string;
+//   depCode?: string;
+//   title?: string;
+// }
 export class User {
   avatar?: string;
   login?: string;
@@ -55,17 +66,39 @@ export class User {
   firstName?: string;
   lastName?: string;
   fullName?: string;
+  roles?: UserRole[];
   rolesString?: string[];
   branch?: string;
   depCode?: string;
   title?: string;
+  photo?: Photo;
 }
-
 export class Token {
   accessToken?: string;
   refreshToken?: string;
 }
 
+export class Photo {
+  id?: string;
+  name?: string;
+  type?: string;
+  data?: string;
+}
+
+export class UserRole {
+  authority?: string;
+  code?: string;
+  description?: string;
+  comments?: string;
+  queues?: UserQueue[];
+}
+
+export class UserQueue {
+  id: number = 0;
+  name?: string;
+  filter?: string;
+  view?: string;
+}
 export class Services {
     async getList(city:string): Promise<AnalysisElements[]> {
       return server.get(`/temporary/city/?city=${city}`, {

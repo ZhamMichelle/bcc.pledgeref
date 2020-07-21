@@ -67,9 +67,9 @@ export const Elements = (props:any) =>{
         console.log("analysis",analysis)
     },[analysis])
 
-    // const onClickItem = (element: AnalysisElements) => {
-    //       history.push(`${PATH_REFERENCE_BOOK}/element/${element.id}`);
-    //   };
+    const onClickItem = (element: AnalysisElements) => {
+          history.push(`/${element.id}`);
+      };
 
       const onConfirm = (showToast: () => void) => {
         services.deleteElement(idWantDelete).then(() => {
@@ -77,6 +77,15 @@ export const Elements = (props:any) =>{
           setAnalysis(analysis.filter((m) => m.id !== idWantDelete));
         });
       };
+
+      const onDelete = (id:any) =>{
+        var con = window.confirm("Вы дейтсвительно хотите удалить?");
+        if (con) {
+          services.deleteElement(id).then(() => {
+            setAnalysis(analysis.filter((m) => m.id !== id));
+          });
+        }
+      }
     
 return(
     <AppContext.Consumer>
@@ -128,8 +137,8 @@ return(
               {analysis.map(
                 (m, i) =>
                   !filter?.some((f) => f == m.id) && (
-                    // <tr key={i} onClick={() => onClickItem(m)}>
-                      <tr key={i}>
+                    <tr key={i} onClick={() => onClickItem(m)}>
+                      {/* <tr key={i}> */}
                       <td>{i + 1}</td>
                       <td>{m.city}</td>
                       <td>{m.sector}</td>
@@ -140,7 +149,6 @@ return(
                       <td>{m.wallMaterial}</td>
                       <td>{m.minCostPerSQM}</td>
                       <td>{m.maxCostPerSQM}</td>
-                      {/* <td>{m.beginDate}</td> */}
                       <td>{m.beginDate !=null ?
                         moment(m.beginDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.beginDate}</td>
                       <td>{m.endDate !=null ?
@@ -152,9 +160,6 @@ return(
                               icon={IconNames.EDIT}
                               intent={Intent.PRIMARY}
                               onClick={(e: any) => {
-                                // history.replace(
-                                //   `${PATH_REFERENCE_BOOK}/command/${m.id}/edit`
-                                // ); 
                                 history.push(`/${m.id}/edit`);  
                                 e.stopPropagation();
                               }}
@@ -164,8 +169,9 @@ return(
                               icon={IconNames.REMOVE}
                               intent={Intent.DANGER}
                               onClick={(e: any) => {
-                                setWantDelete(true);
-                                setIdWantDelete(m.id || 1);
+                                // setWantDelete(true);
+                                // setIdWantDelete(m.id || 1);
+                                onDelete(m.id);
                                 e.stopPropagation();
                               }}
                             />

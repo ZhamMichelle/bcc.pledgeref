@@ -4,6 +4,7 @@ import {Grid, TextField, Select, InputLabel, FormControl, Input} from '@material
 import {  FormState, AnalysisElements, Services } from '../api/Services';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import moment from "moment";
+import Alert from '@material-ui/lab/Alert';
 
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -95,13 +96,18 @@ var services = new Services();
   const onSubmit = (e: any, showToast: () => void) => {
     e.preventDefault();
     if (formState === FormState.CREATE) {
+     
       services.postElement(analysis).then(() => {
-        showToast();
+        // showToast();
+        // alert("Успешно добавлен")
         history.goBack();
       });
+    
+      
     } else if (formState === FormState.EDIT) {
       services.putElement(analysis).then(() => {
-        showToast();
+        // alert("Успешно изменен")
+        // showToast();
         history.goBack();
       });
     }
@@ -121,7 +127,8 @@ var services = new Services();
               )
             }
           >
-              <h2 style={{textAlign: 'center'}}>Редактирование</h2>
+              <h2 style={{textAlign: 'center'}}>{formState==FormState.READ ? <>Просмотр</> 
+              : formState==FormState.EDIT ? <>Редактирование</> : <>Добавление</>}</h2>
               <Grid item xs={6} className={classes.paper} container spacing={3}>
                 <Grid item xs={6}>
               <FormControl variant="outlined" className={classes.formControl}>
@@ -264,7 +271,8 @@ var services = new Services();
             </Grid>
             <Grid item xs={12}  >
             <div style={{ textAlign: "center" }}>
-              <input type="submit" value="Сохранить" className='pxbutton'/>
+              {formState!=FormState.READ ? <input type="submit" value="Сохранить" className='pxbutton'/>
+              :  <></>}
             </div>
             </Grid>
           </form>

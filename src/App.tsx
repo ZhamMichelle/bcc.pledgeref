@@ -6,7 +6,6 @@ import { Switch, Route,  Router, } from "react-router-dom";
 import { Toaster, Position, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import Login from "./login/Login";
-import {AddAnalysis} from './components/AddAnalysis'
 import { FormState, } from './api/Services';
 
 export const history = createBrowserHistory();
@@ -47,7 +46,7 @@ function App() {
     toaster.show({
       icon: IconNames.SMALL_TICK,
       message: "Успешно изменен",
-      intent: Intent.WARNING,
+      intent: Intent.SUCCESS,
       timeout: 3000,
     });
   };
@@ -78,6 +77,7 @@ function App() {
       <Route exact path="/" component={MainPage} />
       <Route path={`/:id/edit`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
       <Route path='/create' component={(props)=> <Element {...props} formState={FormState.CREATE}/> } />
+      <Route path='/:id' component={(props)=> <Element {...props} formState={FormState.READ}/> } />
     </Switch>
   </Router>
   </AppContext.Provider>
