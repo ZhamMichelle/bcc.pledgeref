@@ -33,8 +33,8 @@ export const Elements = (props:any) =>{
     const [wantDelete, setWantDelete] = useState(false);
     const [idWantDelete, setIdWantDelete] = useState(0);
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
-    const [searchName, setSearchName] = useState();
-    
+    const [searchSector, setSearchSector] = useState();
+    const [searchEstate, setSearchEstate] = useState();
     const {
         city,
       formState,
@@ -57,15 +57,19 @@ export const Elements = (props:any) =>{
     },[city])
 
     useEffect(() => {
-      if(searchName!=null){
-        services.getBySearch(city, searchName).then(json => {
+      if(searchSector!=null && searchEstate==null){
+        services.getBySearchSector(city, searchSector).then(json => {
           setAnalysis(json);
         });
       }
-      }, [searchName]);
+      }, [searchSector]);
     useEffect(()=>{
-        console.log("analysis",analysis)
-    },[analysis])
+      if(searchEstate!=null){
+        services.getBySearchEstate(city, searchSector, searchEstate).then(json => {
+          setAnalysis(json);
+        });
+      }
+    }, [searchEstate, searchSector])
 
     const onClickItem = (element: AnalysisElements) => {
           history.push(`/${element.id}`);
@@ -118,11 +122,18 @@ return(
                     type="search"
                     // leftIcon={IconNames.SEARCH}
                     placeholder="Сектор"
-                    value={searchName}
-                    onChange={(e: any) => setSearchName(e.target.value)}
+                    value={searchSector}
+                    onChange={(e: any) => setSearchSector(e.target.value)}
                   /></th>
                 <th>Описание сектора</th>
-                <th>Тип недвижимости</th>
+                {/* <th>Тип недвижимости</th> */}
+                <th><InputGroup
+                    type="search"
+                    // leftIcon={IconNames.SEARCH}
+                    placeholder="Тип недвижимости"
+                    value={searchEstate}
+                    onChange={(e: any) => setSearchEstate(e.target.value)}
+                  /></th>
                 <th>Особенности строения</th>
                 <th>Планировка</th>
                 <th>Материал стен</th>

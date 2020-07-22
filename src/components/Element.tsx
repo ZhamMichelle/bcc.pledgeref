@@ -134,6 +134,7 @@ var services = new Services();
               <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">Город</InputLabel>
               <Select
+              required
                 native
                 value={analysis.city || ""}
                 onChange={(e: any) => { setAnalysis({ ...analysis, city: e.target.value  })}}

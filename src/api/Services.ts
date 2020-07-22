@@ -113,8 +113,14 @@ export class Services {
       });
     }
 
-    async getBySearch(city:string, sector:number): Promise<AnalysisElements[]> {
-      return server.get(`/temporary/search/?city=${city}&sector=${sector}`, {
+    async getBySearchSector(city:string, sector:number): Promise<AnalysisElements[]> {
+      return server.get(`/temporary/search/sector/?city=${city}&sector=${sector}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
+    async getBySearchEstate(city:string, sector:number, estate:string): Promise<AnalysisElements[]> {
+      return server.get(`/temporary/search/?city=${city}&sector=${sector!=undefined ? sector : ''}&estate=${estate}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
