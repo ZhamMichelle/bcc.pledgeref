@@ -1,0 +1,5 @@
+window.env = {
+  BCC_PLEDGEREFBACK: "${BCC_PLEDGEREFBACK}",
+  CAMUNDA_URL: "${CAMUNDA_URL}",
+  KATO:"${KATO}"
+};
