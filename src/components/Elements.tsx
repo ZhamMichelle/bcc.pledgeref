@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { AnalysisElements, Services, FormState,  } from '../api/Services';
+import { AnalysisElements, Services, FormState, UserContext } from '../api/Services';
 import {
   Button,
   Classes,
@@ -18,9 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '80%',
     },
-    container: {
-      maxHeight: 440,
-    },
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
@@ -35,6 +32,7 @@ export const Elements = (props:any) =>{
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
     const [searchSector, setSearchSector] = useState();
     const [searchEstate, setSearchEstate] = useState();
+    const [username, setUsername] = useState(new UserContext());
     const {
         city,
       formState,
@@ -48,6 +46,7 @@ export const Elements = (props:any) =>{
     } = props;
 
     var services = new Services();
+    useEffect(()=>{setUsername(JSON.parse(localStorage.getItem("userContext") || '{}'))},[]);
     useEffect(()=>{
       services.getList(city)
     .then(json=>setAnalysis(json))
@@ -76,7 +75,7 @@ export const Elements = (props:any) =>{
       };
 
       const onConfirm = (showToast: () => void) => {
-        services.deleteElement(idWantDelete).then(() => {
+        services.deleteElement(idWantDelete, username.user?.fullName || "").then(() => {
           showToast();
           setAnalysis(analysis.filter((m) => m.id !== idWantDelete));
         });
@@ -85,7 +84,7 @@ export const Elements = (props:any) =>{
       const onDelete = (id:any) =>{
         var con = window.confirm("Вы дейтсвительно хотите удалить?");
         if (con) {
-          services.deleteElement(id).then(() => {
+          services.deleteElement(id, username.user?.fullName || "").then(() => {
             setAnalysis(analysis.filter((m) => m.id !== id));
           });
         }
@@ -116,32 +115,32 @@ return(
           >
             <thead>
               <tr>
-                <th>№</th>
-                <th>Нас. пункт</th>
-                <th><InputGroup
+                <th style={{textAlign: 'center'}}>№</th>
+                <th style={{textAlign: 'center'}}>Нас. пункт</th>
+                <th style={{textAlign: 'center'}}><InputGroup
                     type="search"
                     // leftIcon={IconNames.SEARCH}
                     placeholder="Сектор"
                     value={searchSector}
                     onChange={(e: any) => setSearchSector(e.target.value)}
                   /></th>
-                <th>Описание сектора</th>
+                <th style={{textAlign: 'center'}}>Описание сектора</th>
                 {/* <th>Тип недвижимости</th> */}
-                <th><InputGroup
+                <th style={{textAlign: 'center'}}><InputGroup
                     type="search"
                     // leftIcon={IconNames.SEARCH}
                     placeholder="Тип недвижимости"
                     value={searchEstate}
                     onChange={(e: any) => setSearchEstate(e.target.value)}
                   /></th>
-                <th>Особенности строения</th>
-                <th>Планировка</th>
-                <th>Материал стен</th>
-                <th>Стоимость за кв(сотку) Min</th>
-                <th>Стоимость за кв(сотку) Max</th>
-                <th>Дата начала параметра</th>
-                <th>Дата окончания параметра</th>
-                <th>Настройки</th>
+                <th style={{textAlign: 'center'}}>Особенности строения</th>
+                <th style={{textAlign: 'center'}}>Планировка</th>
+                <th style={{textAlign: 'center'}}>Материал стен</th>
+                <th style={{textAlign: 'center'}}>Стоимость за кв(сотку) Min</th>
+                <th style={{textAlign: 'center'}}>Стоимость за кв(сотку) Max</th>
+                <th style={{textAlign: 'center'}}>Дата начала параметра</th>
+                <th style={{textAlign: 'center'}}>Дата окончания параметра</th>
+                <th style={{textAlign: 'center'}}>Настройки</th>
               </tr>
             </thead>
             <tbody>
@@ -150,17 +149,17 @@ return(
                   !filter?.some((f) => f == m.id) && (
                     <tr key={i} onClick={() => onClickItem(m)}>
                       {/* <tr key={i}> */}
-                      <td>{i + 1}</td>
-                      <td>{m.city}</td>
-                      <td>{m.sector}</td>
-                      <td>{m.sectorDescription}</td>
-                      <td>{m.typeEstate}</td>
-                      <td>{m.detailArea}</td>
-                      <td>{m.apartmentLayout}</td>
-                      <td>{m.wallMaterial}</td>
-                      <td>{m.minCostPerSQM}</td>
-                      <td>{m.maxCostPerSQM}</td>
-                      <td>{m.beginDate !=null ?
+                      <td style={{textAlign: 'center'}}>{i + 1}</td>
+                      <td style={{textAlign: 'center'}}>{m.city}</td>
+                      <td style={{textAlign: 'center'}}>{m.sector}</td>
+                      <td style={{textAlign: 'center'}}>{m.sectorDescription}</td>
+                      <td style={{textAlign: 'center'}}>{m.typeEstate}</td>
+                      <td style={{textAlign: 'center'}}>{m.detailArea}</td>
+                      <td style={{textAlign: 'center'}}>{m.apartmentLayout}</td>
+                      <td style={{textAlign: 'center'}}>{m.wallMaterial}</td>
+                      <td style={{textAlign: 'center'}}>{m.minCostPerSQM}</td>
+                      <td style={{textAlign: 'center'}}>{m.maxCostPerSQM}</td>
+                      <td style={{textAlign: 'center'}}>{m.beginDate !=null ?
                         moment(m.beginDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.beginDate}</td>
                       <td>{m.endDate !=null ?
                         moment(m.endDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.endDate}</td>
@@ -171,7 +170,7 @@ return(
                               icon={IconNames.EDIT}
                               intent={Intent.PRIMARY}
                               onClick={(e: any) => {
-                                history.push(`/${m.id}/edit`);  
+                                history.push(`/${m.id}/edit`);
                                 e.stopPropagation();
                               }}
                             />

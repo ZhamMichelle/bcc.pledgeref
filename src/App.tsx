@@ -7,6 +7,7 @@ import { Toaster, Position, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import Login from "./login/Login";
 import { FormState, } from './api/Services';
+import Page from './components/Page'
 
 export const history = createBrowserHistory();
 
@@ -74,10 +75,11 @@ function App() {
     <Router history={history}>
     <Switch>
       <Route exact path="/login" component={Login} />
-      <Route exact path="/" component={MainPage} />
+      <Route  path="/" component={Page} />
+      {/* <Route exact path="/" component={MainPage} />
       <Route path={`/:id/edit`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
       <Route path='/create' component={(props)=> <Element {...props} formState={FormState.CREATE}/> } />
-      <Route path='/:id' component={(props)=> <Element {...props} formState={FormState.READ}/> } />
+      <Route path='/:id' component={(props)=> <Element {...props} formState={FormState.READ}/> } /> */}
     </Switch>
   </Router>
   </AppContext.Provider>

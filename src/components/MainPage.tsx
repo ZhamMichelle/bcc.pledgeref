@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Services, FormState, } from '../api/Services';
+import { Services, FormState, UserContext} from '../api/Services';
 import {FormControl, Select, InputLabel} from "@material-ui/core";
 import {Elements} from './Elements';
 import { AppContext, history} from "../App";
@@ -46,7 +46,12 @@ const { match: _match }: { match: any } = props;
     const classes = useStyles();
     const [city, setCity] = useState("Актау");
     const [uploadResult, setUploadResult] = useState();
+    const [username, setUsername] = useState(new UserContext());
     var services = new Services();
+
+useEffect(()=>{setUsername(JSON.parse(localStorage.getItem("userContext") || '{}'))},[]);
+
+
 const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   const obj = {hello: 'world'};
   const blob1 = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
@@ -54,7 +59,7 @@ const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   var formData = new FormData();
   formData.append('body', file?.[0] || blob1);
   if(!!file){
-    services.postExcel(formData).then(json=>setUploadResult(json))
+    services.postExcel(formData, username.user?.fullName || "").then(json=>setUploadResult(json))
   }
 }
 useEffect(()=>{
@@ -86,7 +91,6 @@ return (
             </option>
           ))}
         </Select>
-        
         </FormControl>
         <button className='pxbutton' onClick={() => { history.push(`/create`)}}>Добавить данные</button>
         <input type='file' id='input' style={{float: "right"}} onChange={(e)=>onFileChange(e)}/>

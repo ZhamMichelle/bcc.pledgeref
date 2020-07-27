@@ -28,6 +28,35 @@ export class AnalysisElements{
         endDate?: Date;
 }
 
+export class LoggingElements{
+  id?: number;
+  cityCodeKATO?: string;
+  city?: string;
+  sectorCode?: string;
+  sector?: number; 
+  relativityLocation?: string;
+  sectorDescription?: string;
+  typeEstateCode?: string;
+  typeEstateByRef?: string;
+  typeEstate?: string;
+  apartmentLayoutCode?: string;
+  apartmentLayout?: string;
+  wallMaterialCode?: number; 
+  wallMaterial?: string;
+  detailAreaCode?: string;
+  detailArea?: string;
+  minCostPerSQM?: number; 
+  maxCostPerSQM?: number; 
+  corridor?: number;
+  minCostWithBargain?: number; 
+  maxCostWithBargain?: number; 
+  beginDate?: Date;
+  endDate?: Date;
+  action?: string;
+  username?: string;
+  previousId?: number;
+  changeDate?: Date;
+}
 export enum FormState {
     CREATE,
     EDIT,
@@ -99,16 +128,19 @@ export class UserQueue {
   filter?: string;
   view?: string;
 }
+
+
+
+
 export class Services {
     async getList(city:string): Promise<AnalysisElements[]> {
       return server.get(`/temporary/city/?city=${city}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
-  
 
-    async postExcel(body:FormData): Promise<string> {
-      return server.post('/upload/', body, {
+    async postExcel(formData:FormData, username: string): Promise<string> {
+      return server.post(`/upload/?username=${username}`, formData, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
@@ -119,14 +151,19 @@ export class Services {
       });
     }
 
+    async getBySearchCode(actionType:string, code:number): Promise<LoggingElements[]> {
+      return server.get(`/logging/search/?actionType=${actionType}&code=${code!=undefined ? code : ''}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
     async getBySearchEstate(city:string, sector:number, estate:string): Promise<AnalysisElements[]> {
       return server.get(`/temporary/search/?city=${city}&sector=${sector!=undefined ? sector : ''}&estate=${estate}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
 
-    async deleteElement(id:number): Promise<void> {
-      return server.delete(`/temporary/${id}`, {
+    async deleteElement(id:number, username: string): Promise<void> {
+      return server.delete(`/temporary/${id}/?username=${username}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
@@ -137,15 +174,15 @@ export class Services {
         });
     }
 
-   async postElement(element:AnalysisElements): Promise<void>{
-        return server.post(`/temporary/`, element, {
+   async postElement(analysis:AnalysisElements, username: string): Promise<void>{
+        return server.post(`/temporary/?username=${username}`, analysis, {
             baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
         });
     }
 
 
-   async putElement(element:AnalysisElements): Promise<void>{
-        return server.put(`/temporary/`, element, {
+   async putElement(analysis:AnalysisElements, username: string): Promise<void>{
+        return server.put(`/temporary/?username=${username}`, analysis, {
             baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
         });
     }
@@ -157,7 +194,11 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
 })
     }
 
-    
+    async getLogList(action:string): Promise<LoggingElements[]> {
+      return server.get(`/logging/?action=${action}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
 }
 
 export class LoginServer {

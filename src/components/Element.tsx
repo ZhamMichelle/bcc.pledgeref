@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { AppContext, history } from "../App";
 import {Grid, TextField, Select, InputLabel, FormControl, Input} from '@material-ui/core';
-import {  FormState, AnalysisElements, Services } from '../api/Services';
+import {  FormState, AnalysisElements, Services, UserContext,  } from '../api/Services';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import moment from "moment";
 import Alert from '@material-ui/lab/Alert';
@@ -76,15 +76,17 @@ const helperDetailArea=['до 100 кв.м.','от 100-200 кв.м.','>200 кв.�
 export const Element = (props: any) =>{
     const classes = useStyles();
     const [analysis, setAnalysis] = useState(new AnalysisElements());
-
+    const [username, setUsername] = useState(new UserContext());
+    
   const { match, formState } = props;
-var services = new Services();
+  var services = new Services();
   useEffect(() => {
     if (formState === FormState.EDIT || formState === FormState.READ) {
     services.getIdElement(match.params.id).then(json => setAnalysis(json));
     }
+    setUsername(JSON.parse(localStorage.getItem("userContext") || '{}'))
   }, []);
-  useEffect(()=>{console.log('analysis',analysis)},[analysis])
+  
 
   useEffect(()=>{
     if(analysis.city!=null){
@@ -97,7 +99,7 @@ var services = new Services();
     e.preventDefault();
     if (formState === FormState.CREATE) {
      
-      services.postElement(analysis).then(() => {
+      services.postElement(analysis, username.user?.fullName || "").then(() => {
         // showToast();
         // alert("Успешно добавлен")
         history.goBack();
@@ -105,7 +107,8 @@ var services = new Services();
     
       
     } else if (formState === FormState.EDIT) {
-      services.putElement(analysis).then(() => {
+      
+      services.putElement(analysis, username.user?.fullName || "").then(() => {
         // alert("Успешно изменен")
         // showToast();
         history.goBack();

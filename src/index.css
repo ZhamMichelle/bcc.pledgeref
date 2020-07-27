@@ -75,3 +75,12 @@ input[type="file"]::-ms-browse {
   font-family: "Roboto", sans-serif;
   float: right;
 }
+
+.px2 {
+  background-color: #ffffff;
+}
+
+.black-text li a {
+  color: black;
+  font-family: "Roboto", sans-serif;
+}
