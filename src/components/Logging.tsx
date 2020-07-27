@@ -121,7 +121,7 @@ export const Logging = (props:any) =>{
           ))}
         </Select>
         </FormControl>
-        <Grid item xs={11} className={classes.paper}>
+        <Grid item xs={12} className={classes.paper}>
          <table
             style={{ width: "100%", textAlign: 'center', border:'1px solid black', borderCollapse: 'collapse'}}
           >
@@ -133,15 +133,17 @@ export const Logging = (props:any) =>{
                     value={searchCode}
                     onChange={(e: any) => setSearchCode(e.target.value)}
                   /></th>
-                <th >Нас. пункт</th>
+                <th>Город</th>
                 <th>Сектор</th>
                 <th>Описание сектора</th>
-                <th>Тип недвижимости</th>
-                <th >Особенности строения</th>
+                <th>Тип недвижимости по справочнику</th>
                 <th >Планировка</th>
                 <th >Материал стен</th>
-                <th >Стоимость за кв(сотку) Min</th>
-                <th >Стоимость за кв(сотку) Max</th>
+                <th >Детализация площади по жилому дому</th>
+                <th >Стоимость за кв.м. Min</th>
+                <th >Стоимость за кв.м. Max</th>
+                <th>Стоимость за кв.м., min значение c торгом </th>
+                <th>Стоимость за кв.м. max значение c торгом</th>
                 <th >Дата начала параметра</th>
                 <th >Дата окончания параметра</th>
                 <th >Действие</th>
@@ -159,11 +161,13 @@ export const Logging = (props:any) =>{
                       <td >{m.sector}</td>
                       <td >{m.sectorDescription}</td>
                       <td >{m.typeEstate}</td>
-                      <td >{m.detailArea}</td>
                       <td >{m.apartmentLayout}</td>
                       <td >{m.wallMaterial}</td>
-                      <td >{m.minCostPerSQM}</td>
-                      <td >{m.maxCostPerSQM}</td>
+                      <td >{m.detailArea}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.minCostPerSQM || 0)}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.maxCostPerSQM || 0)}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.minCostWithBargain || 0)}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.maxCostWithBargain || 0)}</td>
                       <td >{m.beginDate !=null ?
                         moment(m.beginDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.beginDate}</td>
                       <td>{m.endDate !=null ?

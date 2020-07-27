@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Services, FormState, UserContext} from '../api/Services';
-import {FormControl, Select, InputLabel} from "@material-ui/core";
+import { Services, FormState, UserContext, AnalysisElements} from '../api/Services';
+import {FormControl, Select, InputLabel, Grid} from "@material-ui/core";
 import {Elements} from './Elements';
 import { AppContext, history} from "../App";
 
@@ -70,6 +70,14 @@ if(uploadResult==="Ok") {
 else if(uploadResult==="Error") alert("Произошла ошибка. Попробуйте изменить содержимое файла.");
 },[uploadResult])
 
+const onDeleteCity = () =>{
+  var con = window.confirm("Вы действительно хотите удалить?");
+  if (con) {
+    services.deleteCity(city, username.user?.fullName || "").then(() => {
+     // setAnalysis(analysis.filter((m) => m.id !== id));
+    });
+  }
+}
 return (
         <React.Fragment>
         <h2 style={{textAlign: 'center'}}>Заполнение и корректировка справочника</h2>
@@ -94,11 +102,17 @@ return (
         </FormControl>
         <button className='pxbutton' onClick={() => { history.push(`/create`)}}>Добавить данные</button>
         <input type='file' id='input' style={{float: "right"}} onChange={(e)=>onFileChange(e)}/>
+        {/* <input type='button' value="Удалить все по городу" style={{float: "right", height:'20px', marginTop: '25px'}}/> */}
         <Elements city={city}
               formState={FormState.READ}
             />
-            <div style={{ textAlign: "center" }}><button className='pxbutton' 
-            onClick={()=>{localStorage.clear(); window.location.reload()}}>Logout</button></div>
+            <Grid container className={classes.paper}>
+              <Grid item xs={2} ><div style={{ textAlign: "left" }}><button className='pxbutton' 
+            onClick={()=>{onDeleteCity(); window.location.reload()}}>Удалить все по городу</button></div></Grid>
+              <Grid item xs={8} ><div style={{ textAlign: "center" }}><button className='pxbutton' 
+            onClick={()=>{localStorage.clear(); window.location.reload()}}>Logout</button></div></Grid>
+            </Grid>
+            
             
         </React.Fragment>
     )

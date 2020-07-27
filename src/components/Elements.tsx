@@ -33,6 +33,7 @@ export const Elements = (props:any) =>{
     const [searchSector, setSearchSector] = useState();
     const [searchEstate, setSearchEstate] = useState();
     const [username, setUsername] = useState(new UserContext());
+    const [uniqueSector, setUniqueSector] = useState([] as number[]);
     const {
         city,
       formState,
@@ -54,6 +55,29 @@ export const Elements = (props:any) =>{
     console.log(error.response)
     });
     },[city])
+    
+    useEffect(()=>{
+      var sectors: number[]= new Array();
+    var fhelper:boolean = false;
+    var shelper:boolean=false;
+    sectors.push(analysis?.[0]?.sector || 0)
+        for(let i=1; i<analysis.length; i++){
+          for(let j=0; j<sectors.length; j++){
+            if(analysis?.[i].sector!=sectors[j]){
+                fhelper=true
+            }
+            if(analysis?.[i].sector==sectors[j]){shelper=true}
+          }
+          if(fhelper && !shelper){sectors.push(analysis?.[i].sector || 0); fhelper=false; }
+          shelper=false;
+        };
+        
+        setUniqueSector(sectors.sort(function(a, b) {
+          return a - b;
+        }))
+    },[analysis])
+
+    useEffect(()=>{console.log('uniqueSector',uniqueSector)},[uniqueSector])
 
     useEffect(() => {
       if(searchSector!=null && searchEstate==null){
@@ -82,7 +106,7 @@ export const Elements = (props:any) =>{
       };
 
       const onDelete = (id:any) =>{
-        var con = window.confirm("Вы дейтсвительно хотите удалить?");
+        var con = window.confirm("Вы действительно хотите удалить?");
         if (con) {
           services.deleteElement(id, username.user?.fullName || "").then(() => {
             setAnalysis(analysis.filter((m) => m.id !== id));
@@ -109,38 +133,40 @@ return(
               <br /> Вы уверены что хотите удалить ?
             </p>
           </Alert>
-        <Grid item xs={11} className={classes.paper}>
+        <Grid item xs={12} className={classes.paper}>
          <table
             style={{ width: "100%", textAlign: 'center', border:'1px solid black', borderCollapse: 'collapse'}}
           >
             <thead>
               <tr>
-                <th style={{textAlign: 'center'}}>№</th>
-                <th style={{textAlign: 'center'}}>Нас. пункт</th>
-                <th style={{textAlign: 'center'}}><InputGroup
+                <th>№</th>
+                <th>Город</th>
+                <th><InputGroup
                     type="search"
                     // leftIcon={IconNames.SEARCH}
                     placeholder="Сектор"
                     value={searchSector}
                     onChange={(e: any) => setSearchSector(e.target.value)}
                   /></th>
-                <th style={{textAlign: 'center'}}>Описание сектора</th>
+                <th>Описание сектора</th>
                 {/* <th>Тип недвижимости</th> */}
-                <th style={{textAlign: 'center'}}><InputGroup
+                <th><InputGroup
                     type="search"
                     // leftIcon={IconNames.SEARCH}
-                    placeholder="Тип недвижимости"
+                    placeholder="Тип недвижимости по справочнику"
                     value={searchEstate}
                     onChange={(e: any) => setSearchEstate(e.target.value)}
                   /></th>
-                <th style={{textAlign: 'center'}}>Особенности строения</th>
-                <th style={{textAlign: 'center'}}>Планировка</th>
-                <th style={{textAlign: 'center'}}>Материал стен</th>
-                <th style={{textAlign: 'center'}}>Стоимость за кв(сотку) Min</th>
-                <th style={{textAlign: 'center'}}>Стоимость за кв(сотку) Max</th>
-                <th style={{textAlign: 'center'}}>Дата начала параметра</th>
-                <th style={{textAlign: 'center'}}>Дата окончания параметра</th>
-                <th style={{textAlign: 'center'}}>Настройки</th>
+                <th>Планировка</th>
+                <th>Материал стен</th>
+                <th>Детализация площади по жилому дому</th>
+                <th>Стоимость за кв.м. Min</th>
+                <th>Стоимость за кв.м. Max</th>
+                <th>Стоимость за кв.м., min значение c торгом </th>
+                <th>Стоимость за кв.м. max значение c торгом</th>
+                <th>Дата начала параметра</th>
+                <th>Дата окончания параметра</th>
+                <th >Настройки</th>
               </tr>
             </thead>
             <tbody>
@@ -149,17 +175,19 @@ return(
                   !filter?.some((f) => f == m.id) && (
                     <tr key={i} onClick={() => onClickItem(m)}>
                       {/* <tr key={i}> */}
-                      <td style={{textAlign: 'center'}}>{i + 1}</td>
-                      <td style={{textAlign: 'center'}}>{m.city}</td>
-                      <td style={{textAlign: 'center'}}>{m.sector}</td>
-                      <td style={{textAlign: 'center'}}>{m.sectorDescription}</td>
-                      <td style={{textAlign: 'center'}}>{m.typeEstate}</td>
-                      <td style={{textAlign: 'center'}}>{m.detailArea}</td>
-                      <td style={{textAlign: 'center'}}>{m.apartmentLayout}</td>
-                      <td style={{textAlign: 'center'}}>{m.wallMaterial}</td>
-                      <td style={{textAlign: 'center'}}>{m.minCostPerSQM}</td>
-                      <td style={{textAlign: 'center'}}>{m.maxCostPerSQM}</td>
-                      <td style={{textAlign: 'center'}}>{m.beginDate !=null ?
+                      <td>{i + 1}</td>
+                      <td>{m.city}</td>
+                      <td>{m.sector}</td>
+                      <td>{m.sectorDescription}</td>
+                      <td>{m.typeEstate}</td>
+                      <td>{m.apartmentLayout}</td>
+                      <td>{m.wallMaterial}</td>
+                      <td>{m.detailArea}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.minCostPerSQM || 0)}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.maxCostPerSQM || 0)}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.minCostWithBargain || 0)}</td>
+                      <td>{new Intl.NumberFormat('ru-RU').format(m.maxCostWithBargain || 0)}</td>
+                      <td>{m.beginDate !=null ?
                         moment(m.beginDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.beginDate}</td>
                       <td>{m.endDate !=null ?
                         moment(m.endDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.endDate}</td>

@@ -27,8 +27,11 @@ export const NavbarUp = () =>{
     <React.Fragment>
  
      <Grid container spacing={0}>
-        <Grid item xs={9}>
-      <img src={logo} style={{ paddingLeft: "50px", paddingTop: "10px" }} />
+        <Grid item xs={9} container spacing={0}>
+          <Grid item xs={1}><img src={logo} style={{ paddingLeft: "90px", paddingTop: "14px",  }} /></Grid>
+      
+      <Grid item xs={7} style={{marginTop:'1px'}}><h2>Справочник</h2></Grid>
+       
        </Grid>
        <Grid item xs={3}>
        <Button variant="outlined" color="primary" href="/" style={{color:'#27ae60', marginTop:'12px'}} >Анализ цен</Button>

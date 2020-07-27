@@ -168,6 +168,13 @@ export class Services {
       });
     }
 
+    async deleteCity(city:string, username: string): Promise<void> {
+      debugger;
+      return server.delete(`/temporary/city/${city}/?username=${username}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
    async getIdElement(id:number): Promise<AnalysisElements>{
         return server.get(`/temporary/${id}`, {
             baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
