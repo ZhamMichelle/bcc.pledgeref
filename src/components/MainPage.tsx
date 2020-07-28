@@ -63,7 +63,6 @@ const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   }
 }
 useEffect(()=>{
-console.log("uploadResult",uploadResult);
 if(uploadResult==="Ok") {
   alert("Файл загружен")
 }

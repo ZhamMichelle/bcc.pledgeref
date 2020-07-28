@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import { AnalysisElements, Services, FormState, UserContext } from '../api/Services';
 import {
   Button,
@@ -12,6 +11,7 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import { AppContext, history, PATH_REFERENCE_BOOK } from "../App";
 import moment from "moment";
+import {FormControl, Select, InputLabel, Grid} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
+    },
+    formControl: {
+      margin: theme.spacing(1),
     },
   }),
 );
@@ -34,6 +37,8 @@ export const Elements = (props:any) =>{
     const [searchEstate, setSearchEstate] = useState();
     const [username, setUsername] = useState(new UserContext());
     const [uniqueSector, setUniqueSector] = useState([] as number[]);
+    const [uniqueEstate, setUniqueEstate] = useState([] as string[]);
+    const [selectHelper, setSelectHelper] = useState('')
     const {
         city,
       formState,
@@ -50,7 +55,7 @@ export const Elements = (props:any) =>{
     useEffect(()=>{setUsername(JSON.parse(localStorage.getItem("userContext") || '{}'))},[]);
     useEffect(()=>{
       services.getList(city)
-    .then(json=>setAnalysis(json))
+    .then((json)=>{setAnalysis(json); setSelectHelper('Rest')})
     .catch(error => {
     console.log(error.response)
     });
@@ -72,27 +77,38 @@ export const Elements = (props:any) =>{
           shelper=false;
         };
         
-        setUniqueSector(sectors.sort(function(a, b) {
+        setUniqueSector(
+          sectors.sort(function(a, b) {
           return a - b;
-        }))
-    },[analysis])
+        }));
 
-    useEffect(()=>{console.log('uniqueSector',uniqueSector)},[uniqueSector])
+        var estates: string[] = new Array();
+        fhelper=false; shelper=false;
+        estates.push(analysis?.[0]?.typeEstateByRef || "")
+        for(let i=1; i<analysis.length; i++){
+          for(let j=0; j<estates.length; j++){
+            if(analysis?.[i].typeEstateByRef!=estates[j]){
+              fhelper=true
+          }
+          if(analysis?.[i].typeEstateByRef==estates[j]){shelper=true}
+          }
+          if(fhelper && !shelper){estates.push(analysis?.[i].typeEstateByRef || ""); fhelper=false; }
+          shelper=false;
+        }
+        setUniqueEstate(estates);
+    },[selectHelper, analysis?.[0]?.city])
 
-    useEffect(() => {
-      if(searchSector!=null && searchEstate==null){
-        services.getBySearchSector(city, searchSector).then(json => {
-          setAnalysis(json);
-        });
-      }
-      }, [searchSector]);
+
     useEffect(()=>{
-      if(searchEstate!=null){
+      if((searchSector!=undefined && searchEstate==undefined ) || (searchSector==undefined && searchEstate!=undefined ) || 
+      (searchSector!=undefined && searchEstate!=undefined )){
         services.getBySearchEstate(city, searchSector, searchEstate).then(json => {
           setAnalysis(json);
         });
       }
     }, [searchEstate, searchSector])
+    
+   //useEffect(()=>{console.log('uniqueSector',uniqueSector)},[uniqueSector])
 
     const onClickItem = (element: AnalysisElements) => {
           history.push(`/${element.id}`);
@@ -109,7 +125,7 @@ export const Elements = (props:any) =>{
         var con = window.confirm("Вы действительно хотите удалить?");
         if (con) {
           services.deleteElement(id, username.user?.fullName || "").then(() => {
-            setAnalysis(analysis.filter((m) => m.id !== id));
+            setAnalysis(analysis.filter((m) => m.id !== id)); 
           });
         }
       }
@@ -141,22 +157,60 @@ return(
               <tr>
                 <th>№</th>
                 <th>Город</th>
-                <th><InputGroup
+                {/* <th><InputGroup
                     type="search"
                     // leftIcon={IconNames.SEARCH}
                     placeholder="Сектор"
                     value={searchSector}
                     onChange={(e: any) => setSearchSector(e.target.value)}
-                  /></th>
+                  /></th> */}
+                  <th>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                  <Select
+                    native
+                    value={searchSector}
+                    onChange={(e: any) => {
+                      setSearchSector( e.currentTarget.value );
+                    }}
+                    style={{ height: "30px", width: "100px" }}
+                  >
+                    <option>Сектор</option>
+                    {uniqueSector.map((m, i) => (
+                      <option key={i} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </Select>
+                  </FormControl>
+                  </th>
                 <th>Описание сектора</th>
                 {/* <th>Тип недвижимости</th> */}
-                <th><InputGroup
+                {/* <th><InputGroup
                     type="search"
                     // leftIcon={IconNames.SEARCH}
                     placeholder="Тип недвижимости по справочнику"
                     value={searchEstate}
                     onChange={(e: any) => setSearchEstate(e.target.value)}
-                  /></th>
+                  /></th> */}
+                <th>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                  <Select
+                    native
+                    value={searchEstate}
+                    onChange={(e: any) => {
+                      setSearchEstate( e.currentTarget.value );
+                    }}
+                    style={{ height: "30px", width: "200px" }}
+                  >
+                    <option>Тип недвижимости по справочнику</option>
+                    {uniqueEstate.map((m, i) => (
+                      <option key={i} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </Select>
+                  </FormControl>
+                  </th>
                 <th>Планировка</th>
                 <th>Материал стен</th>
                 <th>Детализация площади по жилому дому</th>
@@ -179,7 +233,7 @@ return(
                       <td>{m.city}</td>
                       <td>{m.sector}</td>
                       <td>{m.sectorDescription}</td>
-                      <td>{m.typeEstate}</td>
+                      <td>{m.typeEstateByRef}</td>
                       <td>{m.apartmentLayout}</td>
                       <td>{m.wallMaterial}</td>
                       <td>{m.detailArea}</td>

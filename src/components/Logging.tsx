@@ -160,7 +160,7 @@ export const Logging = (props:any) =>{
                       <td >{m.city}</td>
                       <td >{m.sector}</td>
                       <td >{m.sectorDescription}</td>
-                      <td >{m.typeEstate}</td>
+                      <td >{m.typeEstateByRef}</td>
                       <td >{m.apartmentLayout}</td>
                       <td >{m.wallMaterial}</td>
                       <td >{m.detailArea}</td>

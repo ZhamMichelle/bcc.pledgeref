@@ -192,10 +192,10 @@ export const Element = (props: any) =>{
                 setAnalysis({ ...analysis, typeEstateCode: e.target.value })
               }/>
               
-              <br/><br/>
+              {/* <br/><br/>
               <TextField variant="outlined"  label="Тип недвижимости" value={analysis.typeEstate || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, typeEstate: e.target.value })
-              }/>
+              }/> */}
               <br/><br/>
               <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">Планировка квартир</InputLabel>
@@ -250,15 +250,15 @@ export const Element = (props: any) =>{
                 setAnalysis({ ...analysis, maxCostPerSQM: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Коридор, %" value={(analysis.corridor || 0)} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, corridor: parseFloat(e.target.value) })
+              <TextField variant="outlined"  label="Торг, %" value={(analysis.bargain || 0)} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, bargain: parseFloat(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом -10%" value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом" value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, minCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом -10%" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, maxCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>

@@ -12,7 +12,7 @@ export class AnalysisElements{
         sectorDescription?: string;
         typeEstateCode?: string;
         typeEstateByRef?: string;
-        typeEstate?: string;
+        //typeEstate?: string;
         apartmentLayoutCode?: string;
         apartmentLayout?: string;
         wallMaterialCode?: number; 
@@ -21,7 +21,7 @@ export class AnalysisElements{
         detailArea?: string;
         minCostPerSQM?: number; 
         maxCostPerSQM?: number; 
-        corridor?: number;
+        bargain?: number;
         minCostWithBargain?: number; 
         maxCostWithBargain?: number; 
         beginDate?: Date;
@@ -38,7 +38,7 @@ export class LoggingElements{
   sectorDescription?: string;
   typeEstateCode?: string;
   typeEstateByRef?: string;
-  typeEstate?: string;
+  //typeEstate?: string;
   apartmentLayoutCode?: string;
   apartmentLayout?: string;
   wallMaterialCode?: number; 
@@ -47,7 +47,7 @@ export class LoggingElements{
   detailArea?: string;
   minCostPerSQM?: number; 
   maxCostPerSQM?: number; 
-  corridor?: number;
+  bargain?: number;
   minCostWithBargain?: number; 
   maxCostWithBargain?: number; 
   beginDate?: Date;
@@ -157,7 +157,8 @@ export class Services {
       });
     }
     async getBySearchEstate(city:string, sector:number, estate:string): Promise<AnalysisElements[]> {
-      return server.get(`/temporary/search/?city=${city}&sector=${sector!=undefined ? sector : ''}&estate=${estate}`, {
+      sector>=0 ? sector=sector : sector=0;
+      return server.get(`/temporary/search/?city=${city}&sector=${sector==undefined ? '' : sector==0 ? '' : sector}&estate=${estate==undefined ? '' : estate=='Тип недвижимости по справочнику' ? '' : estate}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
