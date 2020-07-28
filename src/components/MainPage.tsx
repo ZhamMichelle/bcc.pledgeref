@@ -66,7 +66,7 @@ useEffect(()=>{
 if(uploadResult==="Ok") {
   alert("Файл загружен")
 }
-else if(uploadResult==="Error") alert("Произошла ошибка. Попробуйте изменить содержимое файла.");
+else if(uploadResult==="Error") alert("Ошибка либо в формате данных, либо вы передаете нулевое значение в обязательные поля. Пожалуйста, загружайте данные после последних добавленных данных!");
 },[uploadResult])
 
 const onDeleteCity = () =>{

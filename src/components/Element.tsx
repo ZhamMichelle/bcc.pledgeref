@@ -135,16 +135,16 @@ export const Element = (props: any) =>{
               <Grid item xs={6} className={classes.paper} container spacing={3}>
                 <Grid item xs={6}>
               <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel htmlFor="outlined-age-native-simple">Город</InputLabel>
+              <InputLabel htmlFor="city">Город</InputLabel>
               <Select
-              required
                 native
+                required
                 value={analysis.city || ""}
                 onChange={(e: any) => { setAnalysis({ ...analysis, city: e.target.value  })}}
                 label="Город"
                 style={{width: "450px" }}
               >
-                <option>Выберите город</option>
+                <option></option>
                 {cities.map((m, i) => (
                   <option key={i} value={m}>
                     {m}
@@ -153,15 +153,15 @@ export const Element = (props: any) =>{
               </Select>
             </FormControl>
             <br/><br/>
-            <TextField  variant="outlined"  label="Код города КАТО" value={analysis.cityCodeKATO || ""} style={{ width: "450px" }} onChange={(e: any) =>
+            <TextField required variant="outlined"  label="Код города КАТО" value={analysis.cityCodeKATO || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, cityCodeKATO: e.target.value })
               }/> 
               <br/><br/>
-              <TextField variant="outlined"  label="Код сектора города" value={analysis.sectorCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Код сектора города" value={analysis.sectorCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, sectorCode: e.target.value })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Сектор города" value={analysis.sector || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Сектор города" value={analysis.sector || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, sector: parseInt(e.target.value)})
               }/>
               <br/><br/>
@@ -169,7 +169,7 @@ export const Element = (props: any) =>{
                 setAnalysis({ ...analysis, relativityLocation: e.target.value })
               }/>
               <br/><br/>
-              <TextField variant="outlined" label="Описание сектора города" value={analysis.sectorDescription || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined" label="Описание сектора города" value={analysis.sectorDescription || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, sectorDescription: e.target.value })
               }/>
               <br/><br/>
@@ -177,18 +177,19 @@ export const Element = (props: any) =>{
               <InputLabel htmlFor="outlined-age-native-simple">Тип недвижимости по справочнику</InputLabel>
               <Select
                 native
+                required
                 value={analysis.typeEstateByRef || ""}
                 onChange={(e: any) => { setAnalysis({ ...analysis, typeEstateByRef: e.target.value, typeEstateCode: PropertyType.get(e.target.value)  })}}
                 label="Тип недвижимости по справочнику"
                 style={{width: "450px" }}
               >
                 {/* {Array.from(PropertyType).map(([key,value])=>(<option key={key} value={value}>{key}</option>))} */}
-                <option>Выберите тип недвижимости</option>
+                <option></option>
               {helperPropertyType.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
               </Select>
             </FormControl>
               <br/><br/>
-              <TextField variant="outlined"  label="Код Типа недвижимости" value={analysis.typeEstateCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Код Типа недвижимости" value={analysis.typeEstateCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, typeEstateCode: e.target.value })
               }/>
               
@@ -201,26 +202,26 @@ export const Element = (props: any) =>{
               <InputLabel htmlFor="outlined-age-native-simple">Планировка квартир</InputLabel>
               <Select
                 native
+                required={analysis.typeEstateByRef=='Квартира' ? true : false}
                 value={analysis.apartmentLayout || ""}
                 onChange={(e: any) => { setAnalysis({ ...analysis, apartmentLayout: e.target.value, apartmentLayoutCode: Layout.get(e.target.value)  })}}
                 label="Планировка квартир"
                 style={{width: "450px" }}
-              >
-                <option>{analysis.apartmentLayout || ""}</option>
+              ><option>{analysis.apartmentLayout || ""}</option>
               {helperLayout.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
-              </Select>
+              </Select> 
               </FormControl>
               <br/><br/>
-              <TextField variant="outlined"  label="Код Планировка квартир" value={analysis.apartmentLayoutCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required={analysis.typeEstateByRef=='Квартира' ? true : false} variant="outlined"  label="Код Планировка квартир" value={analysis.apartmentLayoutCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, apartmentLayoutCode: e.target.value })
               }/>
               </Grid>
               <Grid item xs={6}>
-              <TextField variant="outlined"  label="Код Материал стен" value={analysis.wallMaterialCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required={analysis.typeEstateByRef=='Квартира' ? true : false} variant="outlined"  label="Код Материал стен" value={analysis.wallMaterialCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, wallMaterialCode: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Материал стен" value={analysis.wallMaterial || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required={analysis.typeEstateByRef=='Квартира' ? true : false} variant="outlined"  label="Материал стен" value={analysis.wallMaterial || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, wallMaterial: e.target.value })
               }/>
               <br/><br/>
@@ -228,37 +229,38 @@ export const Element = (props: any) =>{
               <InputLabel htmlFor="outlined-age-native-simple">Детализация площади по жилому дому</InputLabel>
               <Select
                 native
+                required={analysis.typeEstateByRef=='Жилой дом' ? true : false}
                 value={analysis.detailArea || ""}
                 onChange={(e: any) => { setAnalysis({ ...analysis, detailArea: e.target.value, detailAreaCode: DetailArea.get(e.target.value) })}}
                 label="Детализация площади по жилому дому"
                 style={{width: "450px" }}
               >
-              <option>Выберите детализацию площади по жилому дому</option>
+              <option></option>
               {helperDetailArea.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
               </Select>
               </FormControl>
               <br/><br/>
-              <TextField variant="outlined"  label="Код детализации площади по жилому дому" value={analysis.detailAreaCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required={analysis.typeEstateByRef=='Жилой дом' ? true : false} variant="outlined"  label="Код детализации площади по жилому дому" value={analysis.detailAreaCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, detailAreaCode: e.target.value })
               }/> 
               <br/><br/>
-              <TextField variant="outlined"  label="Стоимость за кв.м., мин значение" value={analysis.minCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Стоимость за кв.м., мин значение" value={analysis.minCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, minCostPerSQM: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Стоимость за кв.м. макс значение" value={analysis.maxCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Стоимость за кв.м. макс значение" value={analysis.maxCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, maxCostPerSQM: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Торг, %" value={(analysis.bargain || 0)} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Торг, %" value={(analysis.bargain || '')} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, bargain: parseFloat(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом" value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом" value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, minCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, maxCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>
