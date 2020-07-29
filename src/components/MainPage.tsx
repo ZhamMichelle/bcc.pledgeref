@@ -47,6 +47,7 @@ const { match: _match }: { match: any } = props;
     const [city, setCity] = useState("Актау");
     const [uploadResult, setUploadResult] = useState();
     const [username, setUsername] = useState(new UserContext());
+    const [helperAlert, setHelperAlert] = useState(false);
     var services = new Services();
 
 useEffect(()=>{setUsername(JSON.parse(localStorage.getItem("userContext") || '{}'))},[]);
@@ -59,7 +60,7 @@ const onFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
   var formData = new FormData();
   formData.append('body', file?.[0] || blob1);
   if(!!file){
-    services.postExcel(formData, username.user?.fullName || "").then(json=>setUploadResult(json))
+    services.postExcel(formData, username.user?.fullName || "").then(json=>{setUploadResult(json); setHelperAlert(!helperAlert)})
   }
 }
 useEffect(()=>{
@@ -67,7 +68,7 @@ if(uploadResult==="Ok") {
   alert("Файл загружен")
 }
 else if(uploadResult==="Error") alert("Ошибка либо в формате данных, либо вы передаете нулевое значение в обязательные поля. Пожалуйста, загружайте данные после последних добавленных данных!");
-},[uploadResult])
+},[ helperAlert])
 
 const onDeleteCity = () =>{
   var con = window.confirm("Вы действительно хотите удалить?");
@@ -75,6 +76,7 @@ const onDeleteCity = () =>{
     services.deleteCity(city, username.user?.fullName || "").then(() => {
      // setAnalysis(analysis.filter((m) => m.id !== id));
     });
+    window.location.reload();
   }
 }
 return (
@@ -107,7 +109,7 @@ return (
             />
             <Grid container className={classes.paper}>
               <Grid item xs={2} ><div style={{ textAlign: "left" }}><button className='pxbutton' 
-            onClick={()=>{onDeleteCity(); window.location.reload()}}>Удалить все по городу</button></div></Grid>
+            onClick={()=>{onDeleteCity(); }}>Удалить все по городу</button></div></Grid>
               <Grid item xs={8} ><div style={{ textAlign: "center" }}><button className='pxbutton' 
             onClick={()=>{localStorage.clear(); window.location.reload()}}>Logout</button></div></Grid>
             </Grid>

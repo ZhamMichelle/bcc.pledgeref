@@ -169,8 +169,7 @@ export class Services {
       });
     }
 
-    async deleteCity(city:string, username: string): Promise<void> {
-      debugger;
+    async deleteCity(city:string, username: string): Promise<string> {
       return server.delete(`/temporary/city/${city}/?username=${username}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
