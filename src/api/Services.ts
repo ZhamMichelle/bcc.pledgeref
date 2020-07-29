@@ -4,6 +4,7 @@ const webConfigEnv = (window as any).env;
 
 export class AnalysisElements{
         id?: number;
+        code?: string;
         cityCodeKATO?: string;
         city?: string;
         sectorCode?: string;
@@ -12,7 +13,6 @@ export class AnalysisElements{
         sectorDescription?: string;
         typeEstateCode?: string;
         typeEstateByRef?: string;
-        //typeEstate?: string;
         apartmentLayoutCode?: string;
         apartmentLayout?: string;
         wallMaterialCode?: number; 
@@ -30,6 +30,7 @@ export class AnalysisElements{
 
 export class LoggingElements{
   id?: number;
+  code?: string;
   cityCodeKATO?: string;
   city?: string;
   sectorCode?: string;
@@ -38,7 +39,6 @@ export class LoggingElements{
   sectorDescription?: string;
   typeEstateCode?: string;
   typeEstateByRef?: string;
-  //typeEstate?: string;
   apartmentLayoutCode?: string;
   apartmentLayout?: string;
   wallMaterialCode?: number; 
@@ -54,7 +54,6 @@ export class LoggingElements{
   endDate?: Date;
   action?: string;
   username?: string;
-  previousId?: number;
   changeDate?: Date;
 }
 export enum FormState {

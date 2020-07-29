@@ -44,8 +44,8 @@ const cities: string[] = [
 export const MainPage = (props: any)=>{
 const { match: _match }: { match: any } = props;
     const classes = useStyles();
-    const [city, setCity] = useState("Актау");
-    const [uploadResult, setUploadResult] = useState();
+    const [city, setCity] = useState("Актобе");
+    const [uploadResult, setUploadResult] = useState("");
     const [username, setUsername] = useState(new UserContext());
     const [helperAlert, setHelperAlert] = useState(false);
     var services = new Services();
@@ -67,7 +67,9 @@ useEffect(()=>{
 if(uploadResult==="Ok") {
   alert("Файл загружен")
 }
-else if(uploadResult==="Error") alert("Ошибка либо в формате данных, либо вы передаете нулевое значение в обязательные поля. Пожалуйста, загружайте данные после последних добавленных данных!");
+else if(uploadResult.includes("Пустое")) alert( `Ошибка! ${uploadResult}`)
+else if(uploadResult.includes("формат")) alert( `Ошибка! ${uploadResult}`)
+else if(uploadResult==="Error") alert("Ошибка в формате данных!");
 },[ helperAlert])
 
 const onDeleteCity = () =>{

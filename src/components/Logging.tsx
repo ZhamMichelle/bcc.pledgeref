@@ -28,7 +28,7 @@ const cities: string[] = [
     "Шымкент",
     "Туркестан",
   ];
-const actions: string[]=["Удаление", "Редактирование", "Добавление"];
+const actions: string[]=["Удаление", "Редактирование", "Добавление", "Excel"];
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -156,7 +156,7 @@ export const Logging = (props:any) =>{
                 (m, i) =>
                   !filter?.some((f) => f == m.id) && (
                     <tr key={i}>
-                      <td >{m.previousId}</td>
+                      <td >{m.code}</td>
                       <td >{m.city}</td>
                       <td >{m.sector}</td>
                       <td >{m.sectorDescription}</td>

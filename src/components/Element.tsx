@@ -160,6 +160,10 @@ export const Element = (props: any) =>{
               : formState==FormState.EDIT ? <>Редактирование</> : <>Добавление</>}</h2>
               <Grid item xs={6} className={classes.paper} container spacing={3}>
                 <Grid item xs={6}>
+                <TextField required variant="outlined"  label="Код строки" value={analysis.code || ""} style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, code: e.target.value })
+              }/> 
+              <br/><br/>
               <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="city">Город</InputLabel>
               <Select
