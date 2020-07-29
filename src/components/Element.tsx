@@ -5,6 +5,31 @@ import {  FormState, AnalysisElements, Services, UserContext,  } from '../api/Se
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import moment from "moment";
 import Alert from '@material-ui/lab/Alert';
+import NumberFormat from 'react-number-format';
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={values => {
+        onChange({
+          target: {
+            value: values.value
+          }
+        });
+      }}     
+      thousandSeparator={" "}
+      decimalSeparator={"."}
+      isNumericString
+      prefix={props.prefix} //"$"      
+    />
+  );
+}
+
+
 
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -115,6 +140,7 @@ export const Element = (props: any) =>{
       });
     }
   };
+
     return(
         <AppContext.Consumer>
  {({ showToastCreate, showToastEdit }) => (
@@ -244,23 +270,30 @@ export const Element = (props: any) =>{
                 setAnalysis({ ...analysis, detailAreaCode: e.target.value })
               }/> 
               <br/><br/>
-              <TextField required variant="outlined"  label="Стоимость за кв.м., мин значение" value={analysis.minCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Стоимость за кв.м., мин значение" 
+              InputProps={{inputComponent: NumberFormatCustom}}
+              value={ analysis.minCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, minCostPerSQM: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField required variant="outlined"  label="Стоимость за кв.м. макс значение" value={analysis.maxCostPerSQM || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField  InputProps={{inputComponent: NumberFormatCustom}}
+              required variant="outlined"  label="Стоимость за кв.м. макс значение"
+               value={analysis.maxCostPerSQM || ""} style={{ width: "450px" }}
+                onChange={(e: any) =>
                 setAnalysis({ ...analysis, maxCostPerSQM: parseInt(e.target.value) })
-              }/>
+              }
+              />
               <br/><br/>
-              <TextField required variant="outlined"  label="Торг, %" value={(analysis.bargain || '')} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField  inputProps={{maxLength: 2}} required variant="outlined"  label="Торг, %" value={(analysis.bargain || '')} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, bargain: parseFloat(e.target.value) })
               }/>
               <br/><br/>
-              <TextField required variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом" value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField InputProps={{inputComponent: NumberFormatCustom}} required variant="outlined"  label="Стоимость за кв.м., минимальное значение c торгом"
+               value={analysis.minCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, minCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>
-              <TextField required variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField InputProps={{inputComponent: NumberFormatCustom}} required variant="outlined"  label="Стоимость за кв.м. максимальное значение c торгом" value={analysis.maxCostWithBargain || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, maxCostWithBargain: parseInt(e.target.value) })
               }/>
               <br/><br/>
