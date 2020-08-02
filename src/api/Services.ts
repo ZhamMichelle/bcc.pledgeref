@@ -1,4 +1,5 @@
 import { server } from "./server";
+import service from "./Service";
 
 const webConfigEnv = (window as any).env;
 
@@ -55,11 +56,13 @@ export class LoggingElements{
   action?: string;
   username?: string;
   changeDate?: Date;
+  isArch?: any;
 }
 export enum FormState {
     CREATE,
     EDIT,
-    READ
+    READ,
+    ARCHANDNEW
   }
 
 export class City{
@@ -128,7 +131,15 @@ export class UserQueue {
   view?: string;
 }
 
-
+export class PaginationParams {
+  results?: LoggingElements[];
+  currentPage?: number;
+  pageCount?: number;
+  pageSize?: number;
+  rowCount?: number;
+  firstRowOnPage?: number;
+  lastRowOnPage?: number;
+}
 
 
 export class Services {
@@ -150,11 +161,18 @@ export class Services {
       });
     }
 
-    async getBySearchCode(actionType:string, code:number): Promise<LoggingElements[]> {
-      return server.get(`/logging/search/?actionType=${actionType}&code=${code!=undefined ? code : ''}`, {
+    async getBySearchCode(actionType:string, code:number, status:any): Promise<LoggingElements[]> {
+      return server.get(`/logging/search/?actionType=${actionType!=undefined ? actionType : ''}&code=${code!=undefined ? code : ''}&status=${status}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
+
+    async getLogPage(page:number, size:number, code:string, status:any): Promise<PaginationParams> {
+      return server.get(`/logging/${page}/${size}/?status=${status}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
     async getBySearchEstate(city:string, sector:number, estate:string): Promise<AnalysisElements[]> {
       sector>=0 ? sector=sector : sector=0;
       return server.get(`/temporary/search/?city=${city}&sector=${sector==undefined ? '' : sector==0 ? '' : sector}&estate=${estate==undefined ? '' : estate=='Тип недвижимости по справочнику' ? '' : estate}`, {
@@ -193,6 +211,11 @@ export class Services {
         });
     }
 
+    async archAndNewElement(analysis:AnalysisElements, username: string): Promise<void>{
+      return server.put(`/temporary/archandnew/?username=${username}`, analysis, {
+          baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+  }
 
     async getKatoCityCode(city:string): Promise<string>{
 return server.get(`/reference/api/kato/children/city/?city=${city}`, {
@@ -204,6 +227,11 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
       return server.get(`/logging/?action=${action}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
+    }
+
+    async Download() {
+      return service.getRestClient()
+        .get("/logging/download/",  { responseType: "blob" });
     }
 }
 

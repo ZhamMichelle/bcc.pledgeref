@@ -141,6 +141,16 @@ export const Element = (props: any) =>{
     }
   };
 
+  const archAndNew = (e:any) =>{
+    e.preventDefault();
+    var con = window.confirm("Вы действительно хотите архивировать и создать новый?");
+        if (con) {
+    services.archAndNewElement(analysis, username.user?.fullName || "").then(() => {
+      history.goBack();
+    });
+  }
+  }
+
     return(
         <AppContext.Consumer>
  {({ showToastCreate, showToastEdit }) => (
@@ -222,11 +232,6 @@ export const Element = (props: any) =>{
               <TextField required variant="outlined"  label="Код Типа недвижимости" value={analysis.typeEstateCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, typeEstateCode: e.target.value })
               }/>
-              
-              {/* <br/><br/>
-              <TextField variant="outlined"  label="Тип недвижимости" value={analysis.typeEstate || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, typeEstate: e.target.value })
-              }/> */}
               <br/><br/>
               <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">Планировка квартир</InputLabel>
@@ -237,7 +242,8 @@ export const Element = (props: any) =>{
                 onChange={(e: any) => { setAnalysis({ ...analysis, apartmentLayout: e.target.value, apartmentLayoutCode: Layout.get(e.target.value)  })}}
                 label="Планировка квартир"
                 style={{width: "450px" }}
-              ><option>{analysis.apartmentLayout || ""}</option>
+              >
+                <option></option>
               {helperLayout.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
               </Select> 
               </FormControl>
@@ -288,7 +294,8 @@ export const Element = (props: any) =>{
               }
               />
               <br/><br/>
-              <TextField  inputProps={{maxLength: 2}} required variant="outlined"  label="Торг, %" value={(analysis.bargain || '')} type='percent' style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField  inputProps={{maxLength: 2, minLength: 1}} 
+              required variant="outlined"  label="Торг, %" value={(analysis.bargain || 0)}  style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, bargain: parseFloat(e.target.value) })
               }/>
               <br/><br/>
@@ -312,11 +319,21 @@ export const Element = (props: any) =>{
               }/>
               </Grid>
             </Grid>
-            <Grid item xs={12}  >
+            <Grid container className={classes.paper}>
+            <Grid item xs={2}  >
+            <div style={{ textAlign: "left" }}>
+              {formState!=FormState.READ && formState!=FormState.CREATE ? 
+              <input type="button" value="Архивировать и создать новый" className='pxbutton' 
+              onClick={(e: any) => {archAndNew(e)}}/>
+              :  <></>}
+            </div>
+            </Grid>
+            <Grid item xs={8}  >
             <div style={{ textAlign: "center" }}>
               {formState!=FormState.READ ? <input type="submit" value="Сохранить" className='pxbutton'/>
               :  <></>}
             </div>
+            </Grid>
             </Grid>
           </form>
           </fieldset>

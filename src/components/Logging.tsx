@@ -4,8 +4,8 @@ import {FormControl, Select, InputLabel} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 import moment from "moment";
 import { InputGroup, } from "@blueprintjs/core";
-import { LoggingElements, Services, FormState, UserContext } from '../api/Services';
-import { act } from 'react-dom/test-utils';
+import { LoggingElements, Services, FormState, UserContext, PaginationParams } from '../api/Services';
+import { saveAs } from 'file-saver';
 
 const cities: string[] = [
     "Алматы",
@@ -29,6 +29,7 @@ const cities: string[] = [
     "Туркестан",
   ];
 const actions: string[]=["Удаление", "Редактирование", "Добавление", "Excel"];
+const status: string[]=["Действ.", "Арх."];
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
+        textAlign: 'center'
     }, 
     formControl: {
         margin: theme.spacing(1),
@@ -47,9 +49,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Logging = (props:any) =>{
     const classes = useStyles();
     const [city, setCity] = useState("");
-    const [searchCode, setSearchCode] = useState();
+    const [searchCode, setSearchCode] = useState('f');
+    const [searchStatus, setSearchStatus] = useState();
     const [logData, setLogData] = useState([] as LoggingElements[])
     const [actionType, setActionType]=useState();
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+    const [pagResult, setPagResult] = useState(new PaginationParams());
     const {
       formState,
       onSelectedItem,
@@ -61,72 +67,79 @@ export const Logging = (props:any) =>{
     } = props;
 
     var services = new Services();
-    
-    // useEffect(()=>{
-    //     if(!!actionType){
-    //   services.getLogList(actionType)
-    // .then(json=>setLogData(json))
-    // .catch(error => {
-    // console.log(error.response)
-    // });}
-    // },[actionType])
-    useEffect(()=>{console.log("logData",logData)},[logData])
 
-    useEffect(() => {
-       // if(!!actionType){
-            services.getBySearchCode(actionType, searchCode).then(json => {
-                setLogData(json);
-              });
-       // }
-        }, [actionType,searchCode]);
+
+    // useEffect(() => {
+    //    // if(!!actionType){
+    //      var status = searchStatus=="Действ." ? '0' : searchStatus=="Арх." ? '1' : '' 
+    //         services.getBySearchCode(actionType, searchCode, status).then(json => {
+    //             setLogData(json);
+    //           });
+    //    // }
+    //     }, [actionType,searchCode,searchStatus]);
+
+    useEffect(()=>{
+      var status = null;
+      setSearchCode('f')
+      services.getLogPage(page, size, searchCode, status).then(json => {
+        setPagResult(json);
+      });
+    },[]);
+
+    useEffect(()=>{
+      console.log('pagresult',pagResult);
+    },[searchCode,searchStatus]);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+      var status = searchStatus=="Действ." ? '0' : searchStatus=="Арх." ? '1' : '' 
+      if (newPage < page) {
+        services.getLogPage(newPage, size, searchCode, status)
+          .then((json) => setPagResult(json));
+      }
+      setPage(newPage);
+  
+      if (newPage > page) {
+        services.getLogPage(page + 1, size, searchCode, status)
+          .then((json) => setPagResult(json));
+      }
+    };
+
+    const  extractFileName = (contentDispositionValue) => {
+      var filename = "";
+      if (contentDispositionValue && contentDispositionValue.indexOf('attachment') !== -1) {
+          var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          var matches = filenameRegex.exec(contentDispositionValue);
+          if (matches != null && matches[1]) {
+              filename = matches[1].replace(/['"]/g, '');
+          }
+      }
+      return filename;
+  }
+  const  downloadFile = () => {
+    services.Download().then((response) => {
+        var filename=extractFileName(response.headers['content-disposition']);
+        saveAs(response.data, filename);
+    }).catch(function (error) {
+        console.log(error);
+        if (error.response) {
+            console.log('Error', error.response.status);
+        } else {
+            console.log('Error', error.message);
+        }
+    });
+};
     return(
         <>
         <React.Fragment>
         <h2 style={{textAlign: 'center'}}>История действий</h2>
-        {/* <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Город</InputLabel>
-        <Select
-          native
-          value={city}
-          onChange={(e: any) => {
-            setCity( e.currentTarget.value );
-          }}
-          label="Филиал"
-          style={{ height: "50px", width: "280px" }}
-        >
-          <option>Выберите город</option>
-          {cities.map((m, i) => (
-            <option key={i} value={m}>
-              {m}
-            </option>
-          ))}
-        </Select>
-        </FormControl> */}
-        <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Действие</InputLabel>
-        <Select
-          native
-          value={actionType}
-          onChange={(e: any) => {
-            setActionType( e.currentTarget.value );
-          }}
-          label="Действие"
-          style={{ height: "50px", width: "280px" }}
-        >
-          <option>Выберите действие</option>
-          {actions.map((m, i) => (
-            <option key={i} value={m}>
-              {m}
-            </option>
-          ))}
-        </Select>
-        </FormControl>
+        <button className='pxbutton' onClick={(e:any)=>{downloadFile()}}>Выгрузить данные</button>
         <Grid item xs={12} className={classes.paper}>
          <table
             style={{ width: "100%", textAlign: 'center', border:'1px solid black', borderCollapse: 'collapse'}}
           >
             <thead>
               <tr>
+                <th>№</th>
               <th><InputGroup
                     type="search"
                     placeholder="Код"
@@ -149,21 +162,39 @@ export const Logging = (props:any) =>{
                 <th >Действие</th>
                 <th >Исполнитель</th>
                 <th >Дата изменения</th>
+                <th><FormControl variant="outlined" className={classes.formControl}>
+                  <Select
+                    native
+                    value={searchStatus}
+                    onChange={(e: any) => {
+                      setSearchStatus( e.currentTarget.value );
+                    }}
+                    style={{ height: "30px", width: "100px" }}
+                  >
+                    <option>Статус</option>
+                    {status.map((m, i) => (
+                      <option key={i} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </Select>
+                  </FormControl></th>
               </tr>
             </thead>
             <tbody>
-              {logData.map(
+              {pagResult.results?.map(
                 (m, i) =>
                   !filter?.some((f) => f == m.id) && (
                     <tr key={i}>
-                      <td >{m.code}</td>
-                      <td >{m.city}</td>
-                      <td >{m.sector}</td>
-                      <td >{m.sectorDescription}</td>
-                      <td >{m.typeEstateByRef}</td>
-                      <td >{m.apartmentLayout}</td>
-                      <td >{m.wallMaterial}</td>
-                      <td >{m.detailArea}</td>
+                      <td>{m.id}</td>
+                      <td>{m.code}</td>
+                      <td>{m.city}</td>
+                      <td>{m.sector}</td>
+                      <td>{m.sectorDescription}</td>
+                      <td>{m.typeEstateByRef}</td>
+                      <td>{m.apartmentLayout}</td>
+                      <td>{m.wallMaterial}</td>
+                      <td>{m.detailArea}</td>
                       <td>{new Intl.NumberFormat('ru-RU').format(m.minCostPerSQM || 0)}</td>
                       <td>{new Intl.NumberFormat('ru-RU').format(m.maxCostPerSQM || 0)}</td>
                       <td>{new Intl.NumberFormat('ru-RU').format(m.minCostWithBargain || 0)}</td>
@@ -176,12 +207,22 @@ export const Logging = (props:any) =>{
                     <td >{m.username}</td>
                     <td>{m.changeDate !=null ?
                         moment(m.changeDate, moment.ISO_8601, true).format("DD.MM.YYYY") : m.changeDate}</td>
+                    <td>{!!m.isArch && m.isArch=='0' ? <>Действ.</> : <>Арх.</>}</td>
                     </tr>
                   )
               )}
             </tbody>
           </table>
           </Grid>
+          <Grid container className={classes.paper}>
+          <Grid item xs={12} className={classes.paper}>
+          {page==1 ?  <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></> 
+          : !!pagResult.rowCount && (page*size)>=pagResult?.rowCount 
+          ? <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page-1) }}>Назад</button></>
+          :<><button className='pxbuttonPage' onClick={(e:any)=>{ handleChangePage(e,page-1)}}>Назад</button>&nbsp;&nbsp;
+            <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></>} 
+            </Grid>
+            </Grid>
         </React.Fragment>
         </>
     )
