@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Logging = (props:any) =>{
     const classes = useStyles();
     const [city, setCity] = useState("");
-    const [searchCode, setSearchCode] = useState('f');
+    const [searchCode, setSearchCode] = useState("");
     const [searchStatus, setSearchStatus] = useState();
     const [logData, setLogData] = useState([] as LoggingElements[])
     const [actionType, setActionType]=useState();
@@ -79,15 +79,19 @@ export const Logging = (props:any) =>{
     //     }, [actionType,searchCode,searchStatus]);
 
     useEffect(()=>{
-      var status = null;
-      setSearchCode('f')
+      var status = '';
+      setSearchCode('')
       services.getLogPage(page, size, searchCode, status).then(json => {
         setPagResult(json);
       });
     },[]);
 
     useEffect(()=>{
-      console.log('pagresult',pagResult);
+      var status = searchStatus=="Действ." ? '0' : searchStatus=="Арх." ? '1' : '' 
+      
+      services.getLogPage(page, size, searchCode, status).then(json => {
+        setPagResult(json);
+      });
     },[searchCode,searchStatus]);
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -128,6 +132,10 @@ export const Logging = (props:any) =>{
         }
     });
 };
+
+useEffect(()=>{
+  console.log('pagresult',pagResult)
+},[pagResult]);
     return(
         <>
         <React.Fragment>
@@ -144,7 +152,7 @@ export const Logging = (props:any) =>{
                     type="search"
                     placeholder="Код"
                     value={searchCode}
-                    onChange={(e: any) => setSearchCode(e.target.value)}
+                    onChange={(e: any) => {setSearchCode(e.target.value); setPage(1)}}
                   /></th>
                 <th>Город</th>
                 <th>Сектор</th>
@@ -167,7 +175,7 @@ export const Logging = (props:any) =>{
                     native
                     value={searchStatus}
                     onChange={(e: any) => {
-                      setSearchStatus( e.currentTarget.value );
+                      setSearchStatus( e.currentTarget.value ); setPage(1)
                     }}
                     style={{ height: "30px", width: "100px" }}
                   >
@@ -216,7 +224,9 @@ export const Logging = (props:any) =>{
           </Grid>
           <Grid container className={classes.paper}>
           <Grid item xs={12} className={classes.paper}>
-          {page==1 ?  <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></> 
+          {pagResult.lastRowOnPage==0 ? <></>   
+          : !!pagResult.rowCount && pagResult.rowCount<= size ? <></>
+          : page==1 ?  <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></> 
           : !!pagResult.rowCount && (page*size)>=pagResult?.rowCount 
           ? <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page-1) }}>Назад</button></>
           :<><button className='pxbuttonPage' onClick={(e:any)=>{ handleChangePage(e,page-1)}}>Назад</button>&nbsp;&nbsp;

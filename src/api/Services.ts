@@ -168,7 +168,7 @@ export class Services {
     }
 
     async getLogPage(page:number, size:number, code:string, status:any): Promise<PaginationParams> {
-      return server.get(`/logging/${page}/${size}/?status=${status}`, {
+      return server.get(`/logging/${page}/${size}/?status=${status}&code=${code}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
