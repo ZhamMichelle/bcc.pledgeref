@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: 'auto',
         textAlign: 'center'
     }, 
+    paper2: {
+      padding: theme.spacing(2),
+      margin: 'auto',
+      textAlign: 'right'
+  }, 
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
@@ -133,14 +138,16 @@ export const Logging = (props:any) =>{
     });
 };
 
-useEffect(()=>{
-  console.log('pagresult',pagResult)
-},[pagResult]);
+// useEffect(()=>{
+//   console.log('pagresult',pagResult)
+// },[pagResult]);
     return(
         <>
         <React.Fragment>
         <h2 style={{textAlign: 'center'}}>История действий</h2>
-        <button className='pxbutton' onClick={(e:any)=>{downloadFile()}}>Выгрузить данные</button>
+        <div style={{paddingLeft: '15px'}}>
+          <button className='pxbutton' onClick={(e:any)=>{downloadFile()}}>Выгрузить данные</button>
+          </div>
         <Grid item xs={12} className={classes.paper}>
          <table
             style={{ width: "100%", textAlign: 'center', border:'1px solid black', borderCollapse: 'collapse'}}
@@ -223,13 +230,13 @@ useEffect(()=>{
           </table>
           </Grid>
           <Grid container className={classes.paper}>
-          <Grid item xs={12} className={classes.paper}>
+          <Grid item xs={12} className={classes.paper2}>
           {pagResult.lastRowOnPage==0 ? <></>   
           : !!pagResult.rowCount && pagResult.rowCount<= size ? <></>
-          : page==1 ?  <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></> 
+          : page==1 ?  <>Стр. {page}  из {pagResult.pageCount}  <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></> 
           : !!pagResult.rowCount && (page*size)>=pagResult?.rowCount 
-          ? <><button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page-1) }}>Назад</button></>
-          :<><button className='pxbuttonPage' onClick={(e:any)=>{ handleChangePage(e,page-1)}}>Назад</button>&nbsp;&nbsp;
+          ? <>Стр. {page}  из {pagResult.pageCount}  <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page-1) }}>Назад</button></>
+          :<>Стр. {page}  из {pagResult.pageCount}  <button className='pxbuttonPage' onClick={(e:any)=>{ handleChangePage(e,page-1)}}>Назад</button>&nbsp;&nbsp;
             <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></>} 
             </Grid>
             </Grid>
