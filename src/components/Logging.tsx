@@ -121,7 +121,7 @@ export const Logging = (props:any) =>{
   }
   const  downloadFile = () => {
     services.Download().then((response) => {
-        var filename=extractFileName(response.headers['content-disposition']);
+        var filename="History" //xtractFileName(response.headers['content-disposition']);
         saveAs(response.data, filename);
     }).catch(function (error) {
         console.log(error);

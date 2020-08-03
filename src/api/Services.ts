@@ -233,6 +233,12 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
       return service.getRestClient()
         .get("/logging/download/",  { responseType: "blob" });
     }
+
+    // async Download(): Promise<Blob> {
+    //   return server.get(`/logging/download/`, {
+    //     baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    //   });
+    // }
 }
 
 export class LoginServer {
