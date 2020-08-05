@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {Grid, TextField, Select, InputLabel, FormControl, Input} from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import axios from "axios";
+import {  Pos  } from '../api/Services';
 
 const typeStreetSelect=['ул','мкр','проспект'];
 const cities: string[] = [
@@ -58,6 +59,8 @@ export const RefSector = () =>{
     const [house, setHouse] = useState(135);
     const [sector, setSector] = useState();
     const [result, setResult] = useState();
+    const [pos, setPos] = useState([] as Pos[]);
+    const [coordinates, setCoordinates] = useState([] as string[]);
 const onSubmit = (e:any) =>{
     e.preventDefault();
     console.log("onsubmit")
@@ -66,19 +69,35 @@ const onSubmit = (e:any) =>{
       axios.get(
         `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`,
         // `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Алматы+Жарокова+169`,
-        ).then(json=>setResult(json.data));
+        ).then(
+          // json=>setResult(json.data)
+           str  => {
+            //setResult( new DOMParser().parseFromString(str.data, 'application/xml'));
+            setResult(str.data)
+           }
+          );
 }
 
 useEffect(()=>{
     console.log("result",result)
     
-    console.log("typeStreet",typeStreet)
-    
-    console.log("street",street)
-    console.log("house",house)
-
+     var XMLParser = require('react-xml-parser');
+     if(!!result){
+     var xml = new XMLParser().parseFromString(result);    // Assume xmlText contains the example XML
+    console.log("xml",xml);
+     console.log("pos",xml.getElementsByTagName('pos'));
+     setPos(xml.getElementsByTagName('pos'))
+    }
 },[result])
 
+useEffect(()=>{
+  console.log("position",pos[0]?.value);
+  setCoordinates((pos[0]?.value || "dream 4ever").split(" "))
+},[pos])
+
+useEffect(()=>{
+  console.log("coordinates, 1: ",coordinates[0], ", 2:",coordinates[1]);
+},[coordinates])
     return(
         <>
         <React.Fragment>

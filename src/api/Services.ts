@@ -141,6 +141,10 @@ export class PaginationParams {
   lastRowOnPage?: number;
 }
 
+export class Pos{
+  name?: string;
+  value?: string;
+}
 
 export class Services {
     async getList(city:string): Promise<AnalysisElements[]> {
