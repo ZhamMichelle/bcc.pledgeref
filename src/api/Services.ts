@@ -241,7 +241,10 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
     }
 
     async YandexApi(city:string, typeStreet:string, street:string, house:any): Promise<string>{
-      return server.get(`/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`,{
+      return server.get(typeStreet!='мкр' ?
+        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`
+        :
+        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${street}+${typeStreet}+${house}`,{
         baseURL: "https://geocode-maps.yandex.ru/1.x"
       })
     }

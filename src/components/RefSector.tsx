@@ -4,7 +4,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import axios from "axios";
 import { Pos,Services} from '../api/Services';
 
-const typeStreetSelect=['ул','мкр','проспект'];
+const typeStreetSelect=['ул','мкр','проспект', 'переулок', 'жилой массив'];
 const cities: string[] = [
     "Алматы",
     "Актау",
@@ -54,8 +54,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export const RefSector = () =>{
     const classes = useStyles();
     const [city, setCity] = useState("Актобе");
-    const [typeStreet, setTypeStreet] = useState();
-    const [street, setStreet] = useState();
+    const [typeStreet, setTypeStreet] = useState("");
+    const [street, setStreet] = useState("");
     const [house, setHouse] = useState();
     const [sector, setSector] = useState();
     const [result, setResult] = useState();
@@ -64,7 +64,7 @@ export const RefSector = () =>{
 const onSubmit = (e:any) =>{
     e.preventDefault();
     
-  services.YandexApi(city,typeStreet,street,house).then(str=>setResult(str))
+  services.YandexApi(city,typeStreet.replace(" ", "+"),street.replace(" ", "+"),house).then(str=>setResult(str))
 }
 
 useEffect(()=>{
@@ -141,8 +141,8 @@ if(!!pos[0]?.value){
               </Grid>
               </Grid>
               </form>
-<Grid item xs={1}>
-                {!!sector ? <h2 style={{ textAlign: 'center' }}>Сектор: {sector}</h2> : <></>}
+<Grid item xs={12}>
+                {!!sector || sector==0 ? <h2 style={{ textAlign: 'center' }}>Сектор {sector!=0 ? sector : " отсутствует!"}</h2> : <></>}
 </Grid>
 
         </React.Fragment>
