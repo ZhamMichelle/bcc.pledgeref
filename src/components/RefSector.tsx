@@ -54,12 +54,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export const RefSector = () =>{
     const classes = useStyles();
     const [city, setCity] = useState("Актобе");
-
-    const [typeStreet, setTypeStreet] = useState("");
-    const [street, setStreet] = useState("");
-    const [house, setHouse] = useState();
-    const [sector, setSector] = useState();
-    const [result, setResult] = useState();
+    const [typeStreet, setTypeStreet] = useState('');
+    const [street, setStreet] = useState('');
+    const [house, setHouse] = useState('');
+    const [sector, setSector] = useState('');
+    const [result, setResult] = useState('');
 
     const [pos, setPos] = useState([] as Pos[]);
     var services = new Services();
@@ -144,7 +143,7 @@ if(!!pos[0]?.value){
               </Grid>
               </form>
 <Grid item xs={12}>
-                {!!sector || sector==0 ? <h2 style={{ textAlign: 'center' }}>Сектор {sector!=0 ? sector : " отсутствует!"}</h2> : <></>}
+                {!!sector ? <h2 style={{ paddingLeft: '40px' }}>Сектор {sector}</h2> : <></>}
 </Grid>
 
         </React.Fragment>

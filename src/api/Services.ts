@@ -178,7 +178,7 @@ export class Services {
       });
     }
 
-    async getSector(point:string, city:string): Promise<number> {
+    async getSector(point:string, city:string): Promise<string> {
       return server.get(`/coordinates/${city}/${point}`,  {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
