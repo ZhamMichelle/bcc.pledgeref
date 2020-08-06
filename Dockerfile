@@ -5,7 +5,7 @@ ENV NO_PROXY nexus.apps.bcc.kz,$NO_PROXY
 WORKDIR /app
 COPY package*.json /app/
 
-RUN npm config set registry http://registry.npmjs.org/
+RUN npm config set registry https://nexus.apps.bcc.kz/repository/npm-registry-central/
 
 RUN npm install
 
