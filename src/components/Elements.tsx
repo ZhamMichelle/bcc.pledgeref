@@ -33,7 +33,7 @@ export const Elements = (props:any) =>{
     const [wantDelete, setWantDelete] = useState(false);
     const [idWantDelete, setIdWantDelete] = useState(0);
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
-    const [searchSector, setSearchSector] = useState();
+    const [searchSector, setSearchSector] = useState(0);
     const [searchEstate, setSearchEstate] = useState();
     const [username, setUsername] = useState(new UserContext());
     const [uniqueSector, setUniqueSector] = useState([] as number[]);
