@@ -146,6 +146,7 @@ export class Pos{
   value?: string;
 }
 
+
 export class Services {
     async getList(city:string): Promise<AnalysisElements[]> {
       return server.get(`/temporary/city/?city=${city}`, {
@@ -173,6 +174,12 @@ export class Services {
 
     async getLogPage(page:number, size:number, code:string, status:any): Promise<PaginationParams> {
       return server.get(`/logging/${page}/${size}/?status=${status}&code=${code}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
+    async getSector(point:string, city:string): Promise<number> {
+      return server.get(`/coordinates/${city}/${point}`,  {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
@@ -233,6 +240,12 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
       });
     }
 
+    async YandexApi(city:string, typeStreet:string, street:string, house:any): Promise<string>{
+      return server.get(`/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`,{
+        baseURL: "https://geocode-maps.yandex.ru/1.x"
+      })
+    }
+
     async Download() {
       return service.getRestClient()
         .get("/logging/download/",  { responseType: "blob" });
@@ -243,6 +256,7 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
     //     baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
     //   });
     // }
+   
 }
 
 export class LoginServer {

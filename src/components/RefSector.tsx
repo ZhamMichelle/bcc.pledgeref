@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {Grid, TextField, Select, InputLabel, FormControl, Input} from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import axios from "axios";
-import {  Pos  } from '../api/Services';
+import { Pos,Services} from '../api/Services';
 
 const typeStreetSelect=['ул','мкр','проспект'];
 const cities: string[] = [
@@ -54,50 +54,33 @@ const useStyles = makeStyles((theme: Theme) =>
 export const RefSector = () =>{
     const classes = useStyles();
     const [city, setCity] = useState("Актобе");
-    const [typeStreet, setTypeStreet] = useState("ул");
-    const [street, setStreet] = useState("Шабыт");
-    const [house, setHouse] = useState(135);
+    const [typeStreet, setTypeStreet] = useState();
+    const [street, setStreet] = useState();
+    const [house, setHouse] = useState();
     const [sector, setSector] = useState();
     const [result, setResult] = useState();
     const [pos, setPos] = useState([] as Pos[]);
-    const [coordinates, setCoordinates] = useState([] as string[]);
+    var services = new Services();
 const onSubmit = (e:any) =>{
     e.preventDefault();
-    console.log("onsubmit")
-    console.log("url", `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`,
-    )
-      axios.get(
-        `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`,
-        // `https://geocode-maps.yandex.ru/1.x/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Алматы+Жарокова+169`,
-        ).then(
-          // json=>setResult(json.data)
-           str  => {
-            //setResult( new DOMParser().parseFromString(str.data, 'application/xml'));
-            setResult(str.data)
-           }
-          );
+    
+  services.YandexApi(city,typeStreet,street,house).then(str=>setResult(str))
 }
 
 useEffect(()=>{
-    console.log("result",result)
-    
      var XMLParser = require('react-xml-parser');
      if(!!result){
-     var xml = new XMLParser().parseFromString(result);    // Assume xmlText contains the example XML
-    console.log("xml",xml);
-     console.log("pos",xml.getElementsByTagName('pos'));
+     var xml = new XMLParser().parseFromString(result);  
      setPos(xml.getElementsByTagName('pos'))
     }
 },[result])
 
 useEffect(()=>{
-  console.log("position",pos[0]?.value);
-  setCoordinates((pos[0]?.value || "dream 4ever").split(" "))
+if(!!pos[0]?.value){
+  services.getSector(pos[0]?.value, city).then(json=>setSector(json))
+}
 },[pos])
 
-useEffect(()=>{
-  console.log("coordinates, 1: ",coordinates[0], ", 2:",coordinates[1]);
-},[coordinates])
     return(
         <>
         <React.Fragment>
@@ -158,7 +141,9 @@ useEffect(()=>{
               </Grid>
               </Grid>
               </form>
-
+<Grid item xs={1}>
+                {!!sector ? <h2 style={{ textAlign: 'center' }}>Сектор: {sector}</h2> : <></>}
+</Grid>
 
         </React.Fragment>
         </>
