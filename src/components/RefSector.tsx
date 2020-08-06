@@ -54,11 +54,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export const RefSector = () =>{
     const classes = useStyles();
     const [city, setCity] = useState("Актобе");
+
     const [typeStreet, setTypeStreet] = useState("");
     const [street, setStreet] = useState("");
     const [house, setHouse] = useState();
     const [sector, setSector] = useState();
     const [result, setResult] = useState();
+
     const [pos, setPos] = useState([] as Pos[]);
     var services = new Services();
 const onSubmit = (e:any) =>{
