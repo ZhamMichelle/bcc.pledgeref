@@ -143,12 +143,15 @@ export const Element = (props: any) =>{
 
   const archAndNew = (e:any) =>{
     e.preventDefault();
-    var con = window.confirm("Вы действительно хотите архивировать и создать новый?");
-        if (con) {
-    services.archAndNewElement(analysis, username.user?.fullName || "").then(() => {
-      history.goBack();
-    });
-  }
+    if(!!analysis.beginDate){
+      var con = window.confirm("Вы действительно хотите архивировать и создать новый?");
+      if (con) {
+  services.archAndNewElement(analysis, username.user?.fullName || "").then(() => {
+    history.goBack();
+  });
+}
+    }
+    else alert('Заполните поле "Дата начала параметра"')
   }
 
     return(

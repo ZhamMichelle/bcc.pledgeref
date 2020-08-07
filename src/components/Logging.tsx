@@ -6,6 +6,7 @@ import moment from "moment";
 import { InputGroup, } from "@blueprintjs/core";
 import { LoggingElements, Services, FormState, UserContext, PaginationParams } from '../api/Services';
 import { saveAs } from 'file-saver';
+import Pagination from '@material-ui/lab/Pagination';
 
 const cities: string[] = [
     "Алматы",
@@ -49,6 +50,12 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: theme.spacing(1),
         minWidth: 120,
       },
+      paper3: {
+        padding: theme.spacing(5),
+      margin: 'auto',
+      textAlign: 'center',
+      marginTop: theme.spacing(2),
+      },
   }),
 );
 export const Logging = (props:any) =>{
@@ -56,11 +63,9 @@ export const Logging = (props:any) =>{
     const [city, setCity] = useState("");
     const [searchCode, setSearchCode] = useState("");
     const [searchStatus, setSearchStatus] = useState();
-    const [logData, setLogData] = useState([] as LoggingElements[])
-    const [actionType, setActionType]=useState();
-    const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
     const [pagResult, setPagResult] = useState(new PaginationParams());
+    const [pageP, setPageP] = useState(1);
     const {
       formState,
       onSelectedItem,
@@ -73,20 +78,10 @@ export const Logging = (props:any) =>{
 
     var services = new Services();
 
-
-    // useEffect(() => {
-    //    // if(!!actionType){
-    //      var status = searchStatus=="Действ." ? '0' : searchStatus=="Арх." ? '1' : '' 
-    //         services.getBySearchCode(actionType, searchCode, status).then(json => {
-    //             setLogData(json);
-    //           });
-    //    // }
-    //     }, [actionType,searchCode,searchStatus]);
-
     useEffect(()=>{
       var status = '';
       setSearchCode('')
-      services.getLogPage(page, size, searchCode, status).then(json => {
+      services.getLogPage(pageP, size, searchCode, status,city).then(json => {
         setPagResult(json);
       });
     },[]);
@@ -94,23 +89,17 @@ export const Logging = (props:any) =>{
     useEffect(()=>{
       var status = searchStatus=="Действ." ? '0' : searchStatus=="Арх." ? '1' : '' 
       
-      services.getLogPage(page, size, searchCode, status).then(json => {
+      services.getLogPage(pageP, size, searchCode, status, city).then(json => {
         setPagResult(json);
       });
-    },[searchCode,searchStatus]);
+    },[searchCode,searchStatus,city]);
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (event: any, newPage: number) => {
+      event.preventDefault();
       var status = searchStatus=="Действ." ? '0' : searchStatus=="Арх." ? '1' : '' 
-      if (newPage < page) {
-        services.getLogPage(newPage, size, searchCode, status)
+        services.getLogPage(newPage, size, searchCode, status, city)
           .then((json) => setPagResult(json));
-      }
-      setPage(newPage);
-  
-      if (newPage > page) {
-        services.getLogPage(page + 1, size, searchCode, status)
-          .then((json) => setPagResult(json));
-      }
+      setPageP(newPage);
     };
 
     const  extractFileName = (contentDispositionValue) => {
@@ -138,9 +127,9 @@ export const Logging = (props:any) =>{
     });
 };
 
-// useEffect(()=>{
-//   console.log('pagresult',pagResult)
-// },[pagResult]);
+useEffect(()=>{
+  console.log('pagresult',pagResult)
+},[pagResult]);
     return(
         <>
         <React.Fragment>
@@ -159,9 +148,25 @@ export const Logging = (props:any) =>{
                     type="search"
                     placeholder="Код"
                     value={searchCode}
-                    onChange={(e: any) => {setSearchCode(e.target.value); setPage(1)}}
+                    onChange={(e: any) => {setSearchCode(e.target.value); setPageP(1)}}
                   /></th>
-                <th>Город</th>
+                <th><FormControl variant="outlined" className={classes.formControl}>
+                  <Select
+                    native
+                    value={city}
+                    onChange={(e: any) => {
+                      setCity( e.currentTarget.value ); setPageP(1)
+                    }}
+                    style={{ height: "30px", width: "120px" }}
+                  >
+                    <option>Город</option>
+                    {cities.map((m, i) => (
+                      <option key={i} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </Select>
+                  </FormControl></th>
                 <th>Сектор</th>
                 <th>Описание сектора</th>
                 <th>Тип недвижимости по справочнику</th>
@@ -182,7 +187,7 @@ export const Logging = (props:any) =>{
                     native
                     value={searchStatus}
                     onChange={(e: any) => {
-                      setSearchStatus( e.currentTarget.value ); setPage(1)
+                      setSearchStatus( e.currentTarget.value ); setPageP(1)
                     }}
                     style={{ height: "30px", width: "100px" }}
                   >
@@ -228,18 +233,17 @@ export const Logging = (props:any) =>{
               )}
             </tbody>
           </table>
-          </Grid>
-          <Grid container className={classes.paper}>
-          <Grid item xs={12} className={classes.paper2}>
-          {pagResult.lastRowOnPage==0 ? <></>   
-          : !!pagResult.rowCount && pagResult.rowCount<= size ? <></>
-          : page==1 ?  <>Стр. {page}  из {pagResult.pageCount}  <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></> 
-          : !!pagResult.rowCount && (page*size)>=pagResult?.rowCount 
-          ? <>Стр. {page}  из {pagResult.pageCount}  <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page-1) }}>Назад</button></>
-          :<>Стр. {page}  из {pagResult.pageCount}  <button className='pxbuttonPage' onClick={(e:any)=>{ handleChangePage(e,page-1)}}>Назад</button>&nbsp;&nbsp;
-            <button className='pxbuttonPage' onClick={(e:any)=>{handleChangePage(e,page+1)}}>Вперед</button></>} 
-            </Grid>
-            </Grid>
+          </Grid> 
+          <div style={{paddingLeft: '1930px'}}>
+            <Pagination 
+            style={{justifyContent:"right"}}
+            count={!!pagResult.rowCount && pagResult?.rowCount % 10 == 0 ? pagResult?.rowCount/10 : Math.ceil((pagResult?.rowCount || 0)/10)} 
+            variant="outlined"
+            page={pageP} 
+            onChange={(e: any, page: number) => { handleChangePage(e,page)}}/>
+            </div>
+            <br/>
+            <br/>
         </React.Fragment>
         </>
     )

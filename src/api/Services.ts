@@ -172,8 +172,8 @@ export class Services {
       });
     }
 
-    async getLogPage(page:number, size:number, code:string, status:any): Promise<PaginationParams> {
-      return server.get(`/logging/${page}/${size}/?status=${status}&code=${code}`, {
+    async getLogPage(page:number, size:number, code:string, status:any, city:string): Promise<PaginationParams> {
+      return server.get(`/logging/${page}/${size}/?status=${status}&code=${code}&city=${city}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
