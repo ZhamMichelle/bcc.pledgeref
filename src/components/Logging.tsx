@@ -234,14 +234,18 @@ useEffect(()=>{
             </tbody>
           </table>
           </Grid> 
-          <div style={{paddingLeft: '1930px'}}>
+          <br/>
+            <Grid container className={classes.paper} >
+              <Grid item xs={10}></Grid>
+            <Grid  item xs={2}>
             <Pagination 
             style={{justifyContent:"right"}}
             count={!!pagResult.rowCount && pagResult?.rowCount % 10 == 0 ? pagResult?.rowCount/10 : Math.ceil((pagResult?.rowCount || 0)/10)} 
             variant="outlined"
             page={pageP} 
             onChange={(e: any, page: number) => { handleChangePage(e,page)}}/>
-            </div>
+            </Grid>
+            </Grid>
             <br/>
             <br/>
         </React.Fragment>
