@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import { AppContext, history } from "../App";
 import {Grid, TextField, Select, InputLabel, FormControl, Input} from '@material-ui/core';
-import {  FormState, AnalysisElements, Services, UserContext,  } from '../api/Services';
+import {  FormState, AnalysisElements, Services, UserContext } from '../api/Services';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import moment from "moment";
 import Alert from '@material-ui/lab/Alert';
@@ -78,25 +78,14 @@ const cities: string[] = [
   "Туркестан",
 ];
 
-const PropertyType: Map<string, string> = new Map([
-  ['Квартира', "001"],
-  ['Жилой дом', "002"],
-  ['Встроенное помещение', "003"]
-]);
-const helperPropertyType=['Квартира','Жилой дом','Встроенное помещение'];
+const PropertyType= 
+  [{type: 'Квартира', code: '001'}, {type: 'Жилой дом', code: '002'}, {type: 'Встроенное помещение', code: '003'},];
 
-const Layout: Map<string, string> = new Map([
-  ['Обычная (кухня < 8 кв.м)', "001"],
-  ['Улучшенная (кухня >= 8 кв.м)', "002"]
-]);
-const helperLayout=['Обычная (кухня < 8 кв.м)','Улучшенная (кухня >= 8 кв.м)'];
+const Layout = [ {type: 'Обычная (кухня < 8 кв.м)', code: '001'}, {type: 'Улучшенная (кухня >= 8 кв.м)', code: '002'},];
 
-const DetailArea: Map<string, string> = new Map([
-  ['до 100 кв.м.', "001"],
-  ['от 100-200 кв.м.', "002"],
-  ['>200 кв.м.', "003"]
-]);
-const helperDetailArea=['до 100 кв.м.','от 100-200 кв.м.','>200 кв.м.'];
+const DetailArea=[ 
+  {type: 'до 100 кв.м.', code: '001'}, {type: 'от 100-200 кв.м.', code: '002'}, {type: '>200 кв.м.', code: '003'},];
+
 
 export const Element = (props: any) =>{
     const classes = useStyles();
@@ -222,13 +211,13 @@ export const Element = (props: any) =>{
                 native
                 required
                 value={analysis.typeEstateByRef || ""}
-                onChange={(e: any) => { setAnalysis({ ...analysis, typeEstateByRef: e.target.value, typeEstateCode: PropertyType.get(e.target.value)  })}}
+                onChange={(e: any) => { setAnalysis({ ...analysis, typeEstateByRef: e.target.value,
+                  typeEstateCode: PropertyType.filter(m=>m.type==e.target.value)[0].code  })}}
                 label="Тип недвижимости по справочнику"
                 style={{width: "450px" }}
               >
-                {/* {Array.from(PropertyType).map(([key,value])=>(<option key={key} value={value}>{key}</option>))} */}
                 <option></option>
-              {helperPropertyType.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
+                {PropertyType.map((m,i)=>(<option key={i} value={m.type}>{m.type}</option>))}
               </Select>
             </FormControl>
               <br/><br/>
@@ -242,12 +231,13 @@ export const Element = (props: any) =>{
                 native
                 required={analysis.typeEstateByRef=='Квартира' ? true : false}
                 value={analysis.apartmentLayout || ""}
-                onChange={(e: any) => { setAnalysis({ ...analysis, apartmentLayout: e.target.value, apartmentLayoutCode: Layout.get(e.target.value)  })}}
+                onChange={(e: any) => { setAnalysis({ ...analysis, apartmentLayout: e.target.value, 
+                  apartmentLayoutCode: Layout.filter(m=>m.type==e.target.value)[0].code  })}}
                 label="Планировка квартир"
                 style={{width: "450px" }}
               >
                 <option></option>
-              {helperLayout.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
+              {Layout.map((m,i)=>(<option key={i} value={m.type}>{m.type}</option>))}
               </Select> 
               </FormControl>
               <br/><br/>
@@ -270,12 +260,13 @@ export const Element = (props: any) =>{
                 native
                 required={analysis.typeEstateByRef=='Жилой дом' ? true : false}
                 value={analysis.detailArea || ""}
-                onChange={(e: any) => { setAnalysis({ ...analysis, detailArea: e.target.value, detailAreaCode: DetailArea.get(e.target.value) })}}
+                onChange={(e: any) => { setAnalysis({ ...analysis, detailArea: e.target.value, 
+                  detailAreaCode: DetailArea.filter(m=>m.type==e.target.value)[0].code })}}
                 label="Детализация площади по жилому дому"
                 style={{width: "450px" }}
               >
               <option></option>
-              {helperDetailArea.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
+              {DetailArea.map((m,i)=>(<option key={i} value={m.type}>{m.type}</option>))}
               </Select>
               </FormControl>
               <br/><br/>
