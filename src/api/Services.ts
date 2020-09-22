@@ -160,6 +160,13 @@ export class Services {
       });
     }
 
+    async postExcelCoordinates(formData:FormData, username: string): Promise<string> {
+      let reference: string="Test";
+      return server.post(`/coordinates/${reference}&?username=${username}`, formData, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
     async getBySearchSector(city:string, sector:number): Promise<AnalysisElements[]> {
       return server.get(`/temporary/search/sector/?city=${city}&sector=${sector}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
@@ -178,8 +185,8 @@ export class Services {
       });
     }
 
-    async getSector(point:string, city:string): Promise<string> {
-      return server.get(`/coordinates/${city}/${point}`,  {
+    async getSector(point:string, city:string, typeLocCity:string): Promise<string> {
+      return server.get(`/coordinates/${city}/${point}/${typeLocCity=="Город" ? "город" : "нп"}`,  {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
@@ -240,11 +247,21 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
       });
     }
 
-    async YandexApi(city:string, typeStreet:string, street:string, house:any): Promise<string>{
-      return server.get(typeStreet!='мкр' ?
-        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${typeStreet}+${street}+${house}`
+    async YandexApi(typeLocCity:string, typeLocality:string, locality:string, city:string, typeStreet:string, street:string, house:any): Promise<string>{
+    
+     return   typeLocCity=="Город" ? server.get(typeStreet!='мкр' ? 
+        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Казахстан+${city}+${typeStreet}+${street}+${house}`
         :
-        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=${city}+${street}+${typeStreet}+${house}`,{
+        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Казахстан+${city}+${street}+${typeStreet}+${house}`,
+        {
+        baseURL: "https://geocode-maps.yandex.ru/1.x"
+      })
+      :
+      server.get(typeStreet!='мкр' ? 
+        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Казахстан+${typeLocality}+${locality}+${typeStreet}+${street}+${house}`
+        :
+        `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=Казахстан+${typeLocality}+${locality}+${street}+${typeStreet}+${house}`,
+        {
         baseURL: "https://geocode-maps.yandex.ru/1.x"
       })
     }
