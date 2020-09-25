@@ -266,6 +266,12 @@ return server.get(`/reference/api/kato/children/city/?city=${city}`, {
       })
     }
 
+    async DeleteSector(cityDelete: string, typeDelete: string): Promise<string>{
+        return server.delete(`/coordinates/${cityDelete}/${typeDelete}`,{
+          baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+        })
+    }
+
     async Download() {
       return service.getRestClient()
         .get("/logging/download/",  { responseType: "blob" });
