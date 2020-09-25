@@ -130,6 +130,7 @@ useEffect(()=>{
   }
   else if(uploadResult.includes("Пустое")) alert( `Ошибка! ${uploadResult}`)
   else if(uploadResult.includes("формат")) alert( `Ошибка! ${uploadResult}`)
+  else if(uploadResult.includes("Сектор")) alert( `Ошибка! ${uploadResult}`)
   else if(uploadResult==="Error") alert("Ошибка в формате данных!")
   else if(uploadResult==="Deleted") alert("Удалено успешно!")
   else if(uploadResult==="NoData") alert("Не найден данный сектор!")
