@@ -65,6 +65,11 @@ const useStyles = makeStyles((theme: Theme) =>
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
+      width: "95%"
+    },
+    formControl2: {
+      margin: theme.spacing(1),
+      minWidth: 120
     },
   }),
 );
@@ -153,7 +158,6 @@ useEffect(()=>{
                 value={city}
                 onChange={(e: any) => {setCity(e.target.value)}}
                 label="Город"
-                style={{width: "150px" }}
               >
                 <option></option>
                 {cities.map((m, i) => (
@@ -173,21 +177,20 @@ useEffect(()=>{
                 value={typeLocCity}
                 onChange={(e: any) => {setTypeLocCity(e.target.value)}}
                 label="Тип нас. пункта"
-                style={{width: "160px" }}
               >
                   <option key={1} value={"Город"}>Город</option>
-                  <option key={2} value={"Нас. пункт"}>Нас. пункт</option>
+                  <option key={2} value={"НП"}>НП</option>
               </Select>
             </FormControl>
             </Grid>
             {typeLocCity!="Город" ? 
             <>
             <Grid item xs={1}>
-            <TextField required id="outlined-basic" variant="outlined" label="Тип адм. центра" value={typeLocality} style={{ width: "170px" }} 
+            <TextField required id="outlined-basic" variant="outlined" className={classes.formControl} label="Тип адм. центра" value={typeLocality} 
               onChange={(e: any) =>  setTypeLocality(e.target.value)}/>
             </Grid>
             <Grid item xs={1}>
-            <TextField required id="outlined-basic" variant="outlined" label="Нас. пункт" value={locality} style={{ width: "160px" }} 
+            <TextField required id="outlined-basic" variant="outlined" className={classes.formControl} label="Нас. пункт" value={locality}
               onChange={(e: any) =>  setLocality(e.target.value)}/>
             </Grid> </> : <></>
           }
@@ -200,20 +203,19 @@ useEffect(()=>{
                 value={typeStreet}
                 onChange={(e: any) => { setTypeStreet(e.target.value)}}
                 label="Тип улицы"
-                style={{width: "150px" }}
               >
                 <option></option>
               {typeStreetSelect.map((m,i)=>(<option key={i} value={m}>{m}</option>))}
               </Select>
             </FormControl>
             </Grid>
-            <Grid item xs={2} className={classes.formControl}>
-              <TextField required id="outlined-basic" variant="outlined" label="Улица" value={street} style={{ width: "350px" }} 
+            <Grid item xs={1} className={classes.formControl}>
+              <TextField required id="outlined-basic" variant="outlined" label="Улица" value={street} 
               onChange={(e: any) =>  setStreet(e.target.value)}/>
               </Grid>
              {/* <br/><br/> */}
-             <Grid item xs={2} className={classes.formControl}>
-              <TextField required id="outlined-basic" variant="outlined" label="Дом" value={house} style={{ width: "350px" }} 
+             <Grid item xs={1} className={classes.formControl}>
+              <TextField required id="outlined-basic" variant="outlined" label="Дом" value={house}
               onChange={(e: any) => setHouse(e.target.value)}/>
               </Grid>
               
@@ -243,7 +245,7 @@ useEffect(()=>{
               onDeleteSector( e)}>
 <Grid><div style={{paddingLeft: "20px"}}>Выберите город и тип нас. пункта для удаления указанного сектора(ов):</div></Grid>
 <br/>
-<Grid item xs={12} className={classes.formControl}>  <FormControl variant="outlined" className={classes.formControl}>
+<Grid item xs={12} className={classes.formControl2}>  <FormControl variant="outlined" className={classes.formControl2}>
               <InputLabel htmlFor="city">Город</InputLabel>
               <Select
                 native
@@ -261,7 +263,7 @@ useEffect(()=>{
                 ))}
               </Select>
             </FormControl>
-            <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl variant="outlined" className={classes.formControl2}>
               <InputLabel htmlFor="locality">Тип нас. пункта</InputLabel>
               <Select
                 native
@@ -273,7 +275,7 @@ useEffect(()=>{
               >
                 <option></option>
                   <option key={1} value={"Город"}>Город</option>
-                  <option key={2} value={"Нас. пункт"}>Нас. пункт</option>
+                  <option key={2} value={"НП"}>НП</option>
               </Select>
             </FormControl>
             <input type='submit' value='Удалить сектор' className='pxbutton' style={{ height: "55px"}}/>  
