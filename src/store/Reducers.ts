@@ -1,7 +1,7 @@
 export const ACTION_CITY = 'Action_CITY';
 
 const initialState = {
-    city: "Актобе",
+    city: "Нур-Султан",
 }
 
 export const rootReducer = (state = initialState, action) =>{

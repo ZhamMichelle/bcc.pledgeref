@@ -3,8 +3,6 @@ import { NavLink } from "react-router-dom";
 import logo from './logo-bcc.svg';
 import {Grid, Button} from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-//import 'materialize-css/dist/css/materialize.min.css'
-import M from 'materialize-css'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,7 +32,9 @@ export const NavbarUp = () =>{
        
        </Grid>
        <Grid item xs={3}>
-       <Button variant="outlined" color="primary" href="/" style={{color:'#27ae60', marginTop:'12px'}} >Анализ цен</Button>
+       <Button variant="outlined" color="primary" href="/" style={{color:'#27ae60', marginTop:'12px'}} >Анализ цен Вторички</Button>
+       &nbsp;&nbsp;
+       <Button variant="outlined" color="primary" href="/primaryHousing" style={{color:'#27ae60', marginTop:'12px'}} >Анализ цен Первички</Button>
        &nbsp;&nbsp;
        <Button variant="outlined" color="primary" href="/logging" style={{color:'#27ae60', marginTop:'12px', }} >История</Button>
        &nbsp;&nbsp;

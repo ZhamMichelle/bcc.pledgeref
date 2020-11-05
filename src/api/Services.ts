@@ -29,6 +29,21 @@ export class AnalysisElements{
         endDate?: Date;
 }
 
+export class PrimaryAnalysisElements{
+  id?: number;
+  code?: string;
+  cityCodeKATO?: string;
+  city?: string;
+  rcNameCode?: number;
+  rcName?: string;
+  actualAdress?: string;
+  FinQualityLevelCode?: string;
+  FinQualityLevel?: string;
+  minCostPerSQM?: number; 
+  maxCostPerSQM?: number; 
+  beginDate?: Date;
+  endDate?: Date;
+}
 export class LoggingElements{
   id?: number;
   code?: string;
@@ -154,8 +169,19 @@ export class Services {
       });
     }
 
+    async getListPrimary(city:string): Promise<PrimaryAnalysisElements[]> {
+      return server.get(`/primaryHousing/city/?city=${city}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
     async postExcel(formData:FormData, username: string): Promise<string> {
       return server.post(`/upload/?username=${username}`, formData, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
+    async postExcelPrimary(formData:FormData, username: string): Promise<string> {
+      return server.post(`/upload/primUpload/?username=${username}`, formData, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
@@ -215,6 +241,12 @@ export class Services {
             baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
         });
     }
+
+    async getIdElementPrimary(id:number): Promise<AnalysisElements>{
+      return server.get(`/primaryHousing/${id}`, {
+          baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+  }
 
    async postElement(analysis:AnalysisElements, username: string): Promise<void>{
         return server.post(`/temporary/?username=${username}`, analysis, {
