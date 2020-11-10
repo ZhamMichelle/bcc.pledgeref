@@ -18,12 +18,12 @@ const Page = () => {
         <Route exact path="/primaryHousing" component={MainPagePrimary} />
         <Route path='/logging' component={Logging} />
         <Route path='/refsector' component={RefSector} />
-        <Route path={`/:id/edit`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
-        <Route path='/create' component={(props)=> <Element {...props} formState={FormState.CREATE}/> } />
-        <Route path='/:id' component={(props)=> <Element {...props} formState={FormState.READ}/> } />
         <Route path={`/:id/primary/edit`} component={(props)=> <ElementPrimary {...props} formState={FormState.EDIT}/> } />
         <Route path='/primary/create' component={(props)=> <ElementPrimary {...props} formState={FormState.CREATE}/> } />
         <Route path={'/:id/primary'} component={(props)=> <ElementPrimary {...props} formState={FormState.READ}/> } />
+        <Route path={`/:id/edit`} component={(props)=> <Element {...props} formState={FormState.EDIT}/> } />
+        <Route path='/create' component={(props)=> <Element {...props} formState={FormState.CREATE}/> } />
+        <Route path='/:id' component={(props)=> <Element {...props} formState={FormState.READ}/> } />
         </Switch>
     </React.Fragment>
   );

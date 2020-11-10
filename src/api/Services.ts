@@ -230,8 +230,20 @@ export class Services {
       });
     }
 
+    async deleteElementPrimary(id:number, username: string): Promise<void> {
+      return server.delete(`/primaryHousing/${id}/?username=${username}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
     async deleteCity(city:string, username: string): Promise<string> {
       return server.delete(`/temporary/city/${city}/?username=${username}`, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
+    async deleteCityPrimary(city:string, username: string): Promise<string> {
+      return server.delete(`/primaryHousing/city/${city}/?username=${username}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
@@ -242,7 +254,7 @@ export class Services {
         });
     }
 
-    async getIdElementPrimary(id:number): Promise<AnalysisElements>{
+    async getIdElementPrimary(id:number): Promise<PrimaryAnalysisElements>{
       return server.get(`/primaryHousing/${id}`, {
           baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
@@ -254,6 +266,11 @@ export class Services {
         });
     }
 
+    async postElementPrimary(analysis:AnalysisElements, username: string): Promise<void>{
+      return server.post(`/primaryHousing/?username=${username}`, analysis, {
+          baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
 
    async putElement(analysis:AnalysisElements, username: string): Promise<void>{
         return server.put(`/temporary/?username=${username}`, analysis, {
@@ -261,11 +278,23 @@ export class Services {
         });
     }
 
+  async putElementPrimary(analysis:PrimaryAnalysisElements, username: string): Promise<void>{
+      return server.put(`/primaryHousing/?username=${username}`, analysis, {
+          baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      });
+    }
+
     async archAndNewElement(analysis:AnalysisElements, username: string): Promise<void>{
       return server.put(`/temporary/archandnew/?username=${username}`, analysis, {
           baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
   }
+
+  async archAndNewElementPrimary(analysis:AnalysisElements, username: string): Promise<void>{
+    return server.put(`/primaryHousing/archandnew/?username=${username}`, analysis, {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    });
+}
 
     async getKatoCityCode(city:string): Promise<string>{
 return server.get(`/reference/api/kato/children/city/?city=${city}`, {

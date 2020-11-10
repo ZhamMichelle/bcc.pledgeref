@@ -73,12 +73,12 @@ export const ElementsPrimary = (props:any) =>{
     
    //useEffect(()=>{console.log('uniqueSector',uniqueSector)},[uniqueSector])
 
-    const onClickItem = (element: PrimaryAnalysisElements) => {
-          history.push(`/${element.id}/primary`);
+    const onClickItem = (elementPrim: PrimaryAnalysisElements) => {
+          history.push(`/${elementPrim.id}/primary`);
       };
 
       const onConfirm = (showToast: () => void) => {
-        services.deleteElement(idWantDelete, username.user?.fullName || "").then(() => {
+        services.deleteElementPrimary(idWantDelete, username.user?.fullName || "").then(() => {
           showToast();
           setAnalysis(analysis.filter((m) => m.id !== idWantDelete));
         });
@@ -87,7 +87,7 @@ export const ElementsPrimary = (props:any) =>{
       const onDelete = (id:any) =>{
         var con = window.confirm("Вы действительно хотите удалить?");
         if (con) {
-          services.deleteElement(id, username.user?.fullName || "").then(() => {
+          services.deleteElementPrimary(id, username.user?.fullName || "").then(() => {
             setAnalysis(analysis.filter((m) => m.id !== id)); 
           });
         }

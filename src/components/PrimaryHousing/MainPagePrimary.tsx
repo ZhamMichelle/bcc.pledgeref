@@ -80,7 +80,7 @@ else if(uploadResult==="Error") alert("Ошибка в формате данны
 const onDeleteCity = () =>{
   var con = window.confirm("Вы действительно хотите удалить?");
   if (con) {
-    services.deleteCity(city, username.user?.fullName || "").then(() => {
+    services.deleteCityPrimary(city, username.user?.fullName || "").then(() => {
      // setAnalysis(analysis.filter((m) => m.id !== id));
     });
     window.location.reload();

@@ -104,7 +104,7 @@ export const ElementPrimary = (props: any) =>{
     e.preventDefault();
     if (formState === FormState.CREATE) {
      
-      services.postElement(analysis, username.user?.fullName || "").then(() => {
+      services.postElementPrimary(analysis, username.user?.fullName || "").then(() => {
         // showToast();
         // alert("Успешно добавлен")
         history.goBack();
@@ -113,7 +113,7 @@ export const ElementPrimary = (props: any) =>{
       
     } else if (formState === FormState.EDIT) {
       
-      services.putElement(analysis, username.user?.fullName || "").then(() => {
+      services.putElementPrimary(analysis, username.user?.fullName || "").then(() => {
         // alert("Успешно изменен")
         // showToast();
         history.goBack();
@@ -126,7 +126,7 @@ export const ElementPrimary = (props: any) =>{
     if(!!analysis.beginDate){
       var con = window.confirm("Вы действительно хотите архивировать и создать новый?");
       if (con) {
-  services.archAndNewElement(analysis, username.user?.fullName || "").then(() => {
+  services.archAndNewElementPrimary(analysis, username.user?.fullName || "").then(() => {
     history.goBack();
   });
 }
@@ -191,7 +191,8 @@ export const ElementPrimary = (props: any) =>{
               <TextField variant="outlined"  label="Фактический адрес" value={analysis.actualAdress || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, actualAdress: e.target.value })
               }/>
-              <br/><br/>
+              </Grid>
+              <Grid item xs={6}>
               <TextField required variant="outlined" label="Код уровня качества отделки" value={analysis.FinQualityLevelCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, FinQualityLevelCode: e.target.value })
               }/>
