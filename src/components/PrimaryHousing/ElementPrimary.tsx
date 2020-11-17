@@ -193,12 +193,12 @@ export const ElementPrimary = (props: any) =>{
               }/>
               </Grid>
               <Grid item xs={6}>
-              <TextField required variant="outlined" label="Код уровня качества отделки" value={analysis.FinQualityLevelCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, FinQualityLevelCode: e.target.value })
+              <TextField required variant="outlined" label="Код уровня качества отделки" value={analysis.finQualityLevelCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, finQualityLevelCode: e.target.value })
               }/>
               <br/><br/>
-              <TextField required variant="outlined" label="Уровень качества отделки" value={analysis.FinQualityLevel || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, FinQualityLevel: e.target.value })
+              <TextField required variant="outlined" label="Уровень качества отделки" value={analysis.finQualityLevel || ""} style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, finQualityLevel: e.target.value })
               }/>
               
            

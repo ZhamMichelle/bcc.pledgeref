@@ -33,10 +33,10 @@ export const Elements = (props:any) =>{
     const [wantDelete, setWantDelete] = useState(false);
     const [idWantDelete, setIdWantDelete] = useState(0);
     const [analysis, setAnalysis] = useState([] as AnalysisElements[])
-    const [searchSector, setSearchSector] = useState(0);
+    const [searchSector, setSearchSector] = useState('');
     const [searchEstate, setSearchEstate] = useState('');
     const [username, setUsername] = useState(new UserContext());
-    const [uniqueSector, setUniqueSector] = useState([] as number[]);
+    const [uniqueSector, setUniqueSector] = useState([] as string[]);
     const [uniqueEstate, setUniqueEstate] = useState([] as string[]);
     const [selectHelper, setSelectHelper] = useState('')
     const {
@@ -62,10 +62,10 @@ export const Elements = (props:any) =>{
     },[city])
     
     useEffect(()=>{
-      var sectors: number[]= new Array();
+      var sectors: string[]= new Array();
     var fhelper:boolean = false;
     var shelper:boolean=false;
-    sectors.push(analysis?.[0]?.sector || 0)
+    sectors.push(analysis?.[0]?.sector || "")
         for(let i=1; i<analysis.length; i++){
           for(let j=0; j<sectors.length; j++){
             if(analysis?.[i].sector!=sectors[j]){
@@ -73,14 +73,17 @@ export const Elements = (props:any) =>{
             }
             if(analysis?.[i].sector==sectors[j]){shelper=true}
           }
-          if(fhelper && !shelper){sectors.push(analysis?.[i].sector || 0); fhelper=false; }
+          if(fhelper && !shelper){sectors.push(analysis?.[i].sector || ""); fhelper=false; }
           shelper=false;
         };
         
-        setUniqueSector(
-          sectors.sort(function(a, b) {
-          return a - b;
-        }));
+        //setUniqueSector(
+        //   sectors.sort(function(a, b) {
+        //   return a - b;
+        // })
+        //);
+
+        setUniqueSector(sectors.sort());
 
         var estates: string[] = new Array();
         fhelper=false; shelper=false;

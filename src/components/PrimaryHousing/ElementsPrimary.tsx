@@ -62,14 +62,14 @@ export const ElementsPrimary = (props:any) =>{
     },[city])
   
 
-    useEffect(()=>{
-      if((searchSector!=undefined && searchEstate==undefined ) || (searchSector==undefined && searchEstate!=undefined ) || 
-      (searchSector!=undefined && searchEstate!=undefined )){
-        services.getBySearchEstate(city, searchSector, searchEstate).then(json => {
-          setAnalysis(json);
-        });
-      }
-    }, [searchEstate, searchSector])
+    // useEffect(()=>{
+    //   if((searchSector!=undefined && searchEstate==undefined ) || (searchSector==undefined && searchEstate!=undefined ) || 
+    //   (searchSector!=undefined && searchEstate!=undefined )){
+    //     services.getBySearchEstate(city, searchSector, searchEstate).then(json => {
+    //       setAnalysis(json);
+    //     });
+    //   }
+    // }, [searchEstate, searchSector])
     
    //useEffect(()=>{console.log('uniqueSector',uniqueSector)},[uniqueSector])
 
@@ -143,8 +143,8 @@ return(
                       <td>{m.rcNameCode}</td>
                       <td>{m.rcName}</td>
                       <td>{m.actualAdress}</td>
-                      <td>{m.FinQualityLevelCode}</td>
-                      <td>{m.FinQualityLevel}</td>
+                      <td>{m.finQualityLevelCode}</td>
+                      <td>{m.finQualityLevel}</td>
                       <td>{new Intl.NumberFormat('ru-RU').format(m.minCostPerSQM || 0)}</td>
                       <td>{new Intl.NumberFormat('ru-RU').format(m.maxCostPerSQM || 0)}</td>
                       <td>{m.beginDate !=null ?

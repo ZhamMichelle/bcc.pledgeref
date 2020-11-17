@@ -194,7 +194,7 @@ export const Element = (props: any) =>{
               }/>
               <br/><br/>
               <TextField required variant="outlined"  label="Сектор города" value={analysis.sector || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, sector: parseInt(e.target.value)})
+                setAnalysis({ ...analysis, sector: e.target.value})
               }/>
               <br/><br/>
               <TextField variant="outlined"  label="Относительность расположения" value={analysis.relativityLocation || ""} style={{ width: "450px" }} onChange={(e: any) =>

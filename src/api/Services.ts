@@ -9,7 +9,7 @@ export class AnalysisElements{
         cityCodeKATO?: string;
         city?: string;
         sectorCode?: string;
-        sector?: number; 
+        sector?: string; 
         relativityLocation?: string;
         sectorDescription?: string;
         typeEstateCode?: string;
@@ -37,8 +37,8 @@ export class PrimaryAnalysisElements{
   rcNameCode?: number;
   rcName?: string;
   actualAdress?: string;
-  FinQualityLevelCode?: string;
-  FinQualityLevel?: string;
+  finQualityLevelCode?: string;
+  finQualityLevel?: string;
   minCostPerSQM?: number; 
   maxCostPerSQM?: number; 
   beginDate?: Date;
@@ -72,6 +72,12 @@ export class LoggingElements{
   username?: string;
   changeDate?: Date;
   isArch?: any;
+  rcNameCode?: number;
+  rcName?: string;
+  actualAdress?: string;
+  finQualityLevelCode?: string;
+  finQualityLevel?: string;
+  type?: string;
 }
 export enum FormState {
     CREATE,
@@ -217,9 +223,9 @@ export class Services {
       });
     }
 
-    async getBySearchEstate(city:string, sector:number, estate:string): Promise<AnalysisElements[]> {
-      sector>=0 ? sector=sector : sector=0;
-      return server.get(`/temporary/search/?city=${city}&sector=${sector==undefined ? '' : sector==0 ? '' : sector}&estate=${estate==undefined ? '' : estate=='Тип недвижимости по справочнику' ? '' : estate}`, {
+    async getBySearchEstate(city:string, sector:string, estate:string): Promise<AnalysisElements[]> {
+      //sector>=0 ? sector=sector : sector=0;
+      return server.get(`/temporary/search/?city=${city}&sector=${sector==undefined ? '' : sector}&estate=${estate==undefined ? '' : estate=='Тип недвижимости по справочнику' ? '' : estate}`, {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       });
     }
