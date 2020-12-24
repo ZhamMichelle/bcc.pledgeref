@@ -1,14 +1,15 @@
 FROM node:11.14.0-alpine AS builder
 
-ENV NO_PROXY nexus.apps.bcc.kz,$NO_PROXY
-
 WORKDIR /app
 COPY package*.json /app/
 
-RUN npm config set registry https://nexus.apps.bcc.kz/repository/npm-registry-central/
+ENV NO_PROXY nexus.apps.bcc.kz,$NO_PROXY
+
+RUN npm config set registry https://nexus.apps.bcc.kz/repository/npm-group/
+
+RUN npm config set sass-binary-site=https://nexus.apps.bcc.kz/repository/raw-github-proxy/sass/node-sass/releases/download
 
 RUN npm install
-
 
 COPY ./ /app/
 RUN npm run build
