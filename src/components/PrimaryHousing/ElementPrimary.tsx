@@ -77,6 +77,8 @@ const cities: string[] = [
   "Туркестан",
 ];
 
+const FinQualityLevelList= 
+  [{type: 'чистовая', code: '001'}, {type: 'предчистовая', code: '002'}, {type: 'черновая', code: '003'},];
 
 export const ElementPrimary = (props: any) =>{
     const classes = useStyles();
@@ -180,8 +182,10 @@ export const ElementPrimary = (props: any) =>{
                 setAnalysis({ ...analysis, cityCodeKATO: e.target.value })
               }/> 
               <br/><br/>
-              <TextField required variant="outlined"  label="Код наименования ЖК" value={analysis.rcNameCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, rcNameCode: e.target.value })
+              <TextField required variant="outlined"  label="Код наименования ЖК" value={analysis.rcNameCode || ""} 
+              InputProps={{inputComponent: NumberFormatCustom}}
+              style={{ width: "450px" }} onChange={(e: any) =>
+                setAnalysis({ ...analysis, rcNameCode: parseInt(e.target.value) })
               }/>
               <br/><br/>
               <TextField required variant="outlined"  label="Наименование ЖК" value={analysis.rcName || ""} style={{ width: "450px" }} onChange={(e: any) =>
@@ -193,15 +197,27 @@ export const ElementPrimary = (props: any) =>{
               }/>
               </Grid>
               <Grid item xs={6}>
-              <TextField required variant="outlined" label="Код уровня качества отделки" value={analysis.finQualityLevelCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel htmlFor="outlined-age-native-simple">Уровень качества отделки</InputLabel>
+              <Select
+                native
+                required
+                value={analysis.finQualityLevel || ""}
+                onChange={(e: any) => { setAnalysis({ ...analysis, finQualityLevel: e.target.value,
+                  finQualityLevelCode: FinQualityLevelList.filter(m=>m.type==e.target.value)[0].code  })}}
+                label="Уровень качества отделки"
+                style={{width: "450px" }}
+              >
+                <option></option>
+                {FinQualityLevelList.map((m,i)=>(<option key={i} value={m.type}>{m.type}</option>))}
+              </Select>
+            </FormControl>
+            <br/><br/>
+            <TextField required variant="outlined" label="Код уровня качества отделки" 
+              value={analysis.finQualityLevelCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, finQualityLevelCode: e.target.value })
               }/>
-              <br/><br/>
-              <TextField required variant="outlined" label="Уровень качества отделки" value={analysis.finQualityLevel || ""} style={{ width: "450px" }} onChange={(e: any) =>
-                setAnalysis({ ...analysis, finQualityLevel: e.target.value })
-              }/>
               
-           
               <br/><br/>
               <TextField required variant="outlined"  label="Стоимость за кв.м., мин значение" 
               InputProps={{inputComponent: NumberFormatCustom}}
