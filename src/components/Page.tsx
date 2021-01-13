@@ -8,6 +8,7 @@ import {Element} from './SecondaryHousing/Element'
 import { FormState, } from '../api/Services';
 import {Logging} from './Logging';
 import {RefSector} from './RefSector';
+import {TestSector} from './TestSector';
 
 const Page = () => {
   return (
@@ -18,6 +19,7 @@ const Page = () => {
         <Route exact path="/primaryHousing" component={MainPagePrimary} />
         <Route path='/logging' component={Logging} />
         <Route path='/refsector' component={RefSector} />
+        <Route path='/testsector' component={TestSector} />
         <Route path={`/:id/primary/edit`} component={(props)=> <ElementPrimary {...props} formState={FormState.EDIT}/> } />
         <Route path='/primary/create' component={(props)=> <ElementPrimary {...props} formState={FormState.CREATE}/> } />
         <Route path={'/:id/primary'} component={(props)=> <ElementPrimary {...props} formState={FormState.READ}/> } />

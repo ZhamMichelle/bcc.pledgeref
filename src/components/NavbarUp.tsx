@@ -40,6 +40,8 @@ export const NavbarUp = () =>{
        &nbsp;&nbsp;
        <Button variant="outlined" color="primary" href="/refsector" style={{color:'#27ae60', marginTop:'12px'}} >
        Справочник по секторам</Button>
+       &nbsp;&nbsp;
+       <Button variant="outlined" color="primary" href="/testsector" style={{color:'#27ae60', marginTop:'12px', }} >Test</Button>
         </Grid>
         </Grid>
     </React.Fragment>

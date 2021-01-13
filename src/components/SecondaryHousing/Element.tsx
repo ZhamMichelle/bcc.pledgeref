@@ -42,6 +42,9 @@ function NumberFormatCustom(props) {
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
+        '& > div': {
+          flexBasis: 'auto'
+        }
     },
     input: {
       '& .MuiTextField-root': {
@@ -102,12 +105,12 @@ export const Element = (props: any) =>{
   }, []);
   
 
-  useEffect(()=>{
-    if(analysis.city!=null){
-      services.getKatoCityCode(analysis.city || "").then(json=>setAnalysis({...analysis, cityCodeKATO:json.toString()}))
-    }
+  // useEffect(()=>{
+  //   if(analysis.city!=null){
+  //     services.getKatoCityCode(analysis.city || "").then(json=>setAnalysis({...analysis, cityCodeKATO:json.toString()}))
+  //   }
     
-  },[analysis.city])
+  // },[analysis.city])
 
   const onSubmit = (e: any, showToast: () => void) => {
     e.preventDefault();
@@ -160,7 +163,7 @@ export const Element = (props: any) =>{
           >
               <h2 style={{textAlign: 'center'}}>{formState==FormState.READ ? <>Просмотр</> 
               : formState==FormState.EDIT ? <>Редактирование</> : <>Добавление</>}</h2>
-              <Grid item xs={6} className={classes.paper} container spacing={3}>
+              <Grid item className={classes.paper} justify="center" container>
                 <Grid item xs={6}>
                 <TextField required variant="outlined"  label="Код строки" value={analysis.code || ""} style={{ width: "450px" }} onChange={(e: any) =>
                 setAnalysis({ ...analysis, code: e.target.value })
@@ -313,9 +316,9 @@ export const Element = (props: any) =>{
               }/>
               </Grid>
             </Grid>
-            <Grid container className={classes.paper}>
+            <Grid container className={classes.paper} justify="center">
             <Grid item xs={2}  >
-            <div style={{ textAlign: "left" }}>
+            <div style={{ marginRight: 12 }}>
               {formState!=FormState.READ && formState!=FormState.CREATE ? 
               <input type="button" value="Архивировать и создать новый" className='pxbutton' 
               onClick={(e: any) => {archAndNew(e)}}/>
@@ -323,7 +326,7 @@ export const Element = (props: any) =>{
             </div>
             </Grid>
             <Grid item xs={8}  >
-            <div style={{ textAlign: "center" }}>
+            <div>
               {formState!=FormState.READ ? <input type="submit" value="Сохранить" className='pxbutton'/>
               :  <></>}
             </div>
