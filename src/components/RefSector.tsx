@@ -107,9 +107,6 @@ export const RefSector = () => {
   var services = new Services();
   const onSubmit = (e: any) => {
     e.preventDefault();
-    // if (typeof cityZone === "string") {
-    //   setCityZone(cityZone.replace(/\ /g, "+"));
-    // }
     services
       .YandexApi(
         region.rus_name || "",
@@ -117,7 +114,7 @@ export const RefSector = () => {
         cityZone,
         streetType.value || "",
         housingEstate,
-        streetTypeHE.value || "",
+        streetTypeHE?.value || "",
         street,
         house
       )
@@ -375,37 +372,8 @@ export const RefSector = () => {
           />
         </Grid>
       </Grid>
-
       <form onSubmit={(e: any) => onSubmit(e)}>
         <Grid className={classes.paper} container spacing={3}>
-          {/* {typeLocCity != "Город" ? (
-            <>
-              <Grid item xs={1}>
-                <TextField
-                  required
-                  id="outlined-basic"
-                  variant="outlined"
-                  className={classes.formControl}
-                  label="Тип адм. центра"
-                  value={typeLocality}
-                  onChange={(e: any) => setTypeLocality(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  required
-                  id="outlined-basic"
-                  variant="outlined"
-                  className={classes.formControl}
-                  label="Нас. пункт"
-                  value={locality}
-                  onChange={(e: any) => setLocality(e.target.value)}
-                />
-              </Grid>{" "}
-            </>
-          ) : (
-            <></>
-          )} */}
           <Grid item xs={12} className={classes.formControl}></Grid>
           <Grid item xs={12}>
             <div style={{ textAlign: "center" }}>

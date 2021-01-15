@@ -6,7 +6,13 @@ import {
   UserContext,
   AnalysisElements,
 } from "../../api/Services";
-import { FormControl, Select, InputLabel, Grid } from "@material-ui/core";
+import {
+  FormControl,
+  Select,
+  InputLabel,
+  Grid,
+  TextField,
+} from "@material-ui/core";
 import { Elements } from "./Elements";
 import { AppContext, history } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,6 +31,10 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       minWidth: 120,
     },
+    inputStyle: {
+      height: 50,
+      boxSizing: "border-box",
+    },
   })
 );
 export const MainPage = (props: any) => {
@@ -38,6 +48,8 @@ export const MainPage = (props: any) => {
   const [username, setUsername] = useState(new UserContext());
   const [helperAlert, setHelperAlert] = useState(false);
   const [existCities, setExistCities] = useState([] as string[]);
+  const [finCorrections, setFinCorrections] = useState(0);
+  const [areaCorrections, setAreaCorrections] = useState(0);
   var services = new Services();
 
   useEffect(() => {
@@ -117,6 +129,34 @@ export const MainPage = (props: any) => {
       >
         Добавить данные
       </button>
+      <TextField
+        required
+        id="outlined-basic"
+        variant="outlined"
+        className={classes.formControl}
+        value={finCorrections}
+        onChange={(e: any) => {
+          setFinCorrections(e.target.value);
+        }}
+        label="Корректировка по Отделке"
+        InputProps={{
+          className: classes.inputStyle,
+        }}
+      ></TextField>
+      <TextField
+        required
+        id="outlined-basic"
+        variant="outlined"
+        className={classes.formControl}
+        value={areaCorrections}
+        onChange={(e: any) => {
+          setAreaCorrections(e.target.value);
+        }}
+        label="Корректировка по площади квартиры"
+        InputProps={{
+          className: classes.inputStyle,
+        }}
+      ></TextField>
       <input
         type="file"
         id="input"
