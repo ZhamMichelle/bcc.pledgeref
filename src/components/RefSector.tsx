@@ -61,6 +61,7 @@ export const RefSector = () => {
   const [cityZone, setCityZone] = useState("");
   const [streetType, setStreetType] = useState(new CodeValue());
   const [streetTypes, setStreetTypes] = useState([] as CodeValue[]);
+  const [housingEstate, setHousingEstate] = useState("");
 
   useEffect(() => {
     services.getKatoRegion().then((json) => setRegions(json));
@@ -86,8 +87,6 @@ export const RefSector = () => {
 
   const [city, setCity] = useState("Актобе");
   const [typeLocCity, setTypeLocCity] = useState("Город");
-  const [typeLocality, setTypeLocality] = useState("");
-  const [locality, setLocality] = useState("");
   const [street, setStreet] = useState("");
   const [house, setHouse] = useState("");
   const [sector, setSector] = useState("");
@@ -100,6 +99,7 @@ export const RefSector = () => {
   const [typeDelete, setTypeDelete] = useState("");
   const [fileName, setFileName] = useState("");
   const [existCities, setExistCities] = useState([] as string[]);
+  const [streetTypeHE, setStreetTypeHE] = useState(new CodeValue());
 
   useEffect(() => {
     services.getExistCitiesCoordinates().then((json) => setExistCities(json));
@@ -107,16 +107,18 @@ export const RefSector = () => {
   var services = new Services();
   const onSubmit = (e: any) => {
     e.preventDefault();
+    // if (typeof cityZone === "string") {
+    //   setCityZone(cityZone.replace(/\ /g, "+"));
+    // }
     services
       .YandexApi(
-        typeLocCity,
-        region!.rus_name!.replace(" ", "+"),
+        region.rus_name || "",
         city,
-        // cityZone == "" ? streetType!.value!.replace(" ", "+") : "мкр",
-        // cityZone == "" ? street.replace(" ", "+") : cityZone.replace(" ", "+"),
-        cityZone?.replace(" ", "+"),
-        streetType.value != "" ? streetType!.value!.replace(" ", "+") : "",
-        street != "" ? street?.replace(" ", "+") : "",
+        cityZone,
+        streetType.value || "",
+        housingEstate,
+        streetTypeHE.value || "",
+        street,
         house
       )
       .then((str) => setResult(str));
@@ -183,27 +185,6 @@ export const RefSector = () => {
   return (
     <>
       <h2 style={{ textAlign: "center" }}>Тест и загрузка секторов</h2>
-      <Grid item xs={1}>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel htmlFor="locality">Тип для Яндекс Карты</InputLabel>
-          <Select
-            native
-            required
-            value={typeLocCity}
-            onChange={(e: any) => {
-              setTypeLocCity(e.target.value);
-            }}
-            label="Тип для Яндекс Карты"
-          >
-            <option key={1} value={"Город"}>
-              Город
-            </option>
-            <option key={2} value={"НП"}>
-              НП
-            </option>
-          </Select>
-        </FormControl>
-      </Grid>
       <Grid className={classes.paper} container spacing={1}>
         <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -331,11 +312,52 @@ export const RefSector = () => {
             </Select>
           </FormControl>
         </Grid>
+        {streetType.code == "ж/м" ? (
+          <>
+            <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+              <TextField
+                //required
+                id="outlined-basic"
+                variant="outlined"
+                className={classes.formControl}
+                label="Наименование ж/м"
+                value={housingEstate}
+                onChange={(e: any) => setHousingEstate(e.target.value)}
+              />
+            </Grid>
+            <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel htmlFor="streetType">Тип улицы</InputLabel>
+                <Select
+                  native
+                  required
+                  value={streetTypeHE?.value}
+                  onChange={(e: any) => {
+                    setStreetTypeHE(
+                      streetTypes.filter((m) => m?.value == e.target.value)[0]
+                    );
+                  }}
+                  label="Тип улицы"
+                >
+                  <option></option>
+                  {streetTypes?.map((m, i) => (
+                    <option key={i} value={m.value}>
+                      {m.value}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </>
+        ) : (
+          <></>
+        )}
         <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
           <TextField
             //required
             id="outlined-basic"
             variant="outlined"
+            className={classes.formControl}
             label="Улица"
             value={street}
             onChange={(e: any) => setStreet(e.target.value)}
@@ -346,6 +368,7 @@ export const RefSector = () => {
             required
             id="outlined-basic"
             variant="outlined"
+            className={classes.formControl}
             label="Дом"
             value={house}
             onChange={(e: any) => setHouse(e.target.value)}
