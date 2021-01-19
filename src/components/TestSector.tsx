@@ -16,8 +16,6 @@ import {
   KatoBaseModel,
   CodeValue,
 } from "../api/Services";
-import BccInputText from "../components/CustomComponents/BccInputText";
-import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

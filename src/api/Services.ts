@@ -252,10 +252,11 @@ export class Services {
     size: number,
     code: string,
     status: any,
-    city: string
+    city: string,
+    housingType: string
   ): Promise<PaginationParams> {
     return server.get(
-      `/logging/${page}/${size}/?status=${status}&code=${code}&city=${city}`,
+      `/logging/${page}/${size}/?status=${status}&code=${code}&city=${city}&type=${housingType}`,
       {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
       }

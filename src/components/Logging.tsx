@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Logging = (props: any) => {
   const classes = useStyles();
   const [city, setCity] = useState("");
+  const [housingType, setHousingType] = useState("");
   const [searchCode, setSearchCode] = useState("");
   const [searchStatus, setSearchStatus] = useState();
   const [size, setSize] = useState(10);
@@ -70,26 +71,32 @@ export const Logging = (props: any) => {
   useEffect(() => {
     var status = "";
     setSearchCode("");
-    services.getLogPage(pageP, size, searchCode, status, city).then((json) => {
-      setPagResult(json);
-    });
+    services
+      .getLogPage(pageP, size, searchCode, status, city, housingType)
+      .then((json) => {
+        setPagResult(json);
+      });
   }, []);
 
   useEffect(() => {
     var status =
       searchStatus == "Действ." ? "0" : searchStatus == "Арх." ? "1" : "";
+    var type = housingType == "Тип жилья" ? "" : housingType;
 
-    services.getLogPage(pageP, size, searchCode, status, city).then((json) => {
-      setPagResult(json);
-    });
-  }, [searchCode, searchStatus, city]);
+    services
+      .getLogPage(pageP, size, searchCode, status, city, type)
+      .then((json) => {
+        setPagResult(json);
+      });
+  }, [searchCode, searchStatus, city, housingType]);
 
   const handleChangePage = (event: any, newPage: number) => {
     event.preventDefault();
     var status =
       searchStatus == "Действ." ? "0" : searchStatus == "Арх." ? "1" : "";
+    var type = housingType == "Тип жилья" ? "" : housingType;
     services
-      .getLogPage(newPage, size, searchCode, status, city)
+      .getLogPage(newPage, size, searchCode, status, city, type)
       .then((json) => setPagResult(json));
     setPageP(newPage);
   };
@@ -188,6 +195,29 @@ export const Logging = (props: any) => {
                     </Select>
                   </FormControl>
                 </th>
+                <th>
+                  <FormControl
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <Select
+                      native
+                      value={housingType}
+                      onChange={(e: any) => {
+                        setHousingType(e.currentTarget.value);
+                        setPageP(1);
+                      }}
+                      style={{ height: "30px", width: "120px" }}
+                    >
+                      <option>Тип жилья</option>
+                      <option>Первичка</option>
+                      <option>Вторичка</option>
+                    </Select>
+                  </FormControl>
+                </th>
+                <th>Наименование ЖК</th>
+                <th>Факт. адрес</th>
+                <th>Уровень кач-ва отделки</th>
                 <th>Сектор</th>
                 <th>Описание сектора</th>
                 <th>Тип недвижимости по справочнику</th>
@@ -236,6 +266,10 @@ export const Logging = (props: any) => {
                       <td>{m.id}</td>
                       <td>{m.code}</td>
                       <td>{m.city}</td>
+                      <td>{m.type}</td>
+                      <td>{m.rcName}</td>
+                      <td>{m.actualAdress}</td>
+                      <td>{m.finQualityLevel}</td>
                       <td>{m.sector}</td>
                       <td>{m.sectorDescription}</td>
                       <td>{m.typeEstateByRef}</td>
