@@ -459,28 +459,28 @@ export class Services {
     return streetType != "жилой массив"
       ? server.get(
           cityZone == "" || cityZone == undefined || cityZone == null
-            ? `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан+${region}+область+${city}+${formatString(
+            ? `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан,+${region}+область+${city}+${formatString(
                 streetType
-              )}+${formatString(street)},+дом+${formatString(house)}`
-            : `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан+${region}+область+${city}+${formatString(
+              )}+${formatString(street)},+${formatString(house)}`
+            : `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан,+${region}+область+${city}+${formatString(
                 cityZone
-              )}+мкр,+дом+${formatString(house)}`,
+              )}+мкр,+${formatString(house)}`,
           {
             baseURL: "https://geocode-maps.yandex.ru/1.x",
           }
         )
       : server.get(
           cityZone == ""
-            ? `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан+${region}+область+${city}+${formatString(
+            ? `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан,+${region}+область+${city}+${formatString(
                 streetType
               )}+${formatString(housingEstate)},+${formatString(
                 streetTypeHE
-              )}+${formatString(street)},+дом+${formatString(house)}`
-            : `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан+${region}+область+${city},+${formatString(
+              )}+${formatString(street)},+${formatString(house)}`
+            : `/?apikey=91c2baf4-ae67-4844-b63b-0ae832e8b051&geocode=страна+Казахстан,+${region}+область+${city},+${formatString(
                 streetType
               )}+${formatString(housingEstate)},+${formatString(
                 cityZone
-              )}+мкр,+дом+${formatString(house)}`,
+              )}+мкр,+${formatString(house)}`,
           {
             baseURL: "https://geocode-maps.yandex.ru/1.x",
           }
