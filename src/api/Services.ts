@@ -44,6 +44,19 @@ export class PrimaryAnalysisElements {
   beginDate?: Date;
   endDate?: Date;
 }
+
+export class SecondaryAutoAnalysisElements {
+  id?: number;
+  code?: string;
+  carBrand?: string;
+  carModel?: string;
+  produceYear!: number;
+  marketCost?: number;
+  maxPercentageDeviation?: number;
+  beginDate?: Date;
+  endDate?: Date;
+}
+
 export class LoggingElements {
   id?: number;
   code?: string;
@@ -191,6 +204,13 @@ export class Services {
       baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
     });
   }
+
+  async getListSecondaryAuto(): Promise<SecondaryAutoAnalysisElements[]> {
+    return server.get(`/secondaryAuto/getList`, {
+      baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    });
+  }
+
   async postExcel(formData: FormData, username: string): Promise<string> {
     return server.post(`/upload/?username=${username}`, formData, {
       baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
@@ -204,6 +224,19 @@ export class Services {
     return server.post(`/upload/primUpload/?username=${username}`, formData, {
       baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
     });
+  }
+
+  async postExcelSecondaryAuto(
+    formData: FormData,
+    username: string
+  ): Promise<string> {
+    return server.post(
+      `/upload/secondaryAutoUpload/?username=${username}`,
+      formData,
+      {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      }
+    );
   }
 
   async postExcelCoordinates(
@@ -327,6 +360,14 @@ export class Services {
 
   async getIdElementPrimary(id: number): Promise<PrimaryAnalysisElements> {
     return server.get(`/primaryHousing/${id}`, {
+      baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    });
+  }
+  //////////////////
+  async getIdElementSecAuto(
+    id: number
+  ): Promise<SecondaryAutoAnalysisElements> {
+    return server.get(`/secondaryAuto/${id}`, {
       baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
     });
   }

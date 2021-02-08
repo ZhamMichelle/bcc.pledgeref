@@ -57,6 +57,15 @@ export const NavbarUp = () => {
           <Button
             variant="outlined"
             color="primary"
+            href="/secondaryAuto"
+            style={{ color: "#27ae60", marginTop: "12px" }}
+          >
+            Анализ цен Вторичного Авто
+          </Button>
+          &nbsp;&nbsp;
+          <Button
+            variant="outlined"
+            color="primary"
             href="/logging"
             style={{ color: "#27ae60", marginTop: "12px" }}
           >
