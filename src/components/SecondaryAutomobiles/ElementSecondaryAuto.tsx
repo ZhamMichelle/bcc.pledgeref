@@ -95,17 +95,21 @@ export const ElementSecondaryAuto = (props: any) => {
   const onSubmit = (e: any, showToast: () => void) => {
     e.preventDefault();
     if (formState === FormState.CREATE) {
-      services.postElement(analysis, username.user?.fullName || "").then(() => {
-        // showToast();
-        // alert("Успешно добавлен")
-        history.goBack();
-      });
+      services
+        .postElementSecondaryAuto(analysis, username.user?.fullName || "")
+        .then(() => {
+          // showToast();
+          // alert("Успешно добавлен")
+          history.goBack();
+        });
     } else if (formState === FormState.EDIT) {
-      services.putElement(analysis, username.user?.fullName || "").then(() => {
-        // alert("Успешно изменен")
-        // showToast();
-        history.goBack();
-      });
+      services
+        .putElementSecondaryAuto(analysis, username.user?.fullName || "")
+        .then(() => {
+          // alert("Успешно изменен")
+          // showToast();
+          history.goBack();
+        });
     }
   };
 
@@ -117,7 +121,10 @@ export const ElementSecondaryAuto = (props: any) => {
       );
       if (con) {
         services
-          .archAndNewElement(analysis, username.user?.fullName || "")
+          .archAndNewElementSecondaryAuto(
+            analysis,
+            username.user?.fullName || ""
+          )
           .then(() => {
             history.goBack();
           });
@@ -195,7 +202,10 @@ export const ElementSecondaryAuto = (props: any) => {
                   value={analysis.produceYear || ""}
                   style={{ width: "450px" }}
                   onChange={(e: any) =>
-                    setAnalysis({ ...analysis, produceYear: e.target.value })
+                    setAnalysis({
+                      ...analysis,
+                      produceYear: parseInt(e.target.value),
+                    })
                   }
                 />
               </Grid>
@@ -203,10 +213,14 @@ export const ElementSecondaryAuto = (props: any) => {
                 <TextField
                   variant="outlined"
                   label="Рыночная стоимость"
-                  value={analysis.marketCost || ""}
+                  InputProps={{ inputComponent: NumberFormatCustom }}
+                  value={analysis.marketCost}
                   style={{ width: "450px" }}
                   onChange={(e: any) =>
-                    setAnalysis({ ...analysis, marketCost: e.target.value })
+                    setAnalysis({
+                      ...analysis,
+                      marketCost: parseInt(e.target.value),
+                    })
                   }
                 />
                 <br />
@@ -215,12 +229,13 @@ export const ElementSecondaryAuto = (props: any) => {
                   required
                   variant="outlined"
                   label="Max % отклонения/коридор"
-                  value={analysis.maxPercentageDeviation || ""}
+                  InputProps={{ inputComponent: NumberFormatCustom }}
+                  value={analysis.maxPercentageDeviation}
                   style={{ width: "450px" }}
                   onChange={(e: any) =>
                     setAnalysis({
                       ...analysis,
-                      maxPercentageDeviation: e.target.value,
+                      maxPercentageDeviation: parseInt(e.target.value),
                     })
                   }
                 />

@@ -35,6 +35,13 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 50,
       boxSizing: "border-box",
     },
+    period: {
+      margin: "0 15px",
+    },
+    periodInput: {
+      height: "50px",
+      width: "280px",
+    },
   })
 );
 export const MainPageSecondaryAuto = (props: any) => {
@@ -99,18 +106,19 @@ export const MainPageSecondaryAuto = (props: any) => {
         variant="outlined"
         label="Срок валидности"
         value={validYear || ""}
-        style={{
-          height: "50px",
-          width: "280px",
-          paddingLeft: "15px",
-          paddingRight: "10px",
+        className={classes.period}
+        InputProps={{
+          className: classes.periodInput,
         }}
         onChange={(e: any) => setValidYear(e.target.value)}
       />
       <button
         className="pxbutton"
         onClick={() => {
-          history.push(`/create`);
+          history.push(`/secondaryAuto/create`);
+        }}
+        style={{
+          marginTop: 0,
         }}
       >
         Добавить данные

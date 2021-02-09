@@ -78,9 +78,11 @@ export const ElementsSecondaryAuto = (props: any) => {
   const onDelete = (id: any) => {
     var con = window.confirm("Вы действительно хотите удалить?");
     if (con) {
-      services.deleteElement(id, username.user?.fullName || "").then(() => {
-        setAnalysis(analysis.filter((m) => m.id !== id));
-      });
+      services
+        .deleteElementSecondaryAuto(id, username.user?.fullName || "")
+        .then(() => {
+          setAnalysis(analysis.filter((m) => m.id !== id));
+        });
     }
   };
 
@@ -135,10 +137,15 @@ export const ElementsSecondaryAuto = (props: any) => {
                         <td>{m.carBrand}</td>
                         <td>{m.carModel}</td>
                         <td>{m.produceYear}</td>
-                        <td>{m.marketCost}</td>
+                        <td>
+                          {new Intl.NumberFormat("ru-RU").format(
+                            m.marketCost || 0
+                          )}
+                        </td>
                         <td>{m.maxPercentageDeviation}</td>
                         <td>
-                          {new Date().getFullYear() - m.produceYear < validYear
+                          {new Date().getFullYear() - (m?.produceYear || 0) <
+                          validYear
                             ? "Валиден"
                             : "Не валиден"}
                         </td>

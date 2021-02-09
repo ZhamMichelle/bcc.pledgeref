@@ -50,7 +50,7 @@ export class SecondaryAutoAnalysisElements {
   code?: string;
   carBrand?: string;
   carModel?: string;
-  produceYear!: number;
+  produceYear?: number;
   marketCost?: number;
   maxPercentageDeviation?: number;
   beginDate?: Date;
@@ -340,6 +340,15 @@ export class Services {
     });
   }
 
+  async deleteElementSecondaryAuto(
+    id: number,
+    username: string
+  ): Promise<void> {
+    return server.delete(`/secondaryAuto/${id}/?username=${username}`, {
+      baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    });
+  }
+
   async deleteCity(city: string, username: string): Promise<string> {
     return server.delete(`/temporary/city/${city}/?username=${username}`, {
       baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
@@ -390,6 +399,15 @@ export class Services {
     });
   }
 
+  async postElementSecondaryAuto(
+    analysis: SecondaryAutoAnalysisElements,
+    username: string
+  ): Promise<void> {
+    return server.post(`/secondaryAuto/?username=${username}`, analysis, {
+      baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    });
+  }
+
   async putElement(
     analysis: AnalysisElements,
     username: string
@@ -404,6 +422,15 @@ export class Services {
     username: string
   ): Promise<void> {
     return server.put(`/primaryHousing/?username=${username}`, analysis, {
+      baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+    });
+  }
+
+  async putElementSecondaryAuto(
+    analysis: SecondaryAutoAnalysisElements,
+    username: string
+  ): Promise<void> {
+    return server.put(`/secondaryAuto/?username=${username}`, analysis, {
       baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
     });
   }
@@ -423,6 +450,19 @@ export class Services {
   ): Promise<void> {
     return server.put(
       `/primaryHousing/archandnew/?username=${username}`,
+      analysis,
+      {
+        baseURL: webConfigEnv.BCC_PLEDGEREFBACK,
+      }
+    );
+  }
+
+  async archAndNewElementSecondaryAuto(
+    analysis: SecondaryAutoAnalysisElements,
+    username: string
+  ): Promise<void> {
+    return server.put(
+      `/secondaryAuto/archandnew/?username=${username}`,
       analysis,
       {
         baseURL: webConfigEnv.BCC_PLEDGEREFBACK,

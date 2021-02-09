@@ -212,6 +212,7 @@ export const Logging = (props: any) => {
                       <option>Тип жилья</option>
                       <option>Первичка</option>
                       <option>Вторичка</option>
+                      <option>Авто Вторичка</option>
                     </Select>
                   </FormControl>
                 </th>

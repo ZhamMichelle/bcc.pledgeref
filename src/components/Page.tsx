@@ -70,6 +70,12 @@ const Page = () => {
           )}
         />
         <Route
+          path="/secondaryAuto/create"
+          component={(props) => (
+            <ElementSecondaryAuto {...props} formState={FormState.CREATE} />
+          )}
+        />
+        <Route
           path="/:id"
           component={(props) => (
             <Element {...props} formState={FormState.READ} />
