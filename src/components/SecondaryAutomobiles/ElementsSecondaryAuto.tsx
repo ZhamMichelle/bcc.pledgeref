@@ -24,6 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
     formControl: {
       margin: theme.spacing(1),
     },
+    tableRow: {
+      "&:hover": {
+        backgroundColor: "#ccc",
+        cursor: "pointer",
+      },
+    },
   })
 );
 
@@ -132,7 +138,11 @@ export const ElementsSecondaryAuto = (props: any) => {
                 {analysis.map(
                   (m, i) =>
                     !filter?.some((f) => f == m.id) && (
-                      <tr key={i} onClick={() => onClickItem(m)}>
+                      <tr
+                        key={i}
+                        onClick={() => onClickItem(m)}
+                        className={classes.tableRow}
+                      >
                         <td>{i + 1}</td>
                         <td>{m.carBrand}</td>
                         <td>{m.carModel}</td>

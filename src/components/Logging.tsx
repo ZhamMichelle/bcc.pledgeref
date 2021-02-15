@@ -132,9 +132,6 @@ export const Logging = (props: any) => {
       });
   };
 
-  useEffect(() => {
-    console.log("pagresult", pagResult);
-  }, [pagResult]);
   return (
     <>
       <React.Fragment>

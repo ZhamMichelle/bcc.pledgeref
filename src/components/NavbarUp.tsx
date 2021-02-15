@@ -15,6 +15,18 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       margin: "auto",
     },
+    containerStyle: {
+      padding: 16,
+    },
+    btnStyle: {
+      color: "#27ae60",
+    },
+    buttonsContainer: {
+      textAlign: "right",
+    },
+    nameSpace: {
+      margin: "0 0 0 12px",
+    },
   })
 );
 
@@ -22,25 +34,26 @@ export const NavbarUp = () => {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Grid container spacing={0}>
-        <Grid item xs={9} container spacing={0}>
-          <Grid item xs={1}>
-            <img
-              src={logo}
-              style={{ paddingLeft: "90px", paddingTop: "14px" }}
-            />
+      <Grid
+        container
+        className={classes.containerStyle}
+        alignItems="center"
+        justify="space-between"
+      >
+        <Grid item xs={6} container alignItems="center">
+          <Grid item>
+            <img src={logo} />
           </Grid>
-
-          <Grid item xs={7} style={{ marginTop: "1px" }}>
-            <h2>Справочник</h2>
+          <Grid item>
+            <h2 className={classes.nameSpace}>Справочник</h2>
           </Grid>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6} className={classes.buttonsContainer}>
           <Button
             variant="outlined"
             color="primary"
             href="/"
-            style={{ color: "#27ae60", marginTop: "12px" }}
+            className={classes.btnStyle}
           >
             Анализ цен Вторички
           </Button>
@@ -49,7 +62,7 @@ export const NavbarUp = () => {
             variant="outlined"
             color="primary"
             href="/primaryHousing"
-            style={{ color: "#27ae60", marginTop: "12px" }}
+            className={classes.btnStyle}
           >
             Анализ цен Первички
           </Button>
@@ -58,7 +71,7 @@ export const NavbarUp = () => {
             variant="outlined"
             color="primary"
             href="/secondaryAuto"
-            style={{ color: "#27ae60", marginTop: "12px" }}
+            className={classes.btnStyle}
           >
             Анализ цен Вторичного Авто
           </Button>
@@ -67,7 +80,7 @@ export const NavbarUp = () => {
             variant="outlined"
             color="primary"
             href="/logging"
-            style={{ color: "#27ae60", marginTop: "12px" }}
+            className={classes.btnStyle}
           >
             История
           </Button>
@@ -76,7 +89,7 @@ export const NavbarUp = () => {
             variant="outlined"
             color="primary"
             href="/refsector"
-            style={{ color: "#27ae60", marginTop: "12px" }}
+            className={classes.btnStyle}
           >
             Справочник по секторам
           </Button>

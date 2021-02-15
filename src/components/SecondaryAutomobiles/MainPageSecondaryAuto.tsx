@@ -17,6 +17,7 @@ import { ElementsSecondaryAuto } from "./ElementsSecondaryAuto";
 import { AppContext, history } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import { changeCity } from "../../store/Actions";
+import PublishIcon from "@material-ui/icons/Publish";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -123,16 +124,42 @@ export const MainPageSecondaryAuto = (props: any) => {
       >
         Добавить данные
       </button>
-      <input
-        type="file"
-        id="input"
-        style={{ float: "right" }}
-        onChange={(e) => onFileChange(e)}
-      />
+      <button
+        className="pxbutton"
+        style={{
+          position: "relative",
+          float: "right",
+          margin: "0 16px 0 0",
+        }}
+        onClick={() => {}}
+      >
+        <input
+          type="file"
+          id="input"
+          style={{
+            opacity: 0,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "100%",
+          }}
+          onChange={(e) => onFileChange(e)}
+        />
+        <Grid container justify="center" alignItems="center">
+          <Grid item>
+            <PublishIcon />
+          </Grid>
+          <Grid item style={{ marginLeft: 8 }}>
+            Загрузить файл
+          </Grid>
+        </Grid>
+      </button>
       <ElementsSecondaryAuto validYear={validYear} formState={FormState.READ} />
       <Grid container className={classes.paper}>
         <Grid item xs={2}>
-          <div style={{ textAlign: "left" }}>
+          {/* <div style={{ textAlign: "left" }}>
             <button
               className="pxbutton"
               onClick={() => {
@@ -141,7 +168,7 @@ export const MainPageSecondaryAuto = (props: any) => {
             >
               Удалить все по авто
             </button>
-          </div>
+          </div> */}
         </Grid>
         <Grid item xs={8}>
           <div style={{ textAlign: "center" }}>

@@ -17,6 +17,7 @@ import { Elements } from "./Elements";
 import { AppContext, history } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import { changeCity } from "../../store/Actions";
+import PublishIcon from "@material-ui/icons/Publish";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
     inputStyle: {
       height: 50,
       boxSizing: "border-box",
+    },
+    optionStyle: {
+      textTransform: "capitalize",
     },
   })
 );
@@ -111,14 +115,16 @@ export const MainPage = (props: any) => {
             dispatch(changeCity(e.currentTarget.value));
           }}
           label="Филиал"
-          style={{ height: "50px", width: "280px" }}
+          style={{ height: "50px", width: "280px", marginLeft: 8 }}
         >
           <option>Выберите город</option>
-          {existCities.map((m, i) => (
-            <option key={i} value={m}>
-              {m}
-            </option>
-          ))}
+          {existCities
+            .sort((a, b) => (a > b ? 1 : b > a ? -1 : 0))
+            .map((m, i) => (
+              <option className={classes.optionStyle} key={i} value={m}>
+                {m.toLocaleLowerCase()}
+              </option>
+            ))}
         </Select>
       </FormControl>
       <button
@@ -157,12 +163,34 @@ export const MainPage = (props: any) => {
           className: classes.inputStyle,
         }}
       ></TextField>
-      <input
-        type="file"
-        id="input"
-        style={{ float: "right" }}
-        onChange={(e) => onFileChange(e)}
-      />
+      <button
+        className="pxbutton"
+        style={{ position: "relative", float: "right", marginRight: 16 }}
+        onClick={() => {}}
+      >
+        <input
+          type="file"
+          id="input"
+          style={{
+            opacity: 0,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "100%",
+          }}
+          onChange={(e) => onFileChange(e)}
+        />
+        <Grid container justify="center" alignItems="center">
+          <Grid item>
+            <PublishIcon />
+          </Grid>
+          <Grid item style={{ marginLeft: 8 }}>
+            Загрузить файл
+          </Grid>
+        </Grid>
+      </button>
       <Elements city={city} formState={FormState.READ} />
       <Grid container className={classes.paper}>
         <Grid item xs={2}>

@@ -59,12 +59,14 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       "& .MuiTextField-root": {
         margin: theme.spacing(1),
-        width: "25ch",
       },
     },
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
+    },
+    cellStyle: {
+      width: 450,
     },
   })
 );
@@ -158,13 +160,15 @@ export const ElementSecondaryAuto = (props: any) => {
               )}
             </h2>
             <Grid item className={classes.paper} justify="center" container>
-              <Grid item xs={6}>
+              <Grid item>
                 <TextField
                   required
                   variant="outlined"
                   label="Код строки"
                   value={analysis.code || ""}
-                  style={{ width: "450px" }}
+                  InputProps={{
+                    className: classes.cellStyle,
+                  }}
                   onChange={(e: any) =>
                     setAnalysis({ ...analysis, code: e.target.value })
                   }
@@ -176,7 +180,9 @@ export const ElementSecondaryAuto = (props: any) => {
                   variant="outlined"
                   label="Марка авто"
                   value={analysis.carBrand || ""}
-                  style={{ width: "450px" }}
+                  InputProps={{
+                    className: classes.cellStyle,
+                  }}
                   onChange={(e: any) =>
                     setAnalysis({ ...analysis, carBrand: e.target.value })
                   }
@@ -188,7 +194,9 @@ export const ElementSecondaryAuto = (props: any) => {
                   variant="outlined"
                   label="Модель авто"
                   value={analysis.carModel || ""}
-                  style={{ width: "450px" }}
+                  InputProps={{
+                    className: classes.cellStyle,
+                  }}
                   onChange={(e: any) =>
                     setAnalysis({ ...analysis, carModel: e.target.value })
                   }
@@ -200,7 +208,9 @@ export const ElementSecondaryAuto = (props: any) => {
                   variant="outlined"
                   label="Год выпуска"
                   value={analysis.produceYear || ""}
-                  style={{ width: "450px" }}
+                  InputProps={{
+                    className: classes.cellStyle,
+                  }}
                   onChange={(e: any) =>
                     setAnalysis({
                       ...analysis,
@@ -209,13 +219,15 @@ export const ElementSecondaryAuto = (props: any) => {
                   }
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item>
                 <TextField
                   variant="outlined"
                   label="Рыночная стоимость"
-                  InputProps={{ inputComponent: NumberFormatCustom }}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                    className: classes.cellStyle,
+                  }}
                   value={analysis.marketCost}
-                  style={{ width: "450px" }}
                   onChange={(e: any) =>
                     setAnalysis({
                       ...analysis,
@@ -229,9 +241,11 @@ export const ElementSecondaryAuto = (props: any) => {
                   required
                   variant="outlined"
                   label="Max % отклонения/коридор"
-                  InputProps={{ inputComponent: NumberFormatCustom }}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                    className: classes.cellStyle,
+                  }}
                   value={analysis.maxPercentageDeviation}
-                  style={{ width: "450px" }}
                   onChange={(e: any) =>
                     setAnalysis({
                       ...analysis,
@@ -240,7 +254,7 @@ export const ElementSecondaryAuto = (props: any) => {
                   }
                 />
                 {/* <br/><br/>
-              <TextField required variant="outlined"  label="Статус" value={analysis.typeEstateCode || ""} style={{ width: "450px" }} onChange={(e: any) =>
+              <TextField required variant="outlined"  label="Статус" value={analysis.typeEstateCode || ""} className={classes.cellStyle} onChange={(e: any) =>
                 setAnalysis({ ...analysis, typeEstateCode: e.target.value })
               }/> */}
                 <br />
@@ -256,7 +270,9 @@ export const ElementSecondaryAuto = (props: any) => {
                     true
                   ).format("YYYY-MM-DD")}
                   InputLabelProps={{ shrink: true, required: true }}
-                  style={{ width: "450px" }}
+                  InputProps={{
+                    className: classes.cellStyle,
+                  }}
                   onChange={(e: any) =>
                     setAnalysis({ ...analysis, beginDate: e.target.value })
                   }
@@ -272,7 +288,9 @@ export const ElementSecondaryAuto = (props: any) => {
                     "YYYY-MM-DD"
                   )}
                   InputLabelProps={{ shrink: true, required: true }}
-                  style={{ width: "450px" }}
+                  InputProps={{
+                    className: classes.cellStyle,
+                  }}
                   onChange={(e: any) =>
                     setAnalysis({ ...analysis, endDate: e.target.value })
                   }
